@@ -24,26 +24,27 @@ export default class jsonArray extends Array{
 
   constructor(array) {
     super(...array);
-
-    this.array = array
   }
 
   // TODO: search for all columns in the Array
-  get columns(){ return Object.keys(this.array[0]) }
+  get columns(){ return Object.keys(this[0]) }
+
+
 
   // sorts the json array by the provided column
-  sort_values( col, ascending=true ){
+  sort_values( col, ascending=true){
+
+    var array
 
     //sort the table based on the ascending flag
     if( ascending === true ){
-      this.array = this.array.sort((a, b) => a[col] > b[col] ? 1 : -1 )
+      array = this.sort((a, b) => a[col] > b[col] ? 1 : -1 )
 
     }else{
-      this.array = this.array.sort((a, b) => a[col] < b[col] ? 1 : -1 )
+      array = this.sort((a, b) => a[col] < b[col] ? 1 : -1 )
     }
 
-    // super(...this.array)
-    return this.array
+    return new jsonArray( array )
   }
 
   // filters the json array based on the column and the provided value.
@@ -51,29 +52,39 @@ export default class jsonArray extends Array{
   filter_column( col, value ){
 
     if( Array.isArray(value) ){
-      return this.array.filter(row => value.includes(row[col]) )
+      return new jsonArray( [...this].filter(row => value.includes(row[col])) )
+    }else{
+      return new jsonArray( [...this].filter(row => row[col] === value ) )
     }
-
-    return this.array.filter(row => row[col] === value )
   }
 
-  test(){
-      console.log( 'this is a test', this.length)
+
+  filter( func ){
+    return new jsonArray( [...this].filter(func) )
   }
 
-  filter( func ){ return new jsonArray( this.array.filter(func) ) }
   map( func ){
-    const array = this.array.map(func)
-    console.log( 'mapping', array.length, array instanceof Array )
-     return new jsonArray( array ) }
+    return [...this].map(func)
+  }
 
   groupby( col ){
-    return new jsonArray( groupby( this.array, col ) )
+    return new jsonArray( groupby( this, col ) )
   }
 
   // removes json ojects with the same values
   drop_duplicates(){
-    return new jsonArray( dropDuplicates( this.array ) )
+
+    var cleaned = [];
+    [...this].forEach(function(itm) {
+        var unique = true;
+        cleaned.forEach(function(itm2) {
+            if (_.isEqual(itm, itm2)) unique = false;
+        });
+        if (unique)  cleaned.push(itm);
+    });
+
+    return new jsonArray(cleaned)
+
   }
 
   pivot( columns ){
@@ -87,8 +98,8 @@ export default class jsonArray extends Array{
       var temp = {column: columns[i]}
 
       // add the column value for each row
-      for( var j=0; j < this.array.length; j++ ){
-        temp[j] = this.array[j][columns[i]]
+      for( var j=0; j < this.length; j++ ){
+        temp[j] = this[j][columns[i]]
       }
 
       // add the results to the final pivot table
@@ -102,15 +113,15 @@ export default class jsonArray extends Array{
 
     var pivot_table = []
 
-    const row_val = [...new Set(this.array.map( r => r[row]) )]
-    const column_val = [...new Set(this.array.map( r => r[column]) )]
+    const row_val = this.unique( row )
+    const column_val = this.unique( column )
 
 
     for( var i=0; i < row_val.length; i++ ){
       // initialize the row to contain the column name
       var temp = {row: row_val[i]}
 
-      const by_row = this.array.filter( r => r[row] === row_val[i] )
+      const by_row = this.filter( r => r[row] === row_val[i] )
 
       // add the column value for each row
       for( var j=0; j < column_val.length; j++ ){
@@ -129,22 +140,46 @@ export default class jsonArray extends Array{
   // converts the specified column into a date string
   strftime( col, format='YYYY-MM-DD' ){
 
-    for( var i=0; i < this.array.length; i++ ){
-      this.array[i][col] = moment(this.array[i][col]).format(format)
+    var array = this
+
+    for( var i=0; i < this.length; i++ ){
+      array[i][col] = moment(this[i][col]).format(format)
     }
 
-    return new jsonArray(this.array)
+    return new jsonArray(array)
+  }
+
+  /**
+   * Creates a new column by merging the content from the columns
+   * specified in the columns attribute
+   * @param  {array} columns  array of column names
+   * @param  {String} col_name Name of the resulting column
+   * @param  {String} [sep='   ']            string delimiter
+   * @return {OBJECT}          jsonArray with the new column
+   */
+  combine( columns, col_name, sep=' ' ){
+    var array = this
+
+    for( var i=0; i < this.length; i++ ){
+      // seed the value with the value from the first column
+      var temp = this[i][columns[0]]
+
+      for( var j=1; j < columns.length; j++ ){
+        temp = temp + sep + this[i][columns[j]]
+      }
+
+      array[i][col_name] = temp
+    }
+
+    return new jsonArray(array)
   }
 
   combine_columns( col1, col2, col_name, sep=' ' ){
     // creates a new column by merging the content of col 1 and 2 to
     // form a new column
-    //
-    for( var i=0; i < this.array.length; i++ ){
-      this.array[i][col_name] = this.array[i][col1] + sep + this.array[i][col2]
-    }
 
-    return new jsonArray(this.array)
+    console.log( 'this function is deprecated: see combine')
+    return this.combine([col1, col2], col_name, sep )
   }
 
   to_jsonObject( key, value ){
@@ -152,18 +187,18 @@ export default class jsonArray extends Array{
     // columns for the key and values
 
     var object = {}
-    for( var i=0; i < this.array.length; i++ ){
-      object[this.array[i][key]] = this.array[i][value]
+    for( var i=0; i < this.length; i++ ){
+      object[this[i][key]] = this[i][value]
     }
 
-    return new jsonObject( object )
+    return new jsonArray( object )
   }
 
   unique( col, ordered=false ){
     // return all unique values for the specified column. When
     // ordered is set to true, these values are sorted.
 
-    var unique_values = [...new Set(this.array.map(row => row[col] ))]
+    var unique_values = [...new Set([...this].map(row => row[col] ))]
 
 
     if( ordered === true ){
@@ -187,17 +222,17 @@ export default class jsonArray extends Array{
   *  Interface for computing common statistical functions
   ********************************************************************************/
   max(col){
-    if( this.array.length === 1 ) return this.array[0][col]
-    return Math.max(...this.array.map(row => row[col])) }
+    if( this.length === 1 ) return this[0][col]
+    return Math.max(...this.map(row => row[col])) }
   min(col){
-    if( this.array.length === 1 ) return this.array[0][col]
-    return Math.min(...this.array.map(row => row[col])) }
+    if( this.length === 1 ) return this[0][col]
+    return Math.min(...this.map(row => row[col])) }
   sum(col){
-    if( this.array.length === 1 ) return this.array[0][col]
-    return this.array.map(row => row[col]).reduce((a,b) => a + b, 0) }
+    if( this.length === 1 ) return this[0][col]
+    return this.map(row => row[col]).reduce((a,b) => a + b, 0) }
   mean(col){
-    if( this.array.length === 1 ) return this.array[0][col]
-    return this.sum(col) / this.array.length }
+    if( this.length === 1 ) return this[0][col]
+    return this.sum(col) / this.length }
 
   /********************************************************************************
   *  ECharts json array interface

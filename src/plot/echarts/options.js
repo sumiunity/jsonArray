@@ -13,7 +13,7 @@
 import {color} from '../Colors'
 import jsonArray from '../../jsonArray'
 
-// import { prepareBoxplotData } from 'echarts/extension/dataTool';
+import { prepareBoxplotData } from 'echarts/extension/dataTool';
 
 const debug = false
 
@@ -122,29 +122,17 @@ export default class echartsOptions{
 
     const keys = this.data.unique( col )
     const groups = this.data.groupby([col])
-    console.log( 'sanity check', this.data instanceof jsonArray )
 
-    console.log( groups )
     // group the data based on the unique column values
     var group_values = []
     for( var i=0; i < groups.length; i++ ){
-      console.log( groups[i].json_obj.length, groups[i].json_obj )
-
-      groups[i].json_obj.map(row => row.RATIO)
-      // group_values.push(
-      //   groups[i].json_obj.map(row => row.RATIO)
-      // )
+      group_values.push(
+        groups[i].json_obj.map(row => row.RATIO)
+      )
     }
-    // this.data.groupby([col]).forEach(
-    //   element => groups.push( element.json_obj.map(row => row.RATIO).array )
-    // )
-
-    console.log( 'these are the groups', group_values )
-    // leverage the echarts function to generate the data
-    // const echartsData = prepareBoxplotData(group_values)
-
-    console.log( 'this is the data', group_values)
-    console.log( 'boxplot data', echartsData)
+    
+    // // leverage the echarts function to generate the data
+    const echartsData = prepareBoxplotData(group_values)
 
     return {
         tooltip: {
@@ -160,7 +148,7 @@ export default class echartsOptions{
         },
         xAxis: {
             type: 'category',
-            data: echartsData.axisData,
+            data: keys,
             boundaryGap: true,
             nameGap: 30,
             splitArea: {

@@ -16,12 +16,17 @@ import jsonArray from './jsonArray'
 //
 // console.log( 'test123' )
 // console.log( data)
-//
-//
+
+
+
 var json_array = new jsonArray( data.data )
 
-// var bin_array = json_array.filter( row => row.SBIN_NUM === '260')
-console.log( json_array.test() )
+var bin_array = json_array.filter( row => row.SBIN_NUM === '260')
+// console.log(bin_array)
+// json_array.test()
+// console.log( json_array.map('TEST') )
+// console.log( json_array.map('TEST') instanceof jsonArray )
 
 // console.log( bin_array.boxplot('LOADBOARD', 'Bin Yield') )
+console.log( bin_array.combine( ['BIN_TYPE', 'SORT'], 'TESTCOL', '--' ))
 console.log( 'finished' )
