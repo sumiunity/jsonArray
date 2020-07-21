@@ -1,0 +1,28 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nik",
+  "license": "ISC",
+  "keywords": [
+    "test"
+  ],
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "echarts": "^4.8.0",
+    "moment": "^2.27.0",
+    "nodemon": "^2.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.6",
+    "nodemon": "^1.18.6"
+  }
+}
