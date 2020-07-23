@@ -20,7 +20,7 @@ import jsonArray from './jsonArray'
 
 
 var json_array = new jsonArray( data.data )
-json_array = json_array.label(row => row.RATIO > 0.95)
+json_array = json_array.groupby(['LOTID'])
 // json_array = json_array.strptime('ENDTIME')
 // var scatter = json_array.plot(
 //   'heatmap',
@@ -29,7 +29,7 @@ json_array = json_array.label(row => row.RATIO > 0.95)
 //     value: 'RATIO'
 //   } )
 //
-// console.log( json_array )
+console.log( json_array )
 // console.log( json_array.scatter('ENDTIME', 'SBIN_NUM' ) )
 
 //
