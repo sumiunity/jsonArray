@@ -9,9 +9,11 @@
  * :Date: Feb 11, 2020
  */
 
+ import moment from 'moment';
+ import _ from 'lodash'
+
 import groupby from './functions/groupby'
-import {dropDuplicates} from './functions/duplicates'
-import moment from 'moment';
+
 import jsonObject from './jsonObject'
 
 import echartsFormat from './plot/echarts/format'
@@ -23,8 +25,40 @@ const debug = false
 export default class jsonArray extends Array{
 
   constructor(array) {
+
+    const keys = Object.keys(array[0])
+
+    // create an __index__ attribute when one doesn't exist
+    if( !keys.includes('__index__') ){
+      for( var i=0; i < array.length; i++ ){
+        array[i]['__index__'] = i
+      }
+    }
+
     super(...array);
   }
+
+  /**
+   * Initialization routine by adding an index to the
+   * json array to enable functions such as merge, join,
+   * etc.
+   * @param  {Array} array JsonArray
+   * @return {Array}       Initialized arrray
+   */
+  __init__( array ){
+
+    const keys = Object.keys(array[0])
+
+    if( keys.includes('__index__') ){
+      return array
+    }
+
+    return array
+    // for( var i=0; i < array.length; i++ ){
+    //
+    // }
+  }
+
 
   // TODO: search for all columns in the Array
   get columns(){ return Object.keys(this[0]) }
@@ -149,6 +183,19 @@ export default class jsonArray extends Array{
     return new jsonArray(array)
   }
 
+  // converts the specified column into a
+  strptime( col ){
+
+    var array = this
+
+    for( var i=0; i < this.length; i++ ){
+      array[i][col] = moment(this[i][col])
+    }
+
+    return new jsonArray(array)
+  }
+
+
   /**
    * Creates a new column by merging the content from the columns
    * specified in the columns attribute
@@ -177,7 +224,6 @@ export default class jsonArray extends Array{
   combine_columns( col1, col2, col_name, sep=' ' ){
     // creates a new column by merging the content of col 1 and 2 to
     // form a new column
-
     console.log( 'this function is deprecated: see combine')
     return this.combine([col1, col2], col_name, sep )
   }
@@ -215,6 +261,37 @@ export default class jsonArray extends Array{
 
     return unique_values
   }
+
+  /**
+   * Applies a threshold to the specified column
+   * @param  {function} func     function used to partition dataset
+   * @param  {string} res_col   column name containing the results
+   * @return {Array}            jsonArray containing res_col
+   */
+  label( func, res_col='label' ){
+
+    var array = this
+
+    // identify all samples identified by the rule
+    const sample_index = array.filter( func ).map( row => row.__index__ )
+
+    // create a boolean label, where parts in the sample set are true
+    for( var i=0; i < array.length; i ++ ){
+      // default the value to false
+      var value = false
+
+      // the value is true when it is included in the sample set
+      if( sample_index.includes( array[i].__index__) ){
+        value = true
+      }
+
+      array[i][res_col] = value
+    }
+
+    return new jsonArray( array )
+  }
+
+
 
   /********************************************************************************
   *  Math Functions
@@ -285,35 +362,31 @@ export default class jsonArray extends Array{
     return echarts.scatter_by( col1, col2, by, label )
   }
 
-
   /**
-   * Returns the echarts options for generating the heatmap plot
+   * Returns the echarts options based on the specified plot type
    *
-   * @param  {string} col1  column 1 name, which will be used for the x_axis
-   * @param  {string} col1  column 2 name, which will be used for the y_axis
-   * @param  {string} value column name, which will be used for the cell value
-   * @param  {string} tooltip string used in the tool tip
-   * @return {Array}       Array of x/y cooridnates
+   * @param  {string} plot_type  plot type definition
+   * @param  {object} params  Plot parameters
+   * @return {Array}          Array of plot objects used to render echarts plots
    */
-  heatmap( col1, col2, value, label ){
+  plot( plot_type, params ){
+
     const echarts = new echartsOptions( this )
-    echarts.heatmap( this.array, col1, col2, value, label )
 
-    console.log( echarts )
-  }
+    // return the plot options based on the specified plot type
+    switch( plot_type ){
 
+      case 'heatmap':
+        return echarts.heatmap( params )
 
-  /**
-   * Returns the echarts options for generating the Boxplot
-   *
-   * @param  {string} col1  column 1 name, which will be used for the x_axis
-   * @param  {string} col1  column 2 name, which will be used for the y_axis
-   * @param  {string} value column name, which will be used for the cell value
-   * @param  {string} tooltip string used in the tool tip
-   * @return {Array}       Array of x/y cooridnates
-   */
-  boxplot( col, y_axis ){
-    const echarts = new echartsOptions( this )
-    return echarts.boxplot( col, y_axis )
+      case 'boxplot':
+        return echarts.boxplot( params )
+
+      case 'scatter':
+        return echarts.scatter( params )
+
+      default:
+        alert('unknown plot type: ' + plot_type)
+    }
   }
 }

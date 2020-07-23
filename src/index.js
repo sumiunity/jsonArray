@@ -20,7 +20,17 @@ import jsonArray from './jsonArray'
 
 
 var json_array = new jsonArray( data.data )
-console.log( json_array.heatmap('LOADBOARD', 'SBIN_NUM', 'RATIO') )
+json_array = json_array.label(row => row.RATIO > 0.95)
+// json_array = json_array.strptime('ENDTIME')
+// var scatter = json_array.plot(
+//   'heatmap',
+//   {colx: 'TEST_PGM',
+//     coly:'SBIN_NUM',
+//     value: 'RATIO'
+//   } )
+//
+// console.log( json_array )
+// console.log( json_array.scatter('ENDTIME', 'SBIN_NUM' ) )
 
 //
 // var bin_array = json_array.filter( row => row.SBIN_NUM === '260')

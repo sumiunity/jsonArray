@@ -19,6 +19,12 @@ export default class echartsAxis extends Object {
     // super(...array)
   }
 
+  // default axis parameters
+  default(){
+    this.type = 'value'
+
+  }
+
   label( label ){
     if( label !== undefined ){
       this.name = label
@@ -37,20 +43,18 @@ export default class echartsAxis extends Object {
     // add the label to the axis configuration
     this.label( params.label )
 
-    // add the tick values based on the plot type
-    if( (params.label !== undefined)&(params.values !== undefined) ){
-      switch( params.type ){
-        case 'category':
-          this.tick_values( [...new Set(params.values)] )
-          break;
+    switch( params.type ){
+      case 'category':
+        this.tick_values( [...new Set(params.values)] )
+        break;
 
-        default:
-          break;
-      }
+      default:
+        break;
     }
   }
 
-  category( params ){
+  // formats the axis to display categories
+  to_category( params={} ){
     this.type = 'category'
     this.splitArea ={
         show: true
@@ -64,7 +68,7 @@ export default class echartsAxis extends Object {
   }
 
   // formats the axis to display values
-  value( params ){
+  to_value( params={} ){
     this.type = 'value'
 
     // set the label when provided
@@ -72,7 +76,8 @@ export default class echartsAxis extends Object {
   }
 
 
-  date( params ){
+  // format the axis to display dates
+  to_date( params={} ){
 
     var strftime = 'MM-DD'
     if( params.strftime !== undefined ) strftime = params.strftime
