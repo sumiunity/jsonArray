@@ -224,10 +224,20 @@ export default class echartsOptions extends Object {
     }
 
 
-    this.series = this.json_array.scatter(
-      params.colx,
-      params.coly,
-      'blue' )
+    if( params.label !== undefined ){
+      this.series = this.json_array.scatter_by(
+        params.colx,
+        params.coly,
+        params.label )
+
+    }else{
+      this.series = this.json_array.scatter(
+        params.colx,
+        params.coly,
+        'blue' )
+
+    }
+
 
 
     delete this.json_array

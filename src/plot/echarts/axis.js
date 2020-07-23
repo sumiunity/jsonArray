@@ -11,6 +11,7 @@
  * :Date: July 22, 2020
  */
 
+import moment from 'moment'
 
 export default class echartsAxis extends Object {
 
