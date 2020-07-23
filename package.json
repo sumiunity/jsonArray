@@ -1,13 +1,13 @@
 {
-  "name": "test",
+  "name": "@nsumikawa/jsonarray",
   "version": "1.0.0",
-  "description": "test",
+  "description": "Routines used to manipulate an array of json objects similar to a DataFrame",
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "nik",
+  "author": "Nik Sumikawa",
   "license": "ISC",
   "keywords": [
     "test"

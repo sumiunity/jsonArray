@@ -20,13 +20,15 @@ import jsonArray from './jsonArray'
 
 
 var json_array = new jsonArray( data.data )
+console.log( json_array.heatmap('LOADBOARD', 'SBIN_NUM', 'RATIO') )
 
-var bin_array = json_array.filter( row => row.SBIN_NUM === '260')
-// console.log(bin_array)
-// json_array.test()
-// console.log( json_array.map('TEST') )
-// console.log( json_array.map('TEST') instanceof jsonArray )
-
-// console.log( bin_array.boxplot('LOADBOARD', 'Bin Yield') )
-console.log( bin_array.combine( ['BIN_TYPE', 'SORT'], 'TESTCOL', '--' ))
-console.log( 'finished' )
+//
+// var bin_array = json_array.filter( row => row.SBIN_NUM === '260')
+// // console.log(bin_array)
+// // json_array.test()
+// // console.log( json_array.map('TEST') )
+// // console.log( json_array.map('TEST') instanceof jsonArray )
+//
+// // console.log( bin_array.boxplot('LOADBOARD', 'Bin Yield') )
+// console.log( bin_array.combine( ['BIN_TYPE', 'SORT'], 'TESTCOL', '--' ))
+// console.log( 'finished' )

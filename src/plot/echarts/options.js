@@ -12,26 +12,45 @@
 
 import {color} from '../Colors'
 import jsonArray from '../../jsonArray'
+import echartsAxis from './axis'
 
 import { prepareBoxplotData } from 'echarts/extension/dataTool';
 
 const debug = false
 
 
-export default class echartsOptions{
+
+
+export default class echartsOptions extends Object {
 
   constructor(data) {
+    super()
 
-    console.log('what the fuck is coming in here??', data)
-    console.log( data instanceof jsonArray )
-    this.data = data
+
+    this.json_array = data
 
     // cast the variable to a jsonArray type when it is a standard array
-    if( (this.data instanceof jsonArray) == false ){
-      console.log( 'do i get here??')
-      this.data  = new jsonArray( this.data  )
+    if( (this.json_array instanceof jsonArray) == false ){
+      this.json_array  = new jsonArray( this.json_array  )
     }
 
+    // set the default plot parameters
+    this.default()
+  }
+
+
+  // set the default plot parameters
+  default(){
+
+    // default animations to off for performance
+    this.animation = false
+
+    this.tooltip = {
+        position: 'top',
+        axisPointer: {
+            type: 'shadow'
+        }
+    }
   }
 
   /**
@@ -45,72 +64,62 @@ export default class echartsOptions{
    * @param  {string} tooltip string used in the tool tip
    * @return {Array}       Array of x/y cooridnates
    */
-  heatmap( data, colx, coly, value, tooltip='value' ){
+  heatmap( colx, coly, value, tooltip='value' ){
     // returns an object for generating a heatmap, similar to
     // the calendar example but with data from a jsonArray
     // example: https://echarts.apache.org/examples/en/editor.html?c=calendar-heatmap
 
-    var json_array = data
 
-    // cast the variable to a jsonArray type when it is a standard array
-    if( json_array instanceof jsonArray ){
-      json_array = new jsonArray( json_array )
+    // set the x axis values using the Axis class
+    this.xAxis = new echartsAxis()
+    this.xAxis.category({
+      label: colx,
+      values: this.json_array.unique(colx)
+    })
+
+    // set the y axis values using the Axis class
+    this.yAxis = new echartsAxis()
+    this.yAxis.category({
+      label: coly,
+      values: this.json_array.unique(coly)
+    })
+
+
+    this.grid = {
+        height: '80%',
+        top: '10%',
+        show:true,
+        backgroundColor: 'rgb(0, 128, 0)'
     }
 
-
-    return {
-      tooltip: {
-          position: 'top'
-      },
-      animation: false,
-      grid: {
-          height: '80%',
-          top: '10%',
-          show:true,
-          backgroundColor: 'rgb(0, 128, 0)'
-      },
-      xAxis: {
-          type: 'category',
-          name: colx,
-          data: json_array.unique(colx, true),
-          splitArea: {
-              show: true
-          }
-      },
-      yAxis: {
-          type: 'category',
-          name: coly,
-          data: (json_array.unique(coly, true)),
-          splitArea: {
-              show: true
-          }
-      },
-      visualMap: {
-          min: Math.min(...json_array.unique(value))*100,
-          max: Math.max(...json_array.unique(value))*100,
-          calculable: true,
-          orient: 'vertical',
-          left: 'left',
-          bottom: '10%',
-          inRange: {
-                    color: ['green', 'yellow','orange', 'red']
-                    }
-      },
-      series: [{
-          name: tooltip,
-          type: 'heatmap',
-          data: data.map(function (item) {
-              return [
-                item[colx],
-                item[coly],
-                (Number(item[value])*100).toFixed(2)
-              ]
-            }),
-          label: {
-              show: true
-          },
-      }]
+    this.visualMap = {
+        min: Math.min(...this.json_array.unique(value))*100,
+        max: Math.max(...this.json_array.unique(value))*100,
+        calculable: true,
+        orient: 'vertical',
+        left: 'left',
+        bottom: '10%',
+        inRange: {
+          color: ['green', 'yellow','orange', 'red']
+        }
     }
+
+    this.series = [{
+        name: tooltip,
+        type: 'heatmap',
+        data: this.json_array.map(function (item) {
+            return [
+              item[colx],
+              item[coly],
+              (Number(item[value])*100).toFixed(2)
+            ]
+          }),
+        label: {
+            show: true
+        },
+    }]
+
+    delete this.json_array
   }
 
 
@@ -130,7 +139,7 @@ export default class echartsOptions{
         groups[i].json_obj.map(row => row.RATIO)
       )
     }
-    
+
     // // leverage the echarts function to generate the data
     const echartsData = prepareBoxplotData(group_values)
 

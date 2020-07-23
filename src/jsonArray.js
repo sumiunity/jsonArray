@@ -297,7 +297,9 @@ export default class jsonArray extends Array{
    */
   heatmap( col1, col2, value, label ){
     const echarts = new echartsOptions( this )
-    return echarts.heatmap( this.array, col1, col2, value, label )
+    echarts.heatmap( this.array, col1, col2, value, label )
+
+    console.log( echarts )
   }
 
 

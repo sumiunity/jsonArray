@@ -1,40 +1,58 @@
+global.base_dir = './';
 
-export function hello(){
-    console.log('helloworld')
-    }
+global.abs_path = function(path) {
+  return base_dir + path;
+}
 
-hello()
+global.include = function(file) {
+  return require(abs_path('/' + file));
+}
 
+import jsonArray from './jsonArray'
 
-const test_data = [
-  { TEST: "OBJECT1", VALUE: 1 },
-  { TEST: "OBJECT2", VALUE: 2 },
-  { TEST: "OBJECT2", VALUE: 3 },
-  { TEST: "OBJECT3", VALUE: 3 },
-]
-
-
-
-export default class jsonArray extends Array{
+class plotAxis extends jsonArray {
 
   constructor(array) {
-    super(...array);
+    super(...array)
+    this.params = {}
   }
 
-  add( obj ){
-    this.push( obj )
+  set label( label ){
+    if( label !== undefined ){
+      this.params.name = label
+    }
   }
 
-  top(limit=10){
-    console.log( this.sort((a, b) => (a.TEST > b.TEST ? -1 : 1)).slice(0, limit) )
+  category( label ){
+    this.params = {
+        type: 'category',
+        splitArea: {
+            show: true
+        }
+      }
+
+    // set the label when provided
+    this.label( label )
+
+    // add the unique values for the axis when provided
+    if( label !== undefined ){
+      this.params['data'] = this.unique(label, true)
+    }
   }
 
-  map( col ){
-    const values = [...this].filter(r => r[col] === 'OBJECT2' )
-    this = values
 
-    console.log( 'here---', this )
-    return new jsonArray( values )
+  value( label ){
+    this.params = {
+        type: 'value',
+    }
+
+    // set the label when provided
+    this.label( label )
   }
 
 }
+
+const plot_axis = new plotAxis()
+plot_axis.category()
+
+console.log( plot_axis.params )
