@@ -10,6 +10,10 @@ global.include = function(file) {
 
 import {data} from './data'
 import jsonArray from './jsonArray'
+import jsonObject from './jsonObject'
+
+import moment from 'moment';
+import datetime from './data_types/datetime'
 // import hello from './src/test'
 // import hello from 'test'
 // include( 'data.js')
@@ -28,8 +32,27 @@ json_array = json_array.groupby(['LOTID'])
 //     coly:'SBIN_NUM',
 //     value: 'RATIO'
 //   } )
-//
-console.log( json_array )
+
+
+var json_object = new jsonObject({a: 1, b: 2, c: 3, date:'2020-07-29'})
+// console.log( json_object )
+// console.log( json_object.timedelta('date', {days:-10}).strftime('date') )
+// json_object.strptime( 'date' )
+// console.log( json_object )
+json_object.strptime('date')
+console.log("Original: " + json_object.date.toString());
+console.log("Extended: " + json_object.date.timedelta({days:2}).toString());
+console.log("Original: " + json_object.date.toString());
+
+
+
+
+const test = datetime('2020-07-01')
+console.log("Original: " + test.toString());
+console.log("Extended: " + test.timedelta({days:2}).toString());
+console.log("Original: " + test.toString());
+
+// console.log( json_array )
 // console.log( json_array.scatter('ENDTIME', 'SBIN_NUM' ) )
 
 //

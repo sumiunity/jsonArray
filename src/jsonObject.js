@@ -10,7 +10,7 @@
  */
 
 
-import moment from 'moment';
+import datetime from './data_types/datetime';
 
 import jsonArray from './jsonArray'
 const debug = false
@@ -39,42 +39,12 @@ export default class jsonObject extends Object {
   // converts the specified key to a datetime attribute
   strptime( key ){
 
-    if( !(this[key] instanceof moment) ){
-      this[key] = moment(this[key])
+    if( !(this[key] instanceof datetime) ){
+      this[key] = datetime(this[key])
     }
     return this
   }
 
-  // converts the datetime attribute to a the specified
-  // date format. when the attribute is not a datetime
-  // format, it is first convert before converting to
-  // a string
-  strftime( key, format='YYYY-MM-DD' ){
-
-    // convert to moment datetime if not already done so
-    this.strptime( key )
-
-    this[key] = this[key].format(format)
-
-    return this
-  }
-
-  // adds time to the date attribute. the key is converted
-  // to moment type if it is not already
-  timedelta( key, params={}){
-
-    // convert to moment datetime if not already done so
-    this.strptime( key )
-
-    const param_keys = Object.keys( params )
-    for( var i=0; i < param_keys.length; i++ ){
-      const pkey = param_keys[i]
-      this[key] = this[key].add(params[pkey], pkey)
-
-    }
-
-    return this
-  }
 
   // convert the json Object to a two dimensional json array
   to_jsonArray( key_name, value_name ){
