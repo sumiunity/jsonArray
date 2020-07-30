@@ -25,14 +25,17 @@ export default class jsonArray extends Array{
 
   constructor(array) {
 
-    const keys = Object.keys(array[0])
+    // add an index column when the array is not empty
+    if( array.length > 0 ){
+      const keys = Object.keys(array[0])
 
-    // create an __index__ attribute when one doesn't exist
-    if( !keys.includes('__index__') ){
-      for( var i=0; i < array.length; i++ ){
-        array[i]['__index__'] = i
+      // create an __index__ attribute when one doesn't exist
+      if( !keys.includes('__index__') ){
+        for( var i=0; i < array.length; i++ ){
+          array[i]['__index__'] = i
+        }
       }
-    }
+  }
 
     super(...array);
   }
@@ -301,6 +304,8 @@ export default class jsonArray extends Array{
   label( func, res_col='label' ){
 
     var array = this
+
+    console.log( 'sample index', array.filter( func ) )
 
     // identify all samples identified by the rule
     const sample_index = array.filter( func ).map( row => row.__index__ )
