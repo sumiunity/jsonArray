@@ -14,6 +14,8 @@ import jsonObject from './jsonObject'
 
 import moment from 'moment';
 import datetime from './data_types/datetime'
+
+import jsonSemanticUI from './framework/SemanticUI'
 // import hello from './src/test'
 // import hello from 'test'
 // include( 'data.js')
@@ -22,9 +24,21 @@ import datetime from './data_types/datetime'
 // console.log( data)
 
 
+//
+// var json_array = new jsonArray( data.data )
+// console.log( json_array.unique('TESTER', true) )
 
-var json_array = new jsonArray( data.data )
-json_array = json_array.groupby(['LOTID'])
+var semanticUI = new jsonSemanticUI( data.data )
+semanticUI.dropdown('TESTER')
+
+
+// json_array = json_array.filter( row => row.SBIN_NUM === '260' )
+//
+//
+// json_array = json_array.label( row => row.RATIO > 0.0005 )
+// console.log( json_array.filter(row => row.label === false).length )
+// console.log( json_array.filter(row => row.label === true).length )
+
 // json_array = json_array.strptime('ENDTIME')
 // var scatter = json_array.plot(
 //   'heatmap',
@@ -34,23 +48,6 @@ json_array = json_array.groupby(['LOTID'])
 //   } )
 
 
-var json_object = new jsonObject({a: 1, b: 2, c: 3, date:'2020-07-29'})
-// console.log( json_object )
-// console.log( json_object.timedelta('date', {days:-10}).strftime('date') )
-// json_object.strptime( 'date' )
-// console.log( json_object )
-json_object.strptime('date')
-console.log("Original: " + json_object.date.toString());
-console.log("Extended: " + json_object.date.timedelta({days:2}).toString());
-console.log("Original: " + json_object.date.toString());
-
-
-
-
-const test = datetime('2020-07-01')
-console.log("Original: " + test.toString());
-console.log("Extended: " + test.timedelta({days:2}).toString());
-console.log("Original: " + test.toString());
 
 // console.log( json_array )
 // console.log( json_array.scatter('ENDTIME', 'SBIN_NUM' ) )

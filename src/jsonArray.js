@@ -283,6 +283,12 @@ export default class jsonArray extends Array{
     if( ordered === true ){
         // try to conver the values to numbers prior to sorting.
         // use a non standard sorting to get the values sorted properly
+
+        // order string type
+        if( typeof unique_values[0] === 'string' ){
+          return unique_values.sort()
+        }
+
         try{
           unique_values = unique_values.map( x => +x)
           unique_values = unique_values.sort(function(a,b){return a - b})
@@ -304,8 +310,6 @@ export default class jsonArray extends Array{
   label( func, res_col='label' ){
 
     var array = this
-
-    console.log( 'sample index', array.filter( func ) )
 
     // identify all samples identified by the rule
     const sample_index = array.filter( func ).map( row => row.__index__ )

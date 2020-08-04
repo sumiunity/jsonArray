@@ -20,20 +20,23 @@ global.include = function(file) {
   return require(abs_path('/' + file));
 }
 
-import jsonObject from './jsonObject'
-import datetime from './data_types/datetime'
+import jsonObject from '../jsonObject'
+import datetime from '../data_types/datetime'
 
 
 test("jsonObject : converts date object to string", () => {
-    var json_object = new jsonObject({date:'2020-07-29'})
-    json_object.strptime('date')
+    var json_object = new jsonObject({date:'2020-07-29'});
+    json_object.strptime('date');
     expect(json_object.date.toString()).toBe('2020-07-29');
 });
 
 
 test("jsonObject : Adding a timedelta to the date", () => {
-    var json_object = new jsonObject({date:'2020-07-29'})
+    var json_object = new jsonObject({date:'2020-07-29'});
+
+    json_object.strptime('date');
     const extended_date = json_object.date.timedelta({days:2});
+
     expect(extended_date.toString()).toBe('2020-07-31');
 });
 
@@ -47,5 +50,6 @@ test("datetime : converts date object to string", () => {
 test("datetime : Adding a timedelta to the date", () => {
     var date =  datetime('2020-07-01');
     const extended_date = date.timedelta({days:2});
+
     expect(extended_date.toString()).toBe('2020-07-03');
 });

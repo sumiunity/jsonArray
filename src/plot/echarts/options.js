@@ -59,6 +59,8 @@ export default class echartsOptions extends Object {
         right: '10%',
         bottom: '15%'
     }
+
+    this.series = []
   }
 
   /**
@@ -140,7 +142,6 @@ export default class echartsOptions extends Object {
       alert( 'boxplot required att : colx and coly' )
     }
 
-    console.log( this.json_array)
     const keys = this.json_array.unique( params.colx )
     const groups = this.json_array.groupby([params.colx])
 
@@ -239,10 +240,57 @@ export default class echartsOptions extends Object {
     }
 
 
-
     delete this.json_array
 
     return this
 
   }
+
+
+
+  // creates a horizontal line across the plotting area
+  axhline( value, color='red' ){
+    this.series = this.series.concat({
+      name: 'limit',
+      type: 'line',
+      color: color,
+      markLine: {
+          symbol: "none",
+          data: [{
+            name: value,
+            yAxis: value,
+            label: {
+              formatter: value,
+              position: 'end'
+            }
+          }]
+      }
+    })
+
+    return this
+  }
+
+  // creates a horizontal line across the plotting area
+  axvline( value, color='red' ){
+    this.series = this.series.concat({
+      name: 'limit',
+      type: 'line',
+      color: color,
+      markLine: {
+          symbol: "none",
+          data: [{
+            name: value,
+            xAxis: value,
+            label: {
+              formatter: value,
+              position: 'end'
+            }
+          }]
+      }
+    })
+
+    return this
+  }
+
+
 }
