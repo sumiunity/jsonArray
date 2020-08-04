@@ -307,7 +307,14 @@ export default class jsonArray extends Array{
    * @param  {string} res_col   column name containing the results
    * @return {Array}            jsonArray containing res_col
    */
-  label( func, res_col='label' ){
+  label( func, params={} ){
+
+    const param_keys = Object.keys(params)
+
+    // set defaults for missing parameter values
+    if( !param_keys.includes('output_col') ) params['output_col'] = 'label'
+    if( !param_keys.includes('value') ) params['value'] = true
+    if( !param_keys.includes('default') ) params['default'] = false
 
     var array = this
 
@@ -316,20 +323,87 @@ export default class jsonArray extends Array{
 
     // create a boolean label, where parts in the sample set are true
     for( var i=0; i < array.length; i ++ ){
-      // default the value to false
-      var value = false
+
+      // extract a list of columns name for the given row
+      const columns = Object.keys( array[i] )
 
       // the value is true when it is included in the sample set
-      if( sample_index.includes( array[i].__index__) ){
-        value = true
+      if( sample_index.includes( array[i].__index__ ) ){
+        array[i][params['output_col']] = params['value']
+        continue
       }
 
-      array[i][res_col] = value
+      // set the default value when no value exists
+      if( !columns.includes(params['output_col']) ){
+        array[i][params['output_col']] = params['default']
+        continue
+      }
+
     }
 
     return new jsonArray( array )
   }
 
+
+  /**
+   * Drops columns from the DataFrame
+   * @param  {String or Array} columns String or Array of column names
+   * @return {OBJECT}         JsonArray without the specified columns
+   */
+  drop_columns( columns ){
+
+    var array = this
+
+    // delete the specified column(s) from the DataFrame
+    for( var i = 0; i < array.length; i++ ){
+
+      // delete the specified column when of string type
+      if( typeof columns === 'string' ){
+        delete array[columns]
+
+      // when a list is provided, delete all columns in the string
+      }else{
+
+        for( var j=0; j < columns.length; j++ ){
+          delete array[i][columns[j]]
+        }
+      }
+    }
+
+    return new jsonArray( array )
+  }
+
+
+  /**
+   * renames columns
+   * @param  {object} mapping object containing the existing column name and new column name
+   * @return {object}         json array with the new column naming
+   */
+  rename( mapping ){
+
+    var array = this
+
+    const columns = Object.keys( mapping )
+
+    // rename the specified columns
+    for( var i = 0; i < array.length; i++ ){
+
+      const ex_columns = Object.keys( array[i] )
+
+      // create a new column based on the mapping and delete
+      // the existing one (taht was replaced)
+      for( var j=0; j < columns.length; j++ ){
+        // only replace the column when data exists for that column
+        if( ex_columns.includes(columns[j]) ){
+          const new_col = mapping[columns[j]]
+          array[i][new_col] = array[i][columns[j]]
+          delete array[i][columns[j]]
+        }
+      }
+    }
+
+    return new jsonArray( array )
+  }
 
 
   /********************************************************************************
