@@ -18,9 +18,11 @@ global.include = function(file) {
   return require(abs_path('/' + file));
 }
 
-import {data} from '../data'
-import jsonArray from '../jsonArray'
+import {data} from './data'
+// import jsonArray from '../jsonArray'
 
+import echartsSeries from '../plot/echarts/series'
+import jsonArray from '../jsonArray'
 
 
 // test("jsonArray : groups similar rows based on the value of the specified column", () => {
@@ -31,60 +33,127 @@ import jsonArray from '../jsonArray'
 //
 // });
 
-//
-// test("jsonArray : returns the eCharts plot object", () => {
-//   var json_array = new jsonArray( data.data )
-//   var scatter = json_array.plot(
-//     'heatmap',
-//     {colx: 'TEST_PGM',
-//       coly:'SBIN_NUM',
-//       value: 'RATIO'
-//     } )
-//
-//
-//   expect(json_object.date.toString()).toBe('2020-07-29');
-//
-//
-// });
 
+test("eCharts : line plot test : default", () => {
 
-test("jsonArray : test filter functionality", () => {
-  var json_array = new jsonArray( data.data );
-  json_array = json_array.filter( row => row.SBIN_NUM === '260' );
-  expect(json_array.length).toBe(16);
+  var series = new echartsSeries( data )
+  series = series.line('VALUE')
+
+  expect(series.type).toBe('line');
+  expect(series.symbol).toBe('none');
+  expect(series.lineStyle.color).toBe('red');
+
 });
 
 
+test("eCharts : line plot test : with params", () => {
 
-test("jsonArray : label when all in one class", () => {
-  var json_array = new jsonArray( data.data );
-  json_array = json_array.filter( row => row.SBIN_NUM === '260' );
-  json_array = json_array.label( row => row.RATIO > 0.01 );
-  expect(json_array.filter(row => row.label === false).length).toBe(16);
-  expect(json_array.filter(row => row.label === true).length).toBe(0);
+  var series = new echartsSeries( data )
+  series = series.line('VALUE', {color:'blue', lw:2})
+
+  expect(series.type).toBe('line');
+  expect(series.symbol).toBe('none');
+  expect(series.lineStyle.color).toBe('blue');
+  expect(series.lineStyle.width).toBe(2);
+
 });
 
 
-test("jsonArray : label when a split occurs", () => {
-  var json_array = new jsonArray( data.data );
-  json_array = json_array.filter( row => row.SBIN_NUM === '260' );
-  json_array = json_array.label( row => row.RATIO > 0.0005 );
-  expect(json_array.filter(row => row.label === false).length).toBe(6);
-  expect(json_array.filter(row => row.label === true).length).toBe(10);
+test("eCharts : area plot : default", () => {
+
+  var series = new echartsSeries( data )
+  series = series.area('VALUE' )
+
+  expect(series.type).toBe('line');
+  expect(series.areaStyle).toStrictEqual({});
+
 });
 
 
-test("jsonArray : test unique ordering using string type", () => {
+test("eCharts : scatter plot : default", () => {
 
-  const expected = [
-    'UP16002',
-    'UP16009',
-    'UP16012',
-    'ZMY02UFB1600-36',
-    'ZMY02UFB1600-69'
-  ]
+  var series = new echartsSeries( data )
+  series = series.scatter('VALUE', 'id' )
 
-  var json_array = new jsonArray( data.data );
-  const values = json_array.unique( 'TESTER', true );
-  expect(values.toString()).toBe(expected.toString());
+  expect(series.name).toBe('scatter');
+  expect(series.type).toBe('scatter');
+  expect(series.color).toBe('blue');
+  expect(series.emphasis === undefined).toBe(true);
+
+});
+
+
+test("eCharts : scatter plot : labeled true", () => {
+
+  var series = new echartsSeries( data )
+  series = series.scatter('VALUE', 'id', {label:true} )
+
+  expect(series.name).toBe('scatter');
+  expect(series.type).toBe('scatter');
+  expect(series.color).toBe('red');
+  expect(series.emphasis === undefined).toBe(false);
+
+});
+
+
+test("eCharts : scatter plot : labeled marked", () => {
+
+  var series = new echartsSeries( data )
+  series = series.scatter('VALUE', 'id', {label:'MARKED'} )
+
+  expect(series.name).toBe('scatter');
+  expect(series.type).toBe('scatter');
+  expect(series.color).toBe('green');
+  expect(series.emphasis === undefined).toBe(false);
+
+});
+
+
+test("eCharts : scatter by plot : labeled true/false", () => {
+
+  const json_array = new jsonArray( data )
+  json_array.label( row => row.VALUE > 0.0005 )
+
+  var series = new echartsSeries( json_array )
+  series = series.scatter_by('VALUE', 'id', 'label')
+
+  expect(series[0].name).toBe('scatter');
+  expect(series[0].type).toBe('scatter');
+  expect(series[0].color).toBe('red');
+  expect(series[0].data.length).toBe(10);
+
+
+  expect(series[1].name).toBe('scatter');
+  expect(series[1].type).toBe('scatter');
+  expect(series[1].color).toBe('blue');
+  expect(series[1].data.length).toBe(6);
+
+});
+
+
+test("eCharts : scatter by plot : labeled true/false/marked", () => {
+
+  const json_array = new jsonArray( data )
+  json_array.label( row => row.VALUE > 0.0005 )
+  json_array.label( row => row.id === 126, {value:'MARKED'} )
+
+  var series = new echartsSeries( json_array )
+  series = series.scatter_by('VALUE', 'id', 'label')
+
+  expect(series[0].name).toBe('scatter');
+  expect(series[0].type).toBe('scatter');
+  expect(series[0].color).toBe('red');
+  expect(series[0].data.length).toBe(9);
+
+
+  expect(series[1].name).toBe('scatter');
+  expect(series[1].type).toBe('scatter');
+  expect(series[1].color).toBe('blue');
+  expect(series[1].data.length).toBe(6);
+
+
+  expect(series[2].name).toBe('scatter');
+  expect(series[2].type).toBe('scatter');
+  expect(series[2].color).toBe('green');
+  expect(series[2].data.length).toBe(1);
 });
