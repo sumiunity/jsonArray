@@ -8,7 +8,7 @@ global.include = function(file) {
   return require(abs_path('/' + file));
 }
 
-import {data} from './data'
+import {data} from './tests/data'
 import jsonArray from './jsonArray'
 import jsonObject from './jsonObject'
 
@@ -24,12 +24,53 @@ import jsonSemanticUI from './framework/SemanticUI'
 // console.log( data)
 
 
-//
-// var json_array = new jsonArray( data.data )
-// console.log( json_array.unique('TESTER', true) )
+import echartsSeries from './plot/echarts/series'
 
-var semanticUI = new jsonSemanticUI( data.data )
-semanticUI.dropdown('TESTER')
+var json_array = new jsonArray( data )
+// json_array.label( row => row.VALUE > 0.0005,  )
+// json_array.label( row => row.id === 126, {value:'MARKED'} )
+
+json_array = json_array.replace( 'CATEGORY1', {UP16009: 'NEW'} )
+console.log( json_array )
+
+// var series = new echartsSeries( json_array )
+// series = series.boxplot('CATEGORY1', 'id' )
+// console.log( series )
+
+
+
+
+
+// var json_array = new jsonArray( data )
+//
+// console.log( json_array )
+//
+// json_array = json_array.drop_columns( ['VALUE'] )
+// console.log( json_array.columns )
+//   'MASK',
+//   'WP_LOTID',
+//   'SORT',
+// 'PRODUCT',
+// 'TEST_PGM',
+// 'FACILITY',
+// 'PACKAGE',
+// 'LOTID',
+// 'HANDLER'
+// ])
+//
+// json_array = json_array.rename({
+//   RATIO: 'VALUE',
+//   __index__: 'id',
+//   TESTER: 'CATEGORY1',
+//   LOADBOARD: 'CATEGORY2',
+//   ENDTIME: 'TIME',
+//   BIN_TYPE: 'TYPE',
+//   SBIN_NUM: 'NUMBER'
+// })
+// console.log( json_array )
+
+// var semanticUI = new jsonSemanticUI( data.data )
+// semanticUI.dropdown('TESTER')
 
 
 // json_array = json_array.filter( row => row.SBIN_NUM === '260' )

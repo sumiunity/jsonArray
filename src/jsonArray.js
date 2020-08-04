@@ -344,6 +344,30 @@ export default class jsonArray extends Array{
     return new jsonArray( array )
   }
 
+  /**
+   * Copies the content from one column to a new column. This is
+   * non destructive, so if the column already exists, only the
+   * missing data will be copied over
+   * @param  {String} col     original column name
+   * @param  {String} new_col new column name
+   * @return {Object}         jsonArray with the new column added
+   */
+  copy_column( col, new_col ){
+
+    var array = this
+
+    // delete the specified column(s) from the DataFrame
+    for( var i = 0; i < array.length; i++ ){
+      const columns = Object.keys(array[i] )
+
+      if(!columns.includes( new_col) ){
+        array[i][new_col] = array[i][col]
+      }
+    }
+
+    return new jsonArray( array )
+  }
+
 
   /**
    * Drops columns from the DataFrame
@@ -405,6 +429,34 @@ export default class jsonArray extends Array{
     return new jsonArray( array )
   }
 
+
+  /**
+   * replaces the values in the specified column with the given value
+   * based on the mapping
+   * @param  {String} col     original column name
+   * @param  {Object} mapping Object containing the value mapping
+   * @return {Object}         jsonArray with the new column added
+   */
+  replace( col, mapping={} ){
+
+    var array = this
+
+    const values = Object.keys( mapping )
+
+    // delete the specified column(s) from the DataFrame
+    for( var i = 0; i < array.length; i++ ){
+      const columns = Object.keys(array[i] )
+
+      // do not perform mapping when no data nor the mapping exists
+      if(!columns.includes(col) ) continue
+      if(!values.includes(array[i][col])) continue
+
+      array[i][col] = mapping[array[i][col]]
+
+    }
+
+    return new jsonArray( array )
+  }
 
   /********************************************************************************
   *  Math Functions

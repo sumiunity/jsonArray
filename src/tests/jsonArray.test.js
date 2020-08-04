@@ -125,3 +125,33 @@ test("jsonArray : rename columns", () => {
   expect(json_array.columns.includes('VALUE')).toBe(false);
   expect(json_array.columns.includes('RENAMED')).toBe(true);
 });
+
+
+
+test("jsonArray : copy columns", () => {
+  var json_array = new jsonArray( JSON.parse(JSON.stringify(data)) );
+
+  // ensure that the data contains the desired column
+  expect(json_array.columns.includes('AREA')).toBe(true);
+  expect(json_array.columns.includes('NEW_COL')).toBe(false);
+
+  // copy the column and validate the results
+  json_array = json_array.copy_column( 'AREA', 'NEW_COL' )
+  expect(json_array.columns.includes('VALUE')).toBe(true);
+  expect(json_array.columns.includes('NEW_COL')).toBe(true);
+});
+
+
+test("jsonArray : replace ", () => {
+  var json_array = new jsonArray( JSON.parse(JSON.stringify(data)) );
+
+  // ensure that the data contains the desired column
+  expect(json_array.unique('CATEGORY1').includes('UP16009')).toBe(true);
+  expect(json_array.unique('CATEGORY1').includes('NEW')).toBe(false);
+
+  // replace the values and checkt he values
+  json_array = json_array.replace( 'CATEGORY1', {UP16009: 'NEW'} )
+  expect(json_array.unique('CATEGORY1').includes('UP16009')).toBe(false);
+  expect(json_array.unique('CATEGORY1').includes('NEW')).toBe(true);
+
+});
