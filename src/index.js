@@ -28,14 +28,14 @@ import echartsSeries from './plot/echarts/series'
 
 var json_array = new jsonArray( data )
 // json_array.label( row => row.VALUE > 0.0005,  )
-// json_array.label( row => row.id === 126, {value:'MARKED'} )
+json_array.label( row => row.id === 126, {value:'MARKED'} )
 
-json_array = json_array.replace( 'CATEGORY1', {UP16009: 'NEW'} )
-console.log( json_array )
+// json_array = json_array.replace( 'CATEGORY1', {UP16009: 'NEW'} )
+// console.log( json_array )
 
-// var series = new echartsSeries( json_array )
-// series = series.boxplot('CATEGORY1', 'id' )
-// console.log( series )
+var series = new echartsSeries( json_array )
+series = series.boxplot('CATEGORY1', 'id', {label:'label'} )
+console.log( series )
 
 
 

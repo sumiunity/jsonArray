@@ -231,7 +231,7 @@ export default class echartsSeries extends Object {
     // // leverage the echarts function to generate the data
     const echartsData = prepareBoxplotData(group_values)
 
-    console.log( echartsData )
+    // format the boxplot results as a series
     var series = [
         {
             name: 'boxplot',
@@ -245,6 +245,32 @@ export default class echartsSeries extends Object {
         }
     ]
 
+    // when specified, overlay a scatter plot that highlights
+    // the location of all 'MARKED' samples in the specified
+    // label column
+    if( param_keys.includes('label') ){
 
+      // create a mapping between the x column values and the integer
+      // values used for the boxplot
+      var mapping = {}
+      keys.forEach((element, i) => mapping[element] = echartsData.axisData[i])
+      this.json_array = this.json_array.copy_column( colx, 'boxplot_x' )
+      this.json_array = this.json_array.replace('boxplot_x', mapping)
+
+      const scatter = this.json_array.filter( row => row[params['label']] === 'MARKED')
+
+      // create a scatter plot and add to the existing series
+      const echart_series = new echartsSeries( scatter )
+      series.push( echart_series.scatter(
+        'boxplot_x',
+        coly,
+        { 
+          label: 'MARKED',
+        }
+      ))
+
+    }
+
+    return series
   }
 }
