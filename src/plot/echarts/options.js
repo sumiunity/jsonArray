@@ -13,9 +13,9 @@
 import {color} from '../Colors'
 import jsonArray from '../../jsonArray'
 import echartsAxis from './axis'
+import echartsSeries from './series'
 import moment from 'moment'
 
-import { prepareBoxplotData } from 'echarts/extension/dataTool';
 
 const debug = false
 
@@ -143,16 +143,6 @@ export default class echartsOptions extends Object {
     }
 
     const keys = this.json_array.unique( params.colx )
-    const groups = this.json_array.groupby([params.colx])
-
-    // group the data based on the unique column values
-    var group_values = []
-    for( var i=0; i < groups.length; i++ ){
-      group_values.push(
-        groups[i].json_obj.map(row => row[params.coly])
-      )
-    }
-
 
     // set the x axis values using the Axis class
     this.xAxis = new echartsAxis()
@@ -168,21 +158,9 @@ export default class echartsOptions extends Object {
     this.yAxis.label(params.coly)
     this.yAxis.splitArea = {show: true}
 
-    // // leverage the echarts function to generate the data
-    const echartsData = prepareBoxplotData(group_values)
 
-    this.series = [
-        {
-            name: 'boxplot',
-            type: 'boxplot',
-            data: echartsData.boxData,
-        },
-        {
-            name: 'outlier',
-            type: 'scatter',
-            data: echartsData.outliers
-        }
-    ]
+    const echart_series = new echartsSeries( this.json_array )
+    this.series = echart_series.boxplot(params.colx, params.coly, params )
 
     delete this.json_array
 
@@ -225,17 +203,19 @@ export default class echartsOptions extends Object {
     }
 
 
+    const echart_series = new echartsSeries( this.json_array )
     if( params.label !== undefined ){
-      this.series = this.json_array.scatter_by(
+      this.series = echart_series.scatter_by(
         params.colx,
         params.coly,
-        params.label )
+        params.label,
+        params)
 
     }else{
-      this.series = this.json_array.scatter(
+      this.series = echart_series.scatter(
         params.colx,
         params.coly,
-        'blue' )
+        params )
 
     }
 

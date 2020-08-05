@@ -86,7 +86,7 @@ export default class echartsAxis extends Object {
     this.type = 'time'
     this.axisLabel = {
       formatter: (function(value){
-        return moment( value.format(strftime))
+        return moment(value).format(strftime)
       })
     }
 

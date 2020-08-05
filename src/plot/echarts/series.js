@@ -93,8 +93,8 @@ export default class echartsSeries extends Object {
 
     }
 
-    this.data= y_axis,
-    this.type= 'line',
+    this.data= y_axis
+    this.type= 'line'
     this.areaStyle= {}
 
     delete this.json_array
@@ -128,14 +128,16 @@ export default class echartsSeries extends Object {
     for( var i=0; i < this.json_array.length; i++ ){
       var temp
 
-      if( col1 === 'index' ){
-        // use the index values as the x-axis
-        temp = [i+index, this.json_array[i][col2]]
+      // if( col1 === 'index' ){
+      //   // use the index values as the x-axis
+      //   temp = [i+index, this.json_array[i][col2]]
+      //
+      // }else{
+      //   // use the col1 value for the x-axis
+      //   temp = [this.json_array[i][col1], this.json_array[i][col2]]
+      // }
 
-      }else{
-        // use the col1 value for the x-axis
-        temp = [this.json_array[i][col1], this.json_array[i][col2]]
-      }
+      temp = [this.json_array[i][col1], this.json_array[i][col2]]
 
       if( params['label'] !== null) temp.push( params['label'] )
 
@@ -264,7 +266,7 @@ export default class echartsSeries extends Object {
       series.push( echart_series.scatter(
         'boxplot_x',
         coly,
-        { 
+        {
           label: 'MARKED',
         }
       ))
