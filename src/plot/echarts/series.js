@@ -255,7 +255,8 @@ export default class echartsSeries extends Object {
       // create a mapping between the x column values and the integer
       // values used for the boxplot
       var mapping = {}
-      keys.forEach((element, i) => mapping[element] = echartsData.axisData[i])
+      // keys.forEach((element, i) => mapping[element] = echartsData.axisData[i])
+      keys.forEach((element, i) => mapping[element] = i)
       this.json_array = this.json_array.copy_column( colx, 'boxplot_x' )
       this.json_array = this.json_array.replace('boxplot_x', mapping)
 
