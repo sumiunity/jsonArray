@@ -28,21 +28,52 @@ import echartsSeries from './plot/echarts/series'
 import echartsOptions from './plot/echarts/options'
 
 var json_array = new jsonArray( data )
-// json_array.label( row => row.VALUE > 0.0005,  )
-json_array.label( row => row.id === 126, {value:'MARKED'} )
 
-// json_array = json_array.replace( 'CATEGORY1', {UP16009: 'NEW'} )
-// console.log( json_array )
+console.log( json_array[0])
 
-var options = new echartsOptions( json_array )
-// options.boxplot({colx: 'CATEGORY1', coly: 'id', label:'label'} )
-// console.log( options )
+var json_array1 = json_array.strftime('TIME')
 
-options.scatter({colx: 'CATEGORY1', coly: 'id', label:'label'} )
-console.log( options )
+console.log( json_array[0].TIME instanceof moment  )
+console.log( json_array[0])
+console.log( json_array1[0].TIME instanceof moment  )
+console.log( json_array1[0])
+// // json_array.label( row => row.VALUE > 0.0005,  )
+// console.log( 'label1')
+// console.log( json_array[0] )
+// var json_array1 = json_array.label( row => row.id === 0, {value:'MARKED'} )
+// console.log( json_array[0] )
+// console.log( json_array1[0] )
+//
+// //
+// //
+// var json_array1 = json_array.label( row => row.id === 7, {value:'MARKED'} )
+// console.log( json_array[0] )
+// console.log( json_array[1] )
+// console.log( json_array1[0] )
+// console.log( json_array1[1] )
 
-
-
+// // console.log( 'label2')
+// // json_array = json_array.label( row => row.VALUE > 0.0005 )
+// // console.log( json_array[0] )
+// // json_array = json_array.replace( 'CATEGORY1', {UP16009: 'NEW'} )
+// // console.log( json_array )
+//
+// var options = new echartsOptions( json_array )
+// // options.boxplot({colx: 'CATEGORY1', coly: 'id', label:'label'} )
+// // console.log( options )
+//
+// options.scatter({colx: 'CATEGORY1', coly: 'id', label:'label'} )
+// // console.log( options )
+// //
+//
+//
+// json_array = json_array.label( row => row.VALUE > 0.0005 )
+// // console.log( json_array )
+//
+// // var series = new echartsSeries( json_array )
+// // series = series.scatter_by('VALUE', 'id', 'label')
+//
+//
 
 
 // var json_array = new jsonArray( data )

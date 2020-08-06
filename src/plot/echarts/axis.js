@@ -18,12 +18,14 @@ export default class echartsAxis extends Object {
   constructor() {
     super()
     // super(...array)
+    //
+    this.default()
   }
 
   // default axis parameters
   default(){
     this.type = 'value'
-
+    this.scale = true
   }
 
   label( label ){

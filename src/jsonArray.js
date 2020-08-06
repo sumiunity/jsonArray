@@ -14,6 +14,7 @@
 
 
 import jsonObject from './jsonObject'
+import DataTypes from './data_types/dtypes'
 
 import echartsFormat from './plot/echarts/format'
 import echartsOptions from './plot/echarts/options'
@@ -21,12 +22,25 @@ import echartsOptions from './plot/echarts/options'
 const debug = false
 
 
+
+
 export default class jsonArray extends Array{
 
   constructor(array) {
 
+    var dtypes = {}
+
+    // extract  local variables from existing jsonArray elements
+    // This is needed for foramatting purposes (i.e. data types)
+    if( array instanceof jsonArray ){
+      dtypes = array.dtypes
+    }
+
     // add an index column when the array is not empty
     if( array.length > 0 ){
+
+      array = JSON.parse(JSON.stringify(array))
+
       const keys = Object.keys(array[0])
 
       // create an __index__ attribute when one doesn't exist
@@ -35,30 +49,16 @@ export default class jsonArray extends Array{
           array[i]['__index__'] = i
         }
       }
-  }
 
-    super(...array);
-  }
+      const data_types = new DataTypes( array )
+      array = data_types.init(dtypes)
 
-  /**
-   * Initialization routine by adding an index to the
-   * json array to enable functions such as merge, join,
-   * etc.
-   * @param  {Array} array JsonArray
-   * @return {Array}       Initialized arrray
-   */
-  __init__( array ){
-
-    const keys = Object.keys(array[0])
-
-    if( keys.includes('__index__') ){
-      return array
     }
 
-    return array
-    // for( var i=0; i < array.length; i++ ){
-    //
-    // }
+    super(...array);
+
+    // dictionary containing column data types
+    this.dtypes = dtypes
   }
 
 
@@ -106,6 +106,7 @@ export default class jsonArray extends Array{
   groupby( col ){
     return new jsonArray( this.__groupby__( this, col ) )
   }
+
 
   __groupby__( json_obj, atts, keys ){
 
@@ -205,27 +206,33 @@ export default class jsonArray extends Array{
   }
 
   // converts the specified column into a date string
-  strftime( col, format='YYYY-MM-DD' ){
+  strftime( col, format='YYYY-MM-DD', params={} ){
 
-    var array = this
+    var array = this.__inplace__(params['inplace'])
 
-    for( var i=0; i < this.length; i++ ){
-      array[i][col] = moment(this[i][col]).format(format)
-    }
+    // convert to date time data type
+    const data_types = new DataTypes( array )
+    array = data_types.convert(col, 'strftime', {format: format})
 
-    return new jsonArray(array)
+    // set the column data type to string
+    this.dtypes[col] = 'string'
+
+    return array
   }
 
   // converts the specified column into a
-  strptime( col ){
+  strptime( col, params={} ){
 
-    var array = this
+    var array = this.__inplace__(params['inplace'])
 
-    for( var i=0; i < this.length; i++ ){
-      array[i][col] = moment(this[i][col])
-    }
+    // convert to date time data type
+    const data_types = new DataTypes( array )
+    array = data_types.convert(col, 'datetime')
 
-    return new jsonArray(array)
+    // set the column data type to datetime
+    this.dtypes[col] = 'datetime'
+
+    return array
   }
 
 
@@ -237,8 +244,9 @@ export default class jsonArray extends Array{
    * @param  {String} [sep='   ']            string delimiter
    * @return {OBJECT}          jsonArray with the new column
    */
-  combine( columns, col_name, sep=' ' ){
-    var array = this
+  combine( columns, col_name, sep=' ', params={} ){
+
+    var array = this.__inplace__(params['inplace'])
 
     for( var i=0; i < this.length; i++ ){
       // seed the value with the value from the first column
@@ -251,7 +259,7 @@ export default class jsonArray extends Array{
       array[i][col_name] = temp
     }
 
-    return new jsonArray(array)
+    return array
   }
 
   combine_columns( col1, col2, col_name, sep=' ' ){
@@ -301,6 +309,9 @@ export default class jsonArray extends Array{
     return unique_values
   }
 
+
+
+
   /**
    * Applies a threshold to the specified column
    * @param  {function} func     function used to partition dataset
@@ -315,8 +326,9 @@ export default class jsonArray extends Array{
     if( !param_keys.includes('output_col') ) params['output_col'] = 'label'
     if( !param_keys.includes('value') ) params['value'] = true
     if( !param_keys.includes('default') ) params['default'] = false
+    if( !param_keys.includes('inplace') ) params['inplace'] = false
 
-    var array = this
+    var array = this.__inplace__(params['inplace'])
 
     // identify all samples identified by the rule
     const sample_index = array.filter( func ).map( row => row.__index__ )
@@ -341,7 +353,7 @@ export default class jsonArray extends Array{
 
     }
 
-    return new jsonArray( array )
+    return array
   }
 
   /**
@@ -352,9 +364,10 @@ export default class jsonArray extends Array{
    * @param  {String} new_col new column name
    * @return {Object}         jsonArray with the new column added
    */
-  copy_column( col, new_col ){
+  copy_column( col, new_col, params={} ){
 
-    var array = this
+    // clone the local copy to avoid mutation
+    var array = this.__inplace__(params['inplace'])
 
     // delete the specified column(s) from the DataFrame
     for( var i = 0; i < array.length; i++ ){
@@ -374,9 +387,10 @@ export default class jsonArray extends Array{
    * @param  {String or Array} columns String or Array of column names
    * @return {OBJECT}         JsonArray without the specified columns
    */
-  drop_columns( columns ){
+  drop_columns( columns, params={} ){
 
-    var array = this
+    // clone the local copy to avoid mutation
+    var array = this.__inplace__(params['inplace'])
 
     // delete the specified column(s) from the DataFrame
     for( var i = 0; i < array.length; i++ ){
@@ -403,9 +417,10 @@ export default class jsonArray extends Array{
    * @param  {object} mapping object containing the existing column name and new column name
    * @return {object}         json array with the new column naming
    */
-  rename( mapping ){
+  rename( mapping, params={} ){
 
-    var array = this
+    // clone the local copy to avoid mutation
+    var array = this.__inplace__(params['inplace'])
 
     const columns = Object.keys( mapping )
 
@@ -437,9 +452,10 @@ export default class jsonArray extends Array{
    * @param  {Object} mapping Object containing the value mapping
    * @return {Object}         jsonArray with the new column added
    */
-  replace( col, mapping={} ){
+  replace( col, mapping={}, params={} ){
 
-    var array = this
+    // clone the local copy to avoid mutation
+    var array = this.__inplace__(params['inplace'])
 
     const values = Object.keys( mapping )
 
@@ -457,6 +473,25 @@ export default class jsonArray extends Array{
 
     return new jsonArray( array )
   }
+
+
+
+  /**
+   * returns the data object. When enable is true, the original
+   * jsonArray is returned so the values are modified directly. Otherwise
+   * the jsonArray is cloned to avoid mutation of the original object
+   *
+   * @param  {Boolean} [enable] when inplace is True, the data is not cloned. Defaults to returning a clone
+   * @return {Object}             current jsonArray content
+   */
+  __inplace__( enable=false ){
+
+    // clone the local copy to avoid mutation when inplace is disabled
+    if( enable ) return this
+
+    return new jsonArray( this )
+  }
+
 
   /********************************************************************************
   *  Math Functions

@@ -21,31 +21,8 @@ global.include = function(file) {
 import {data} from './data'
 import jsonArray from '../jsonArray'
 
+import moment from 'moment';
 
-
-// test("jsonArray : groups similar rows based on the value of the specified column", () => {
-//   var json_array = new jsonArray( data.data )
-//   json_array = json_array.groupby(['LOTID'])
-//   expect(json_object.date.toString()).toBe('2020-07-29');
-//
-//
-// });
-
-//
-// test("jsonArray : returns the eCharts plot object", () => {
-//   var json_array = new jsonArray( data.data )
-//   var scatter = json_array.plot(
-//     'heatmap',
-//     {colx: 'TEST_PGM',
-//       coly:'SBIN_NUM',
-//       value: 'RATIO'
-//     } )
-//
-//
-//   expect(json_object.date.toString()).toBe('2020-07-29');
-//
-//
-// });
 
 
 test("jsonArray : test filter functionality", () => {
@@ -77,8 +54,8 @@ test("jsonArray : label when a split occurs", () => {
 test("jsonArray : label when with 3 items and params", () => {
   var json_array = new jsonArray( data );
 
-  json_array.label( row => row.VALUE > 0.0005, {output_col: 'TEST', value:'YES', default: 'NO'} )
-  json_array.label( row => row.id === 126, {output_col: 'TEST', value:'MARKED'} )
+  json_array = json_array.label( row => row.VALUE > 0.0005, {output_col: 'TEST', value:'YES', default: 'NO'} )
+  json_array = json_array.label( row => row.id === 126, {output_col: 'TEST', value:'MARKED'} )
 
   expect(json_array.filter(row => row.TEST === 'NO').length).toBe(6);
   expect(json_array.filter(row => row.TEST === 'MARKED').length).toBe(1);
@@ -103,7 +80,7 @@ test("jsonArray : test unique ordering using string type", () => {
 
 
 test("jsonArray : drop columns", () => {
-  var json_array = new jsonArray( JSON.parse(JSON.stringify(data)) );
+  var json_array = new jsonArray( data );
 
   // ensure that the data contains the desired column
   expect(json_array.columns.includes('VALUE')).toBe(true);
@@ -115,7 +92,7 @@ test("jsonArray : drop columns", () => {
 
 
 test("jsonArray : rename columns", () => {
-  var json_array = new jsonArray( JSON.parse(JSON.stringify(data)) );
+  var json_array = new jsonArray( data );
 
   // ensure that the data contains the desired column
   expect(json_array.columns.includes('VALUE')).toBe(true);
@@ -129,7 +106,7 @@ test("jsonArray : rename columns", () => {
 
 
 test("jsonArray : copy columns", () => {
-  var json_array = new jsonArray( JSON.parse(JSON.stringify(data)) );
+  var json_array = new jsonArray( data );
 
   // ensure that the data contains the desired column
   expect(json_array.columns.includes('AREA')).toBe(true);
@@ -143,7 +120,7 @@ test("jsonArray : copy columns", () => {
 
 
 test("jsonArray : replace ", () => {
-  var json_array = new jsonArray( JSON.parse(JSON.stringify(data)) );
+  var json_array = new jsonArray( data );
 
   // ensure that the data contains the desired column
   expect(json_array.unique('CATEGORY1').includes('UP16009')).toBe(true);
@@ -154,4 +131,65 @@ test("jsonArray : replace ", () => {
   expect(json_array.unique('CATEGORY1').includes('UP16009')).toBe(false);
   expect(json_array.unique('CATEGORY1').includes('NEW')).toBe(true);
 
+});
+
+
+test("jsonArray : label : persisting ", () => {
+  var json_array = new jsonArray( data );
+
+  var json_array1 = json_array.label( row => row.id === 0, {value:'MARKED'} )
+
+  // the original jsonArray should not be modified
+  expect(json_array[0].label).toBe(undefined);
+
+  // onlyt the returned jsonArray should contain the appropriate label
+  expect(json_array1[0].label).toBe('MARKED');
+
+
+  var json_array2 = json_array.label( row => row.id === 7, {value:'MARKED'} )
+
+  // the original data should not have changed
+  expect(json_array[0].label).toBe(undefined);
+  expect(json_array[1].label).toBe(undefined);
+
+  // only the new label should be changed, where the first label was not propogated
+  expect(json_array2[0].label).toBe(false);
+  expect(json_array2[1].label).toBe('MARKED');
+
+});
+
+
+test("jsonArray : dtype : persisting ", () => {
+  var json_array = new jsonArray( data );
+  json_array = json_array.strptime('TIME')
+
+  // ensure that the dtype was changed for the time attribute
+  expect(json_array[0].TIME instanceof moment).toBe(true);
+
+  var json_array1 = json_array.label( row => row.id === 0, {value:'MARKED'} )
+
+  // ensure that the dtype was propogated to the new jsonArray
+  expect(json_array[0].TIME instanceof moment).toBe(true);
+  expect(json_array1[0].TIME instanceof moment).toBe(true);
+
+});
+
+
+test("jsonArray : strptime", () => {
+  var json_array = new jsonArray( data );
+  var json_array1 = json_array.strptime('TIME')
+
+  // ensure that the dtype was propogated to the new jsonArray
+  expect(json_array[0].TIME instanceof moment).toBe(false);
+  expect(json_array1[0].TIME instanceof moment).toBe(true);
+});
+
+
+test("jsonArray : strftime", () => {
+  var json_array = new jsonArray( data );
+  var json_array1 = json_array.strftime('TIME')
+
+  // ensure that the dtype was propogated to the new jsonArray
+  expect(json_array[0].TIME).toBe('2020-07-05T00:00:42');
+  expect(json_array1[0].TIME).toBe('2020-07-05');
 });

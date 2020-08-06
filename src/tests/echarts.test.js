@@ -111,8 +111,8 @@ test("eCharts : scatter plot : labeled marked", () => {
 
 test("eCharts : scatter by plot : labeled true/false", () => {
 
-  const json_array = new jsonArray( data )
-  json_array.label( row => row.VALUE > 0.0005 )
+  var json_array = new jsonArray( data )
+  json_array = json_array.label( row => row.VALUE > 0.0005 )
 
   var series = new echartsSeries( json_array )
   series = series.scatter_by('VALUE', 'id', 'label')
@@ -133,9 +133,9 @@ test("eCharts : scatter by plot : labeled true/false", () => {
 
 test("eCharts : scatter by plot : labeled true/false/marked", () => {
 
-  const json_array = new jsonArray( data )
-  json_array.label( row => row.VALUE > 0.0005 )
-  json_array.label( row => row.id === 126, {value:'MARKED'} )
+  var json_array = new jsonArray( data )
+  json_array = json_array.label( row => row.VALUE > 0.0005 )
+  json_array = json_array.label( row => row.id === 126, {value:'MARKED'} )
 
   var series = new echartsSeries( json_array )
   series = series.scatter_by('VALUE', 'id', 'label')
@@ -177,8 +177,8 @@ test("eCharts : boxplot : default", () => {
 
 test("eCharts : boxplot : marked", () => {
 
-  const json_array = new jsonArray( data )
-  json_array.label( row => row.id === 126, {value:'MARKED'} )
+  var json_array = new jsonArray( data )
+  json_array = json_array.label( row => row.id === 126, {value:'MARKED'} )
 
   var series = new echartsSeries( json_array )
   series = series.boxplot('CATEGORY1', 'id', {label:'label'} )
