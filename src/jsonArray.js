@@ -205,34 +205,38 @@ export default class jsonArray extends Array{
     return new jsonArray(pivot_table)
   }
 
-  // converts the specified column into a date string
-  strftime( col, format='YYYY-MM-DD', params={} ){
+  // General routine to modify the data type of a specific column
+  dtype( col, data_type, params={} ){
 
     var array = this.__inplace__(params['inplace'])
 
     // convert to date time data type
     const data_types = new DataTypes( array )
-    array = data_types.convert(col, 'strftime', {format: format})
+    array = data_types.convert(col, data_type, params)
 
-    // set the column data type to string
-    this.dtypes[col] = 'string'
+    // set the column data type
+    switch( data_type ){
+      case 'strftime':
+        this.dtypes[col] = 'string';
+        break;
+
+      default:
+        this.dtypes[col] = data_type
+        break
+    }
 
     return array
   }
 
+  // converts the specified column into a date string
+  strftime( col, format='YYYY-MM-DD', params={} ){
+    params['format'] = format
+    return this.dtype(col, 'strftime', params)
+  }
+
   // converts the specified column into a
   strptime( col, params={} ){
-
-    var array = this.__inplace__(params['inplace'])
-
-    // convert to date time data type
-    const data_types = new DataTypes( array )
-    array = data_types.convert(col, 'datetime')
-
-    // set the column data type to datetime
-    this.dtypes[col] = 'datetime'
-
-    return array
+    return this.dtype(col, 'datetime', params)
   }
 
 

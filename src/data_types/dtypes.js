@@ -13,7 +13,7 @@
 
 import jsonArray from '../jsonArray'
 
-import moment from 'moment';
+import datetime from './datetime'
 
 
 
@@ -70,13 +70,13 @@ export default class DataTypes {
 
     switch( dtype ){
       case 'datetime':
-        return moment(value)
+        return datetime(value)
 
       case 'strftime':
         const param_keys = Object.keys(params)
         if( !param_keys.includes('format') ) params['format'] = 'YYYY-MM-DD'
 
-        return moment(value).format(params['format'])
+        return datetime(value).format(params['format'])
 
       default :
         return value

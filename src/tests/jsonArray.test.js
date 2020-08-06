@@ -193,3 +193,14 @@ test("jsonArray : strftime", () => {
   expect(json_array[0].TIME).toBe('2020-07-05T00:00:42');
   expect(json_array1[0].TIME).toBe('2020-07-05');
 });
+
+
+test("jsonArray : datetime : timedelta", () => {
+  var json_array = new jsonArray( data );
+  json_array = json_array.strptime('TIME')
+
+  const date = json_array[0].TIME.timedelta({days:1}).strftime()
+
+  // ensure that the data type was advanced a day
+  expect(date).toBe('2020-07-06');
+});

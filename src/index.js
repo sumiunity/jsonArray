@@ -31,12 +31,12 @@ var json_array = new jsonArray( data )
 
 console.log( json_array[0])
 
-var json_array1 = json_array.strftime('TIME')
+var json_array1 = json_array.strptime('TIME')
 
 console.log( json_array[0].TIME instanceof moment  )
 console.log( json_array[0])
 console.log( json_array1[0].TIME instanceof moment  )
-console.log( json_array1[0])
+console.log( json_array1[0].TIME.timedelta({days:1}))
 // // json_array.label( row => row.VALUE > 0.0005,  )
 // console.log( 'label1')
 // console.log( json_array[0] )
