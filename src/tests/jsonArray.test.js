@@ -204,3 +204,27 @@ test("jsonArray : datetime : timedelta", () => {
   // ensure that the data type was advanced a day
   expect(date).toBe('2020-07-06');
 });
+
+
+test("jsonArray : pivot table : count", () => {
+  var json_array = new jsonArray( data );
+  json_array = json_array.strftime('TIME')
+  var pivot = json_array.pivot_table( 'TIME', 'CATEGORY1')
+
+
+  // spot check the results for validation
+  expect(pivot[1].row).toBe('2020-07-13');
+  expect(pivot[1].UP16009).toBe(4);
+});
+
+
+test("jsonArray : pivot table : unique", () => {
+  var json_array = new jsonArray( data );
+  json_array = json_array.strftime('TIME')
+
+  var pivot = json_array.pivot_table( 'TIME', 'CATEGORY1', 'unique', 'CATEGORY2')
+
+  // spot check the results for validation
+  expect(pivot[1].row).toBe('2020-07-13');
+  expect(pivot[1].UP16009).toBe(2);
+});

@@ -16,27 +16,31 @@ import moment from 'moment';
 import datetime from './data_types/datetime'
 
 import jsonSemanticUI from './framework/SemanticUI'
-// import hello from './src/test'
-// import hello from 'test'
-// include( 'data.js')
-//
-// console.log( 'test123' )
-// console.log( data)
-
-
 import echartsSeries from './plot/echarts/series'
 import echartsOptions from './plot/echarts/options'
 
-var json_array = new jsonArray( data )
+import {dev_data} from './devdata'
 
-console.log( json_array[0])
+var json_array = new jsonArray( data)
 
-var json_array1 = json_array.strptime('TIME')
+// console.log( json_array.columns )
+// json_array = json_array.strftime('TIME')
+// console.log( json_array[0])
+//
+// var pivot = json_array.pivot_table( 'TIME', 'CATEGORY1', 'unique', 'CATEGORY2')
+// console.log( pivot[1])
+//
+// var json_array = new jsonSemanticUI( data)
+// const dropdown = json_array.dropdown('CATEGORY1')
+// console.log( dropdown )
 
-console.log( json_array[0].TIME instanceof moment  )
-console.log( json_array[0])
-console.log( json_array1[0].TIME instanceof moment  )
-console.log( json_array1[0].TIME.timedelta({days:1}))
+
+// var json_array1 = json_array.strptime('TIME')
+//
+// console.log( json_array[0].TIME instanceof moment  )
+// console.log( json_array[0])
+// console.log( json_array1[0].TIME instanceof moment  )
+// console.log( json_array1[0].TIME.timedelta({days:1}))
 // // json_array.label( row => row.VALUE > 0.0005,  )
 // console.log( 'label1')
 // console.log( json_array[0] )
@@ -58,10 +62,6 @@ console.log( json_array1[0].TIME.timedelta({days:1}))
 // // json_array = json_array.replace( 'CATEGORY1', {UP16009: 'NEW'} )
 // // console.log( json_array )
 //
-// var options = new echartsOptions( json_array )
-// // options.boxplot({colx: 'CATEGORY1', coly: 'id', label:'label'} )
-// // console.log( options )
-//
 // options.scatter({colx: 'CATEGORY1', coly: 'id', label:'label'} )
 // // console.log( options )
 // //
@@ -70,8 +70,13 @@ console.log( json_array1[0].TIME.timedelta({days:1}))
 // json_array = json_array.label( row => row.VALUE > 0.0005 )
 // // console.log( json_array )
 //
-// // var series = new echartsSeries( json_array )
-// // series = series.scatter_by('VALUE', 'id', 'label')
+var series = new echartsSeries( json_array )
+series = series.bar(['VALUE', 'id'], {stacked: true})
+console.log( series )
+
+var options = new echartsOptions( json_array )
+options.bar({colx: 'id', coly: ['VALUE', 'id'], stacked:true} )
+console.log( options )
 //
 //
 

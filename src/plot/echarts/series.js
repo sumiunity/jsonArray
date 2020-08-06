@@ -206,6 +206,72 @@ export default class echartsSeries extends Object {
     return series
   }
 
+
+
+  /**
+   * populates the series parameters to enable a bar chart
+   *
+   * @param  {string} col     column name
+   * @param  {Object} params  object containing a plotting parameters
+   * @return {Object}         plot series objected
+   */
+  _bar( col, params={} ){
+
+    // extract the parameter keys
+    const param_keys = Object.keys(params)
+
+    // set defaults, when parameters are not provide
+    if( !param_keys.includes('name') ) params['name'] = 'bar'
+
+    this.name = params['name']
+    this.type = 'bar'
+    this.data = this.json_array.map( row => row[col] )
+
+    // set plot parameters when provided
+    if( param_keys.includes('stacked') ) this.stacked = params['stacked'];
+    if( param_keys.includes('color') ) this.stacked = params['color'];
+
+    delete this.json_array
+
+    return this
+  }
+
+
+  /**
+   * Returns a series with bar plot objects. Multiple columns can be
+   * provided to create size by side or stacked bar chart
+   *
+   * @param  {string} columns single or array of column names
+   * @param  {Object} params  object containing a plotting parameters
+   * @return {Array}          array of echart series objects
+   */
+  bar( columns, params={} ){
+
+    // extract the parameter keys
+    const param_keys = Object.keys(params)
+
+    if( typeof columns === 'string' ){
+      return [this._bar( columns, params )]
+    }
+
+    var series = []
+
+    for( var i=0; i < columns.length; i++ ){
+
+      const echart_series = new echartsSeries( this.json_array )
+
+      // copy over bar specific parameters when specified
+      var bar_params = params
+      if( param_keys.includes('stacked')) bar_params['stacked'] = columns[i]
+
+      // create a data structure for plotting the scatter plot
+      series.push( echart_series._bar(columns[i], bar_params) )
+
+    }
+
+    return series
+  }
+
   /**
    * Convert the json_array to a format for generating a boxplot
    * @param  {string} colx  column 1 name, when 'index' is provided, the index value will be used

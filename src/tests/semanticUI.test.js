@@ -18,11 +18,11 @@ global.include = function(file) {
   return require(abs_path('/' + file));
 }
 
-import {data} from '../data'
+import {data} from './data'
 import jsonSemanticUI from '../framework/SemanticUI'
 
 
-
+//
 test("SemanticUI : test the dropdown functionality", () => {
 
   const expected = [
@@ -41,7 +41,7 @@ test("SemanticUI : test the dropdown functionality", () => {
     }
   ]
 
-  var semanticUI = new jsonSemanticUI( data.data )
-  const dropdown = semanticUI.dropdown('TESTER')
+  var semanticUI = new jsonSemanticUI( data )
+  const dropdown = semanticUI.dropdown('CATEGORY1')
   expect(dropdown.toString()).toBe(expected.toString());
 });

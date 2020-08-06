@@ -227,6 +227,36 @@ export default class echartsOptions extends Object {
   }
 
 
+  /**
+   * Convert the json_array to a scatter plot option object
+   * @param  {string} colx  column x name
+   * @param  {string} coly  column y name
+   */
+  bar( params={} ){
+
+    // check to ensure the minimum set of parameters are available
+    if( (params.colx === undefined)|(params.coly === undefined) ){
+      alert( 'bar plot required att : colx and coly ')
+    }
+
+    // set the x axis values using the Axis class
+    this.xAxis = new echartsAxis()
+    this.xAxis.label(params.colx)
+    this.xAxis.tick_values(this.json_array.values(params.colx))
+
+    // set the y axis values using the Axis class
+    this.yAxis = new echartsAxis()
+
+    const echart_series = new echartsSeries( this.json_array )
+    this.series = echart_series.bar( params.coly, params)
+
+
+    delete this.json_array
+
+    return this
+
+  }
+
 
   // creates a horizontal line across the plotting area
   axhline( value, color='red' ){

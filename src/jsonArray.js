@@ -62,9 +62,21 @@ export default class jsonArray extends Array{
   }
 
 
-  // TODO: search for all columns in the Array
-  get columns(){ return Object.keys(this[0]) }
+  // returns all columns in the jsonArray
+  get columns(){
+    var columns = []
 
+    for( var i=0; i < this.length; i++ ){
+      columns = columns.concat(Object.keys(this[i]))
+    }
+
+    return [...new Set(columns)]
+  }
+
+  // return all values for the specified column
+  values( col ){
+    return [...this].map(row => row[col])
+  }
 
 
   // sorts the json array by the provided column
@@ -177,7 +189,10 @@ export default class jsonArray extends Array{
     return new jsonArray(pivot_table)
   }
 
-  pivot_table( row, column, summaryType='count' ){
+
+  // creates a pivot table based on the specified row and column.
+  // The summary type is used to compute the value of the pivot.
+  pivot_table( row, column, summaryType='count', value=undefined ){
 
     var pivot_table = []
 
@@ -194,7 +209,27 @@ export default class jsonArray extends Array{
       // add the column value for each row
       for( var j=0; j < column_val.length; j++ ){
         const by_col = by_row.filter( r => r[column] === column_val[j] )
-        if( summaryType === 'count' ){ temp[column_val[j]] = by_col.length }
+
+        switch( summaryType ){
+          // returns the number of rows for the current split
+          case 'count':
+            temp[column_val[j]] = by_col.length
+            break;
+
+          // returns the number of unique values for the current split
+          case 'unique':
+            // set defaults for missing parameter values
+            if( value === undefined ) value = '__index__'
+
+            const temp_json = new jsonArray( by_col )
+            temp[column_val[j]] = temp_json.unique( value ).length
+            break;
+
+
+          default:
+            temp[column_val[j]] = by_col.length
+            break
+        }
 
       }
 
@@ -588,6 +623,9 @@ export default class jsonArray extends Array{
 
       case 'scatter':
         return echarts.scatter( params )
+
+      case 'bar':
+        return echarts.bar( params )
 
       default:
         alert('unknown plot type: ' + plot_type)

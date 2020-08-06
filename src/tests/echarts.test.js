@@ -196,3 +196,39 @@ test("eCharts : boxplot : marked", () => {
   expect(series[2].color).toBe('green');
   expect(series[2].data.length).toBe(1);
 });
+
+
+
+test("eCharts : bar : single", () => {
+
+  var json_array = new jsonArray( data )
+
+  var series = new echartsSeries( json_array )
+  series = series.bar('VALUE')
+
+  expect(series[0].name).toBe('bar');
+  expect(series[0].type).toBe('bar');
+  expect(series[0].data.length).toBe(16);
+
+});
+
+
+test("eCharts : bar : internal", () => {
+
+  var json_array = new jsonArray( data )
+
+  var series = new echartsSeries( json_array )
+  series = series.bar(['VALUE', 'id'], {stacked: true})
+
+  expect(series[0].name).toBe('bar');
+  expect(series[0].type).toBe('bar');
+  expect(series[0].stacked).toBe('VALUE');
+  expect(series[0].data.length).toBe(16);
+
+
+  expect(series[1].name).toBe('bar');
+  expect(series[1].type).toBe('bar');
+  expect(series[1].stacked).toBe('id');
+  expect(series[1].data.length).toBe(16);
+
+});
