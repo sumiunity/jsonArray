@@ -228,8 +228,8 @@ export default class echartsSeries extends Object {
     this.data = this.json_array.map( row => row[col] )
 
     // set plot parameters when provided
-    if( param_keys.includes('stacked') ) this.stacked = params['stacked'];
-    if( param_keys.includes('color') ) this.stacked = params['color'];
+    if( param_keys.includes('stacked') ) this.stack = params['stacked'];
+    if( param_keys.includes('color') ) this.color = params['color'];
 
     delete this.json_array
 
@@ -262,7 +262,7 @@ export default class echartsSeries extends Object {
 
       // copy over bar specific parameters when specified
       var bar_params = params
-      if( param_keys.includes('stacked')) bar_params['stacked'] = columns[i]
+      if( !param_keys.includes('name')) bar_params['name'] = columns[i]
 
       // create a data structure for plotting the scatter plot
       series.push( echart_series._bar(columns[i], bar_params) )

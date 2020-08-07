@@ -36,6 +36,7 @@ export default class echartsAxis extends Object {
 
   tick_values( values ){
     if( values !== undefined ){
+      this.type = 'category'
       this.data = values
     }
   }
