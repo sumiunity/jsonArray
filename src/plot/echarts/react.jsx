@@ -17,6 +17,15 @@ const debug = false
 
 
 
+export function react_echarts( options, params ){
+  return(
+    <EchartsReact
+      option = {options}
+      onClick = {params['onClick']}
+    />
+  )
+}
+
 export default class EchartsReact extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -30,18 +39,17 @@ export default class EchartsReact extends React.Component {
 
       if( this.props.onClick !== undefined ){
         this.echartsInstance = this.echartsReactRef.getEchartsInstance();
-        this.echartsInstance.on('click', this.onClickHandler);
+        this.echartsInstance.on('click', this.onClickHandler.bind(this));
       }
 
     }
 
     // Call the onClick function and pass in the data as a parameter
     onClickHandler(params){
-        this.props.onClick( params )
+      this.props.onClick( params )
     };
 
     render() {
-
         return (
           <ReactEcharts
             {...this.props}
