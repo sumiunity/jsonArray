@@ -72,6 +72,10 @@ export default class DataTypes {
       case 'datetime':
         return datetime(value)
 
+      case 'week':
+        return datetime(value).week()
+
+
       case 'strftime':
         const param_keys = Object.keys(params)
         if( !param_keys.includes('format') ) params['format'] = 'YYYY-MM-DD'

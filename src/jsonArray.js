@@ -19,6 +19,13 @@ import DataTypes from './data_types/dtypes'
 import echartsFormat from './plot/echarts/format'
 import echartsOptions from './plot/echarts/options'
 
+// attempt to import the react echarts component
+var echartsReact = {enable: false, Component: undefined}
+try{
+  echartsReact.enable = true
+  echartsReact.Component = require('./plot/echarts/react')
+}catch{}
+
 const debug = false
 
 
@@ -631,4 +638,20 @@ export default class jsonArray extends Array{
         alert('unknown plot type: ' + plot_type)
     }
   }
+
+  react( plot_type, params={} ){
+
+    if( echartsReact.enable === false ){
+      alert('failed to import react component. check if echarts and ReactEcharts are installed')
+      return
+    }
+
+    return(
+      <echartsReact.Component
+        option = {this.plot(plot_type, params)}
+        callback = {params['callback']}
+      />
+    )
+  }
+
 }

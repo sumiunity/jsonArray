@@ -33,6 +33,12 @@ datetime.prototype.strftime = function(format='YYYY-MM-DD'){
   return this.format(format)
 }
 
+// returns the date as a string based on the provided format
+datetime.prototype.week = function(){
+  return this.isoWeek()
+}
+
+
 /**
  *  adds to the date based on the params object
  * @param  {objects}  params         'add' parameters with keys of days, months, years, etc.

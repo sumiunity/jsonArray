@@ -220,15 +220,15 @@ test("eCharts : bar : internal", () => {
   var series = new echartsSeries( json_array )
   series = series.bar(['VALUE', 'id'], {stacked: true})
 
-  expect(series[0].name).toBe('bar');
+  expect(series[0].name).toBe('VALUE');
   expect(series[0].type).toBe('bar');
-  expect(series[0].stacked).toBe('VALUE');
+  expect(series[0].stack).toBe(true);
   expect(series[0].data.length).toBe(16);
 
 
-  expect(series[1].name).toBe('bar');
+  expect(series[1].name).toBe('id');
   expect(series[1].type).toBe('bar');
-  expect(series[1].stacked).toBe('id');
+  expect(series[1].stack).toBe(true);
   expect(series[1].data.length).toBe(16);
 
 });

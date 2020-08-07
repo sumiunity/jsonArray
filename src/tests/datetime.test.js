@@ -21,7 +21,9 @@ global.include = function(file) {
 }
 
 import jsonObject from '../jsonObject'
+import jsonArray from '../jsonArray'
 import datetime from '../data_types/datetime'
+import {data} from './data'
 
 
 test("jsonObject : converts date object to string", () => {
@@ -52,4 +54,12 @@ test("datetime : Adding a timedelta to the date", () => {
     const extended_date = date.timedelta({days:2});
 
     expect(extended_date.toString()).toBe('2020-07-03');
+});
+
+test("datetime : week converstion", () => {
+  var json_array = new jsonArray( data)
+  const json_array1 = json_array.dtype('TIME', 'week')
+  expect(json_array[0].TIME).toBe('2020-07-05T00:00:42');
+  expect(json_array1[0].TIME).toBe(27);
+
 });
