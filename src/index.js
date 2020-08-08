@@ -21,12 +21,19 @@ import echartsOptions from './plot/echarts/options'
 
 import {dev_data} from './devdata'
 
-var json_array = new jsonArray( data)
-const json_array1 = json_array.dtype('TIME', 'week')
+import jsonArrayTable from './table/table'
 
-console.log( json_array[0] );
-console.log( json_array1[0] );
 
+// var json_array = new jsonArray( data)
+// const json_array1 = json_array.dtype('TIME', 'week')
+//
+// console.log( json_array[0] );
+// console.log( json_array1[0] );
+
+var json_table = new jsonArrayTable( data )
+var header = json_table.table()
+
+console.log( header )
 
 
 // var series = new echartsSeries( json_array )

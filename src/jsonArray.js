@@ -78,7 +78,7 @@ export default class jsonArray extends Array{
       columns = columns.concat(Object.keys(this[i]))
     }
 
-    return [...new Set(columns)]
+    return [...new Set(columns.filter(x => !['__index__'].includes(x)))]
   }
 
   // return all values for the specified column
@@ -101,6 +101,12 @@ export default class jsonArray extends Array{
     }
 
     return new jsonArray( array )
+  }
+
+
+  merge( json_array, on  ){
+
+
   }
 
   // filters the json array based on the column and the provided value.
