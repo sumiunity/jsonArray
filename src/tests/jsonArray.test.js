@@ -228,3 +228,14 @@ test("jsonArray : pivot table : unique", () => {
   expect(pivot[1].row).toBe('2020-07-13');
   expect(pivot[1].UP16009).toBe(2);
 });
+
+
+test("jsonArray : unique : array", () => {
+
+  const expected = [ 'ARRAY1', 'ARRAY2' ]
+
+  var json_array = new jsonArray( data );
+  var values = json_array.unique('ARRAY')
+
+  expect(values.toString()).toBe(expected.toString());
+});

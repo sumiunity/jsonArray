@@ -9,6 +9,7 @@ export const data = [
     TIME: '2020-07-05T00:00:42',
     TYPE: 'Bad',
     NUMBER: '260',
+    ARRAY: ['ARRAY1', 'ARRAY2'],
     __index__: 0
   },
   {
@@ -21,6 +22,7 @@ export const data = [
     TIME: '2020-07-05T02:15:26',
     TYPE: 'Bad',
     NUMBER: '260',
+    ARRAY: ['ARRAY2'],
     __index__: 1
   },
   {
@@ -33,6 +35,7 @@ export const data = [
     TIME: '2020-07-05T08:35:13',
     TYPE: 'Bad',
     NUMBER: '260',
+    ARRAY: ['ARRAY1'],
     __index__: 2
   },
   {
@@ -45,6 +48,7 @@ export const data = [
     TIME: '2020-07-13T08:52:02',
     TYPE: 'Bad',
     NUMBER: '260',
+    ARRAY: ['ARRAY1', 'ARRAY2'],
     __index__: 3
   },
   {
@@ -57,6 +61,7 @@ export const data = [
     TIME: '2020-07-13T13:04:51',
     TYPE: 'Bad',
     NUMBER: '260',
+    ARRAY: ['ARRAY1'],
     __index__: 4
   },
   {
@@ -69,6 +74,7 @@ export const data = [
     TIME: '2020-07-13T20:16:55',
     TYPE: 'Bad',
     NUMBER: '260',
+    ARRAY: ['ARRAY1'],
     __index__: 5
   },
   {
@@ -81,6 +87,7 @@ export const data = [
     TIME: '2020-07-13T23:53:38',
     TYPE: 'Bad',
     NUMBER: '260',
+    ARRAY: ['ARRAY2'],
     __index__: 6
   },
   {

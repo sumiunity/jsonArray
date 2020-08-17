@@ -8,9 +8,9 @@
  *
  */
 
-import {ENTROPY} from './colors/entropy_pallet'
-import {ENTROPY_8BIT} from './colors/entropy_8bit'
-import {REDS} from './colors/reds'
+import {ENTROPY} from './pallet/entropy_pallet'
+import {ENTROPY_8BIT} from './pallet/entropy_8bit'
+import {REDS} from './pallet/reds'
 
 
 
@@ -120,6 +120,72 @@ export function convertHex(hex,opacity){
                 .toString(16)
                 .slice(1);
  }
+
+
+/**
+ * returns and object containing the fill and edge color based on a boolean value
+ */
+export function booleanColor( value ){
+
+  var fill, edge
+
+  var color = "white"
+  switch( value ){
+    case true :
+      fill = '#FF0000'
+      edge = shadeHexColor( fill, -0.5)
+      break
+
+    case false :
+      fill = '#00FF00'
+      edge = shadeHexColor( fill, -0.5)
+      break
+
+    case 0 :
+      fill = '#00FF00'
+      edge = shadeHexColor( fill, -0.5)
+      break
+
+    case 1 :
+      fill = '#FF0000'
+      edge = shadeHexColor( fill, -0.5)
+      break
+
+    case -1 :
+      fill = '#B0B0B0'
+      edge = shadeHexColor( fill, -0.5)
+      break
+
+    case -2 :
+      fill = '#000000'
+      edge = shadeHexColor( fill, 0.5)
+      break
+
+    default :
+      color = 'white'
+      edge = 'black'
+      break
+  }
+
+  return {
+    fill: fill,
+    edge: edge
+  }
+}
+
+
+/**
+ * lightens the fill color and darkens the edge color to
+ * create a nice contrast between edge and fill
+ * @param  {hex color} colorHex hex color value
+ * @return {object}          object containing the edge and fill colors
+ */
+export function fillAndEdge( colorHex ){
+  return {
+    fill: shadeHexColor( colorHex, 0.2),
+    edge: shadeHexColor( colorHex, -0.5)
+  }
+}
 
 export default {get_color, int_to_color, shadeHexColor};
 export {get_color, int_to_color, shadeHexColor};

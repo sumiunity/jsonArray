@@ -58,7 +58,7 @@ test("datetime : Adding a timedelta to the date", () => {
 
 test("datetime : week converstion", () => {
   var json_array = new jsonArray( data)
-  const json_array1 = json_array.dtype('TIME', 'week')
+  const json_array1 = json_array.astype({TIME: 'week'})
   expect(json_array[0].TIME).toBe('2020-07-05T00:00:42');
   expect(json_array1[0].TIME).toBe(27);
 

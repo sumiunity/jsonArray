@@ -16,16 +16,10 @@
 import jsonObject from './jsonObject'
 import DataTypes from './data_types/dtypes'
 
-import echartsFormat from './plot/echarts/format'
-import echartsOptions from './plot/echarts/options'
+import echartsFormat from './frameworks/echarts/format'
+import echartsOptions from './frameworks/echarts/options'
 
-
-// attempt to import the react echarts component
-var echartsReact = {enable: true, Component: undefined}
-try{
-  echartsReact.enable = true
-  echartsReact.Component = require('./plot/echarts/react').react_echarts
-}catch{}
+import ReactComponents from './frameworks/react/ReactComponents'
 
 const debug = false
 
@@ -34,18 +28,13 @@ const debug = false
 
 export default class jsonArray extends Array{
 
-  constructor(array) {
+  constructor(array, inplace=false) {
 
-    var dtypes = {}
+    var dtypes = new DataTypes( array )
 
-    // extract  local variables from existing jsonArray elements
-    // This is needed for foramatting purposes (i.e. data types)
-    if( array instanceof jsonArray ){
-      dtypes = array.dtypes
-    }
 
     // add an index column when the array is not empty
-    if( array.length > 0 ){
+    if( (array.length > 0)&(inplace===false) ){
 
       array = JSON.parse(JSON.stringify(array))
 
@@ -58,9 +47,8 @@ export default class jsonArray extends Array{
         }
       }
 
-      const data_types = new DataTypes( array )
-      array = data_types.init(dtypes)
-
+      // initialize the array based on the data type of the uncloned DataFrame
+      array = dtypes.init(array)
     }
 
     super(...array);
@@ -85,6 +73,7 @@ export default class jsonArray extends Array{
   values( col ){
     return [...this].map(row => row[col])
   }
+
 
 
   // sorts the json array by the provided column
@@ -147,8 +136,6 @@ export default class jsonArray extends Array{
     if( keys === undefined ){ keys = {} }
 
     var results = []
-
-    if(debug) console.log( 'groupby----', atts[0], json_obj)
 
     const values = [...new Set(json_obj.map(row => row[atts[0]]))]
     for( var i=0; i < values.length; i++ ){
@@ -254,24 +241,20 @@ export default class jsonArray extends Array{
     return new jsonArray(pivot_table)
   }
 
-  // General routine to modify the data type of a specific column
-  dtype( col, data_type, params={} ){
-
+  /**
+   * convert the column data type based on the mapping
+   * @param  {Object} [columns={}] object containing the mapping between columns and data type
+   * @param  {Object} [params={}]  parameter object
+   * @return {Array}              jsonArray containing the mapped columns
+   */
+  astype( columns={}, params={} ){
     var array = this.__inplace__(params['inplace'])
 
-    // convert to date time data type
-    const data_types = new DataTypes( array )
-    array = data_types.convert(col, data_type, params)
-
-    // set the column data type
-    switch( data_type ){
-      case 'strftime':
-        this.dtypes[col] = 'string';
-        break;
-
-      default:
-        this.dtypes[col] = data_type
-        break
+    // convert all columns based on the specified data types
+    const col_names = Object.keys(columns)
+    for( var i=0; i < col_names.length; i++ ){
+      const col = col_names[i]
+      array = array.dtypes.convert(array, col, columns[col], params)
     }
 
     return array
@@ -279,13 +262,14 @@ export default class jsonArray extends Array{
 
   // converts the specified column into a date string
   strftime( col, format='YYYY-MM-DD', params={} ){
-    params['format'] = format
-    return this.dtype(col, 'strftime', params)
+    var array = this.__inplace__(params['inplace'])
+    return array.dtypes.convert(array, col, 'strftime', params)
   }
 
   // converts the specified column into a
   strptime( col, params={} ){
-    return this.dtype(col, 'datetime', params)
+    var array = this.__inplace__(params['inplace'])
+    return array.dtypes.convert(array, col, 'datetime', params)
   }
 
 
@@ -340,6 +324,17 @@ export default class jsonArray extends Array{
 
     var unique_values = [...new Set([...this].map(row => row[col] ))]
 
+    // When the column is an array type, concatinate all array values
+    if( this.dtypes[col] === 'array'){
+      var temp = []
+      for( var i=0; i < unique_values.length; i++ ){
+        if(unique_values[i] === undefined) continue
+        temp = temp.concat(unique_values[i])
+      }
+
+      // overwrite the unique values with the concatinated values
+      unique_values = [...new Set(temp)]
+    }
 
     if( ordered === true ){
         // try to conver the values to numbers prior to sorting.
@@ -382,6 +377,7 @@ export default class jsonArray extends Array{
     if( !param_keys.includes('inplace') ) params['inplace'] = false
 
     var array = this.__inplace__(params['inplace'])
+
 
     // identify all samples identified by the rule
     const sample_index = array.filter( func ).map( row => row.__index__ )
@@ -570,95 +566,14 @@ export default class jsonArray extends Array{
   *  Interface that returns echarts series objects for plotting
   ********************************************************************************/
 
-  /**
-   * echarts line plot data formatter
-   * @param  {stringi} col  column name
-   * @return {object}      echarts data series object
-   */
-  line( col, symbol='none', color='red', lw=1 ){
-    const echarts = new echartsFormat( this )
-    return echarts.line( col, symbol, color, lw )
-  }
-
-  /**
-   * echarts area plot data formatter
-   * @param  {string} col  column name
-   * @return {object}      echarts data series object
-   */
-  area( col ){
-    const echarts = new echartsFormat( this )
-    return echarts.area( col )
-  }
-
-  /**
-   * Convert the json_array to a list of x/y cooridnates
-   * @param  {string} col1  column 1 name, when 'index' is provided, the index value will be used
-   * @param  {string} col1  column 2 name
-   * @param  {string} color hex or rgb color string
-   * @return {Array}       Array of x/y cooridnates
-   */
-  scatter( col1, col2, color, label, index=0 ){
-    const echarts = new echartsFormat( this )
-    return echarts.scatter( col1, col2, color, label, index )
-  }
-
-  /**
-   * Returns a list of echarts scatter objects colored by the specified att
-   *
-   * @param  {string} col1  column 1 name, when 'index' is provided, the index value will be used
-   * @param  {string} col1  column 2 name
-   * @param  {string} color hex or rgb color string
-   * @return {Array}       Array of x/y cooridnates
-   */
-  scatter_by( col1, col2, by, label ){
-    const echarts = new echartsFormat( this )
-    return echarts.scatter_by( col1, col2, by, label )
-  }
-
-  /**
-   * Returns the echarts options based on the specified plot type
-   *
-   * @param  {string} plot_type  plot type definition
-   * @param  {object} params  Plot parameters
-   * @return {Array}          Array of plot objects used to render echarts plots
-   */
-  plot( plot_type, params ){
-
-    const echarts = new echartsOptions( this )
-
-    // return the plot options based on the specified plot type
-    switch( plot_type ){
-
-      case 'heatmap':
-        return echarts.heatmap( params )
-
-      case 'boxplot':
-        return echarts.boxplot( params )
-
-      case 'scatter':
-        return echarts.scatter( params )
-
-      case 'bar':
-        return echarts.bar( params )
-
-      default:
-        alert('unknown plot type: ' + plot_type)
-    }
-  }
-
-  reactEcharts( plot_type, params={} ){
-
-    if( echartsReact.enable === false ){
-      alert('failed to import react component. check if echarts and ReactEcharts are installed')
-      return
-    }
-
-    return echartsReact.Component(
-      this.plot(plot_type, params),
-      params
-    )
-
-
-  }
+  // /**
+  //  * echarts line plot data formatter
+  //  * @param  {stringi} col  column name
+  //  * @return {object}      echarts data series object
+  //  */
+  get echartsFormat( ){ return new echartsFormat( this ) }
+  get echartsOptions( ){ return new echartsOptions( this ) }
+  // get reactComponents(){ return new ReactComponents(this) }
+  get react(){ return new ReactComponents(this) }
 
 }

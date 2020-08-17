@@ -10,12 +10,15 @@
  */
 
 
-import {color} from '../Colors'
+import {color} from '../colors/Colors'
 import jsonArray from '../../jsonArray'
 
-import { prepareBoxplotData } from 'echarts/extension/dataTool';
+var prepareBoxplotData
+try{
+  prepareBoxplotData =  require( 'echarts/extension/dataTool')
+}catch{ console.log( 'echarts module not implemented')}
 
-const debug = false
+
 
 
 export default class echartsSeries extends Object {

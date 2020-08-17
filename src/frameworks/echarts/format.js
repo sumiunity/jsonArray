@@ -10,7 +10,7 @@
  */
 
 
-import {color} from '../Colors'
+import {color} from '../colors/Colors'
 import jsonArray from '../../jsonArray'
 
 const debug = false
