@@ -18,7 +18,7 @@ global.include = function(file) {
   return require(abs_path('/' + file));
 }
 
-import {data} from './data'
+import {data, array} from './data'
 import jsonArray from '../jsonArray'
 
 import moment from 'moment';
@@ -238,4 +238,16 @@ test("jsonArray : unique : array", () => {
   var values = json_array.unique('ARRAY')
 
   expect(values.toString()).toBe(expected.toString());
+});
+
+
+test("jsonArray : col : set", () => {
+
+  var json_array = new jsonArray( array );
+  expect( json_array.columns.includes('A') ).toBe(false);
+  expect( json_array.columns.includes('B') ).toBe(false);
+
+  json_array.columns = ['A', 'B']
+  expect( json_array.columns.includes('A') ).toBe(true);
+  expect( json_array.columns.includes('B') ).toBe(true);
 });

@@ -12,7 +12,9 @@
 
 import jsonArray from '../../../jsonArray'
 
-import {Table} from 'semantic-ui-react'
+var SemanticUI
+try{ SemanticUI = require('semantic-ui-react') }catch{}
+
 
 export default class jsonSemanticUI {
 
@@ -49,12 +51,13 @@ export default class jsonSemanticUI {
   get table(){
     var table = this.json_array.react.table
 
-    table.parameters.table = Table
-    table.parameters.th = Table.HeaderCell
-    table.parameters.thead = Table.Header
-    table.parameters.td = Table.Cell
-    table.parameters.tr = Table.Row
-    table.parameters.body = Table.Body
+    if( SemanticUI === undefined ) return table
+    table.parameters.table = SemanticUI.Table
+    table.parameters.th = SemanticUI.Table.HeaderCell
+    table.parameters.thead = SemanticUI.Table.Header
+    table.parameters.td = SemanticUI.Table.Cell
+    table.parameters.tr = SemanticUI.Table.Row
+    table.parameters.body = SemanticUI.Table.Body
 
     return table
   }

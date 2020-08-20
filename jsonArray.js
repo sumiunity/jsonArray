@@ -38,14 +38,23 @@ export default class jsonArray extends Array{
 
       array = JSON.parse(JSON.stringify(array))
 
-      const keys = Object.keys(array[0])
+      // when the Array is passed in as an array of arrays, covert
+      // it to an array of objects
+      if( array[0].hasOwnProperty('length') ){
+        for( var i=0; i < array.length; i++ ){
+          array[i] = new Object({... array[i]})
+        }
+      }
 
-      // create an __index__ attribute when one doesn't exist
-      if( !keys.includes('__index__') ){
+      const columns = Object.keys(array[0])
+
+      // create an internal index attribute when one doesn't exist
+      if( !columns.includes('__index__') ){
         for( var i=0; i < array.length; i++ ){
           array[i]['__index__'] = i
         }
       }
+
 
       // initialize the array based on the data type of the uncloned DataFrame
       array = dtypes.init(array)
@@ -69,12 +78,40 @@ export default class jsonArray extends Array{
     return [...new Set(columns.filter(x => !['__index__'].includes(x)))]
   }
 
+  /**
+   * Replace the column names with those provided by the column array
+   * @param  {Array} columns array of column names
+   * @return {Array}         jsonArray with new column names
+   */
+  set columns( columns ){
+      const keys = this.columns
+
+      // define a mapping between the current and new column names
+      var mapping = {}
+      for( var i=0; i < Math.min(keys.length, columns.length); i++ ){
+        mapping[keys[i]] =columns[i]
+      }
+
+      // return a json array with the new mapping applied
+      return this.rename( mapping, {inplace: true} )
+  }
+
+
   // return all values for the specified column
   values( col ){
     return [...this].map(row => row[col])
   }
 
+  // returns the values of the data at the specified index
+  loc( idx ){
+    return Object.values([...this].filter(row => row.__index__ == idx))
 
+  }
+
+  // return the values of the data at the relative row number
+  iloc( idx ){
+    return Object.values(this[idx])
+  }
 
   // sorts the json array by the provided column
   sort_values( col, ascending=true){
@@ -485,7 +522,10 @@ export default class jsonArray extends Array{
         if( ex_columns.includes(columns[j]) ){
           const new_col = mapping[columns[j]]
           array[i][new_col] = array[i][columns[j]]
+
+          // console.log( columns[j], typeof columns[j], typeof columns[j] instanceof 'string' )
           delete array[i][columns[j]]
+
         }
       }
     }
@@ -576,4 +616,49 @@ export default class jsonArray extends Array{
   // get reactComponents(){ return new ReactComponents(this) }
   get react(){ return new ReactComponents(this) }
 
+}
+
+
+
+
+/**
+ * Return an array where each entry has a corresponding
+ * key value that does not correspond to an array location
+ * @param  {Array} array Array of objects
+ * @return {Array}       Array of objects with valid keys
+ */
+function validate_columns( array ){
+
+  const columns = Object.keys(array[0])
+  // search for columns that are integer values. These occur when
+  // objects are inserted as an array i.e. without a key
+  var invalid_col = []
+  for( i = 0; i < columns.length; i++ ){
+    if( !isNaN(columns[i]) ) invalid_col.push( columns[i])
+  }
+
+  if( invalid_col.length === 0) return array
+
+  // map all invalid column names
+  for( var i = 0; i < array.length; i++ ){
+    const keys = Object.keys( array[i] )
+
+    // duplicate the content of the invalid column to a valid column name.
+    // We cannot delete the invalid column because of the dependency of
+    // array position
+    for( var j = 0; j < invalid_col.length; j++ ){
+      if( keys.includes( invalid_col[j]) ){
+        array[i][`col-${invalid_col[j]}`] = array[i][invalid_col[j]]
+      }
+    }
+
+    // remove the invalid columns
+    for( j = 0; j < invalid_col.length; j++ ){
+      if( keys.includes( invalid_col[j]) ){
+        array[i].splice(invalid_col[j])
+      }
+    }
+  }
+
+  return array
 }

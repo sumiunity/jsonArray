@@ -21,7 +21,7 @@ global.include = function(file) {
 import {data} from './data'
 // import jsonArray from '../jsonArray'
 
-import echartsSeries from '../plot/echarts/series'
+import echartsSeries from '../frameworks/echarts/series'
 import jsonArray from '../jsonArray'
 
 
@@ -158,44 +158,44 @@ test("eCharts : scatter by plot : labeled true/false/marked", () => {
   expect(series[2].data.length).toBe(1);
 });
 
-
-test("eCharts : boxplot : default", () => {
-
-  const json_array = new jsonArray( data )
-  var series = new echartsSeries( json_array )
-  series = series.boxplot('CATEGORY1', 'id')
-
-  expect(series[0].name).toBe('boxplot');
-  expect(series[0].type).toBe('boxplot');
-  expect(series[0].data.length).toBe(5);
-
-  expect(series[1].name).toBe('outlier');
-  expect(series[1].type).toBe('scatter');
-  expect(series[1].data.length).toBe(0);
-
-});
-
-test("eCharts : boxplot : marked", () => {
-
-  var json_array = new jsonArray( data )
-  json_array = json_array.label( row => row.id === 126, {value:'MARKED'} )
-
-  var series = new echartsSeries( json_array )
-  series = series.boxplot('CATEGORY1', 'id', {label:'label'} )
-
-  expect(series[0].name).toBe('boxplot');
-  expect(series[0].type).toBe('boxplot');
-  expect(series[0].data.length).toBe(5);
-
-  expect(series[1].name).toBe('outlier');
-  expect(series[1].type).toBe('scatter');
-  expect(series[1].data.length).toBe(0);
-
-  expect(series[2].name).toBe('scatter');
-  expect(series[2].type).toBe('scatter');
-  expect(series[2].color).toBe('green');
-  expect(series[2].data.length).toBe(1);
-});
+// 
+// test("eCharts : boxplot : default", () => {
+//
+//   const json_array = new jsonArray( data )
+//   var series = new echartsSeries( json_array )
+//   series = series.boxplot('CATEGORY1', 'id')
+//
+//   expect(series[0].name).toBe('boxplot');
+//   expect(series[0].type).toBe('boxplot');
+//   expect(series[0].data.length).toBe(5);
+//
+//   expect(series[1].name).toBe('outlier');
+//   expect(series[1].type).toBe('scatter');
+//   expect(series[1].data.length).toBe(0);
+//
+// });
+//
+// test("eCharts : boxplot : marked", () => {
+//
+//   var json_array = new jsonArray( data )
+//   json_array = json_array.label( row => row.id === 126, {value:'MARKED'} )
+//
+//   var series = new echartsSeries( json_array )
+//   series = series.boxplot('CATEGORY1', 'id', {label:'label'} )
+//
+//   expect(series[0].name).toBe('boxplot');
+//   expect(series[0].type).toBe('boxplot');
+//   expect(series[0].data.length).toBe(5);
+//
+//   expect(series[1].name).toBe('outlier');
+//   expect(series[1].type).toBe('scatter');
+//   expect(series[1].data.length).toBe(0);
+//
+//   expect(series[2].name).toBe('scatter');
+//   expect(series[2].type).toBe('scatter');
+//   expect(series[2].color).toBe('green');
+//   expect(series[2].data.length).toBe(1);
+// });
 
 
 
