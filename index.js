@@ -8,35 +8,33 @@ global.include = function(file) {
   return require(abs_path('/' + file));
 }
 
-import {data} from './tests/data'
+import {data, array} from './tests/data'
 import jsonArray from './jsonArray'
 import jsonObject from './jsonObject'
 
 import moment from 'moment';
 import datetime from './data_types/datetime'
 
-import jsonSemanticUI from './framework/SemanticUI'
-import echartsSeries from './plot/echarts/series'
-import echartsOptions from './plot/echarts/options'
-
-import DataTypes from './data_types/dtypes'
-import {dev_data} from './devdata'
-
-import jsonArrayTable from './table/table'
 
 
-
-// var json_array = new jsonArray( data );
-// json_array = json_array.unique('ARRAY')
-// console.log(json_array)
-
-var semantic = new jsonSemanticUI( data )
-var dropdown = semantic.dropdown('ARRAY')
-console.log( dropdown )
-
-
+// console.log( 'array', typeof array )
+// console.log( Object.getOwnPropertyNames(array[0]) )
+// console.log( Object.keys(array[0]) )
 //
-// var json_array = new jsonArray( data)
+// array[0]['test'] = array[0][0]
+//
+// delete array[0][0]
+// array[0].splice[0]
+
+
+var json_array = new jsonArray( array )
+console.log( json_array)
+// json_array = json_array.rename({0:'col', 'AREA': 'area'})
+
+
+
+
+// console.log( json_array[0][0] )
 // json_array = json_array.strftime('TIME')
 // var pivot = json_array.pivot_table( 'TIME', 'CATEGORY1', 'unique', 'CATEGORY2')
 // console.log( pivot )
