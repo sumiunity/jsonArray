@@ -13,6 +13,7 @@
     "test"
   ],
   "dependencies": {
+    "csvtojson": "^2.0.10",
     "dotenv": "^8.2.0",
     "echarts": "^4.8.0",
     "jest": "^26.2.2",
