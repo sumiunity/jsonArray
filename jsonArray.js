@@ -38,6 +38,14 @@ export default class jsonArray extends Array{
 
       array = JSON.parse(JSON.stringify(array))
 
+      // when the Array is passed in as an array of arrays, covert
+      // it to an array of objects
+      if( array[0].hasOwnProperty('length') ){
+        for( var i=0; i < array.length; i++ ){
+          array[i] = new Object({... array[i]})
+        }
+      }
+
       const columns = Object.keys(array[0])
 
       // create an internal index attribute when one doesn't exist
@@ -47,9 +55,6 @@ export default class jsonArray extends Array{
         }
       }
 
-      // replace all keys corresponding to array positions with
-      // valid string i.e. col-index
-      array = validate_columns( array)
 
       // initialize the array based on the data type of the uncloned DataFrame
       array = dtypes.init(array)
@@ -72,6 +77,25 @@ export default class jsonArray extends Array{
 
     return [...new Set(columns.filter(x => !['__index__'].includes(x)))]
   }
+
+  /**
+   * Replace the column names with those provided by the column array
+   * @param  {Array} columns array of column names
+   * @return {Array}         jsonArray with new column names
+   */
+  set columns( columns ){
+      const keys = this.columns
+
+      // define a mapping between the current and new column names
+      var mapping = {}
+      for( var i=0; i < Math.min(keys.length, columns.length); i++ ){
+        mapping[keys[i]] =columns[i]
+      }
+
+      // return a json array with the new mapping applied
+      return this.rename( mapping, {inplace: true} )
+  }
+
 
   // return all values for the specified column
   values( col ){
@@ -500,12 +524,8 @@ export default class jsonArray extends Array{
           array[i][new_col] = array[i][columns[j]]
 
           // console.log( columns[j], typeof columns[j], typeof columns[j] instanceof 'string' )
-          // if( typeof columns[j] === 'integer' ) console.log( 'intbe')
           delete array[i][columns[j]]
 
-          // console.log( array[i][columns[j]], array[i][columns[j]] === undefined)
-          // if( array[i][columns[j]] === undefined ) console.log( 'need to splice')
-          // array[i] = array[i].filter( row => row !== null)
         }
       }
     }

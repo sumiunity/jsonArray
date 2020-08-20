@@ -29,12 +29,16 @@ var components = {
 try{
   components.react = require('./plot/echarts/react').react_echarts
   enabledComponents.react = true
-}catch{ console.log('failed to load echarts. module not installed')}
+}catch{
+  // console.log('failed to load echarts. module not installed')
+}
 
 try{
   components.semanticUI = require('./framework/SemanticUI').default
   enabledComponents.semanticUI = true
-}catch{ console.log('failed to load echarts. module not installed')}
+}catch{
+  // console.log('failed to load semanticUI. module not installed')
+}
 
 
 
@@ -57,7 +61,7 @@ export default class ReactComponents extends Object{
       alert( 'Semantic UI module not installed')
       return
     }
-    
+
     return new components.semanticUI( this.json_array )
   }
 
