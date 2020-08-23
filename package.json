@@ -1,0 +1,49 @@
+{
+  "name": "Toolkit",
+  "author": "Nik Sumikawa",
+  "version": "0.0.0",
+  "private": true,
+  "homepage": ".",
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "echarts": "^4.7.0",
+    "echarts-for-react": "^2.0.15-beta.1",
+    "lodash": "^4.17.20",
+    "moment": "^2.25.3",
+    "react": "^16.13.1",
+    "react-datepicker": "^2.15.0",
+    "react-dom": "^16.13.1",
+    "react-router": "5.0.0",
+    "react-router-config": "^5.1.1",
+    "react-router-dom": "5.0.0",
+    "react-scripts": "^3.4.3",
+    "reactstrap": "8.0.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.88.2",
+    "swagger-ui-react": "^3.26.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "dev": "cross-env REACT_APP_NODE_ENV=dev react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

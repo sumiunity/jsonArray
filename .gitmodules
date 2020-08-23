@@ -1,0 +1,3 @@
+[submodule "src/jsonArray"]
+	path = src/jsonArray
+	url = https://github.com/sumiunity/jsonArray
