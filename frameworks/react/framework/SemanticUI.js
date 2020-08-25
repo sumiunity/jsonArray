@@ -47,7 +47,7 @@ export default class jsonSemanticUI {
   }
 
 
-  // returns
+  // returns a table formatted using the Semantic UI table Framework
   get table(){
     var table = this.json_array.react.table
 
@@ -60,5 +60,22 @@ export default class jsonSemanticUI {
     table.parameters.body = SemanticUI.Table.Body
 
     return table
+  }
+
+  // returns the excel reader using teh Semantic UI Framework for input controls
+  excel(callback){
+
+    var excel = this.json_array.react.excel(callback)
+    if( SemanticUI === undefined ) return excel
+
+    excel.parameters.button = SemanticUI.Button
+    excel.parameters.buttonStyle = {margin:0}
+    excel.parameters.buttonProps = {color: 'blue'}
+
+    excel.parameters.input = SemanticUI.Input
+    excel.parameters.inputStyle = {}
+    excel.parameters.inputProps = {icon: 'file', placeholder: 'xlsx, csv, ...' }
+
+    return excel
   }
 }

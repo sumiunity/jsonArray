@@ -28,7 +28,7 @@ const debug = false
 
 export default class jsonArray extends Array{
 
-  constructor(array, inplace=false) {
+  constructor(array=[], inplace=false) {
 
     var dtypes = new DataTypes( array )
 

@@ -17,12 +17,14 @@ import jsonArrayTable from './table/jsonArrayTable'
 var enabledComponents = {
   echarts: false,
   semanticUI: false,
+  excel: false,
 }
 
 // attempt to import the react echarts component
 var components = {
   echarts: undefined,
   semanticUI: undefined,
+  excel: undefined,
 }
 
 
@@ -36,6 +38,13 @@ try{
 try{
   components.semanticUI = require('./framework/SemanticUI').default
   enabledComponents.semanticUI = true
+}catch{
+  // console.log('failed to load semanticUI. module not installed')
+}
+
+try{
+  components.excel = require('./pluggins/Excel').default
+  enabledComponents.excel = true
 }catch{
   // console.log('failed to load semanticUI. module not installed')
 }
@@ -65,6 +74,16 @@ export default class ReactComponents extends Object{
     return new components.semanticUI( this.json_array )
   }
 
+
+
+  excel( callback ){
+    if( enabledComponents.excel === false ){
+      alert( 'react-excel-renderer module not installed')
+      return
+    }
+
+    return new components.excel( callback )
+  }
 
 
   plot( plot_type, params={} ){
