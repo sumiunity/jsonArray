@@ -18,9 +18,109 @@ import datetime from './data_types/datetime'
 import jsonSemanticUI from './frameworks/react/framework/SemanticUI'
 
 
-// import {from_csv} from './pluggins/jsontocsv.js'
-// from_csv( 'https://raw.githubusercontent.com/sumiunity/jsonArray/v0.0.0/tests/data.csv' )
+import {from_file} from './pluggins/fromCsv.js'
+// from_csv( 'http://localhost:8001/media/test.csv' )
 
+const fs = require('fs');
+fs.readFile('src/tests/data.csv', 'utf8', function (err, file) {
+  console.log( file )
+  console.log(from_file(file) )
+
+});
+
+// from_file( )
+// const fetch = require("node-fetch");
+// const parser = require("papaparse");
+//
+// // fs.readFile('src/data.csv', 'utf8', function (err, data) {
+// //   console.log( data )
+// //   var parsed = parser.parse(
+// //     data,
+// //     {
+// //       header: true,
+// //       complete: function(results) {
+// //           console.log("Finished:", results.data);
+// //       }
+// //     }
+// //   )
+// // });
+//
+// fs.readFile('src/data.csv', 'utf8', function (err, data) {
+//   console.log( data )
+//   var parsed = parser.parse(
+//     data,
+//     {
+//       header: true,
+//       complete: function(results) {
+//           console.log("Finished:", results.data);
+//       }
+//     }
+//   )
+//
+//   console.log( '----', parsed)
+// });
+
+
+// const file = await fs.readFile('src/data.csv', 'utf8')
+//
+// var parsed = parser.parse(
+//   'src/data.csv',
+//   {
+//     header: true,
+//     complete: function(results) {
+//         console.log("Finished:", results.data);
+//     }
+//   }
+// )
+
+// function fetchCsv() {
+//     fetch('http://localhost:8001/media/test.csv').then(function (response) {
+//       let reader = response.body;
+//       // let decoder = new TextDecoder('utf-8');
+//
+//       // var parsed = parser.parse(
+//       //   response,
+//       //   {
+//       //     complete: function(results) {
+//       //         console.log("Finished:", results.data);
+//       //         done()
+//       //     }
+//       //   }
+//       // )
+//
+//       console.log( 'fetch response', reader)
+//         // let reader = response.body.getReader();
+//         // let decoder = new TextDecoder('utf-8');
+//         //
+//         // return reader.read().then(function (result) {
+//         //     return decoder.decode(result.value);
+//         // });
+//       return 'hello'
+//     });
+// }
+
+// console.log( fetchCsv() )
+// var parsed = parser.parse(
+//   './tests/data.csv',
+//   {
+//     complete: function(results) {
+//         console.log("Finished:", results.data);
+//     }
+//   }
+// )
+
+// const fs = require('fs')
+// var parsed = parser.parse(
+//   fs.createReadStream( './tests/data.csv' ),
+//   {
+//     complete: function(results) {
+//         console.log("Finished:", results.data);
+//         done()
+//     }
+//   }
+// )
+// console.log( parsed )
+// console.log( parsed )
 // console.log( 'array', typeof array )
 // console.log( Object.getOwnPropertyNames(array[0]) )
 // console.log( Object.keys(array[0]) )
@@ -30,25 +130,6 @@ import jsonSemanticUI from './frameworks/react/framework/SemanticUI'
 // delete array[0][0]
 // array[0].splice[0]
 
-// var semanticUI = new jsonSemanticUI( data )
-// console.log( new Object(array[0]) )
-// var temp = JSON.parse(JSON.stringify(array))
-// temp[0]['x'] = 1
-// temp[0] = new Object({...temp[0]})
-// console.log( temp[0] )
-// temp = JSON.parse(JSON.stringify(temp))
-// console.log( temp[0] )
-// console.log( JSON.parse(JSON.stringify(array)) )
-var json_array = new jsonArray( array )
-console.log( json_array[0] )
-//
-console.log( 'json2')
-const json_array2 = new jsonArray( json_array )
-console.log( json_array2[0] )
-// json_array = json_array.rename( {'0': 'A'})
-json_array.columns = ['A', 'B']
-console.log( json_array)
-// json_array = json_array.rename({0:'col', 'AREA': 'area'})
 
 
 
