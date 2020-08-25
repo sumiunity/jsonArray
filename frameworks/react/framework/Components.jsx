@@ -22,10 +22,14 @@ export function Input(props){
   return wrapper( props, props.defaultValue, 'input' )
 }
 
+export function Image(props){
+  return wrapper( props, props.defaultValue, 'img' )
+}
+
+
 export function Cell(props){
   return wrapper( props, props.defaultValue, 'td' )
 }
-
 
 export function Header(props){
   return wrapper( props, props.defaultValue, 'thead' )
@@ -53,6 +57,9 @@ function wrapper( props, value, type ){
 
       case 'input':
         return <input {...props}>{value}</input>
+
+      case 'img':
+        return <img src={value}{...props} />
 
       case 'td':
         return <td {...props}>{value}</td>

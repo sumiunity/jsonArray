@@ -12,7 +12,7 @@
 import React from 'react';
 
 import {booleanColor, fillAndEdge} from '../../colors/Colors'
-import {Cell} from '../framework/Components'
+import {Cell, Button, Image} from '../framework/Components'
 // import { Button } from "reactstrap";
 // import {Table, Button, Icon, Checkbox } from 'semantic-ui-react'
 // import {data_type, format_float} from 'components/Data/DataType'
@@ -29,9 +29,8 @@ export default function cell( json_table, row, col ) {
 
   //add the onclick fundtion. Default to do nothing when the function does not exist
   var cellOnClick = onClickFunc( json_table, col, row )
+  var componentOnClick = onClickFunc( json_table, col, row )
 
-
-  var componentOnClick
   var value = json_table.data[row][col]
   var cellContent
 
@@ -39,19 +38,32 @@ export default function cell( json_table, row, col ) {
 
     case 'button':
       cellOnClick = null
-      componentOnClick = onClickFunc( json_table, col, row )
 
-      //TODO: pass in but style css to enable button customization
-      var style = {textAlign:'center'}
-      cellContent = __button__(
-        json_table,
-        value,
-        `${json_table.parameters.tableName}-button-${col}-${row}`,
-        componentOnClick,
-        style
+      cellContent = (
+        <Button
+          {...json_table.parameters.buttonProps}
+          style={{...{textAlign:'center'}, ...json_table.parameters.buttonStyle}}
+          Component={json_table.parameters.button}
+          key={`${json_table.parameters.tableName}-button-${col}-${row}`}
+          defaultValue={value}
+          onClick={componentOnClick}
+          />
       )
       break;
 
+    case 'image':
+      cellOnClick = null
+      cellContent = (
+        <Image
+          {...json_table.parameters.imageProps}
+          style={{...{textAlign:'center'}, ...json_table.parameters.imageStyle}}
+          Component={json_table.parameters.image}
+          key={`${json_table.parameters.tableName}-image-${col}-${row}`}
+          defaultValue={value}
+          onClick={componentOnClick}
+          />
+      )
+      break;
     //
     //   case 'checkbox':
     //     return (
@@ -73,13 +85,11 @@ export default function cell( json_table, row, col ) {
 
     case 'boolean':
       cellOnClick = null
-      componentOnClick = onClickFunc( json_table, col, row )
       cellContent = booleanCircle(value, componentOnClick)
       break
 
     case 'square':
       cellOnClick = null
-      componentOnClick = onClickFunc( json_table, col, row )
       cellContent = coloredSquare(value, componentOnClick)
       break
 
@@ -101,11 +111,12 @@ export default function cell( json_table, row, col ) {
 
   return (
     <Cell
+      {...json_table.parameters.tdProps}
+      style={{...{textAlign:'center'}, ...json_table.parameters.tdStyle}}
       Component={json_table.parameters.td}
       key = {`${json_table.parameters.tableName}-cell-${col}-${row}`}
       onClick={cellOnClick}
       defaultValue= {cellContent}
-      style={{textAlign:'center'}}
       />
   )
 
@@ -143,38 +154,6 @@ function onClickFunc( json_table, col, row ){
   return onClick
 }
 
-/**
- * fills the Table cell with a button that will execute an onClick function when provided.
- * The onClick will always have two parameters (x/y) so the function can determien how to
- * process the results
- * @constructor
- */
- // returns the date as a string based on the provided format
-function __button__(json_table, value, key, onClick, style={}){
-
-  // return standard html json_table header html component when
-  // a different cell type is not provided
-  if( json_table.parameters.button === undefined ){
-    return(
-      <button
-        key={key}
-        style={style}
-        onClick={onClick}>
-          {value}
-      </button>
-    )
-  }
-
-  return (
-    <json_table.parameters.button
-      key={key}
-      style={style}
-      onClick={onClick}>
-        {value}
-    </json_table.parameters.button>
-    );
-
-}
 
 
 

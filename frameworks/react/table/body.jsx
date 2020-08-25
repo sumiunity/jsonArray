@@ -43,6 +43,8 @@ export default function tableBody( json_table ) {
 
   return (
     <Body
+      {...json_table.parameters.bodyProps}
+      style={{...{textAlign:'center'}, ...json_table.parameters.bodyStyle}}
       Component={json_table.parameters.body}
       key={`${json_table.parameters.tableName}-body`}
       defaultValue={body}
@@ -121,6 +123,8 @@ function row( json_table, row_idx, params={} ) {
 
     return (
       <Row
+        {...json_table.parameters.trProps}
+        style={{...{textAlign:'center'}, ...json_table.parameters.trStyle}}
         Component={json_table.parameters.tr}
         key={`${json_table.parameters.tableName}-row--${row_idx}`}
         onClick={rowOnClick}
@@ -186,31 +190,3 @@ function row( json_table, row_idx, params={} ) {
 //   )
 //
 // }
-
-
-// returns the date as a string based on the provided format
-function __body__(json_table, value, key, onClick){
-
-  // return standard html json_table header html component when
-  // a different cell type is not provided
-  if( json_table.parameters.body === undefined ){
-    return(
-      <body
-        key={key}
-        style={{textAlign:'center'}}
-        onClick={onClick}>
-          {value}
-      </body>
-    )
-  }
-
-  return (
-    <json_table.parameters.body
-      key={key}
-      style={{textAlign:'center'}}
-      onClick={onClick}>
-        {value}
-    </json_table.parameters.body>
-    );
-
-}

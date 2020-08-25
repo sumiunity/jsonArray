@@ -37,6 +37,8 @@ export default function tableHeader( json_table ) {
   if( json_table.parameters.accordian === true ){
     row.push(
       <HeaderCell
+        {...json_table.parameters.thProps}
+        style={{...{textAlign:'center'}, ...json_table.parameters.thStyle}}
         Component={json_table.parameters.th}
         defaultValue = {''}
         key = {`${json_table.parameters.tableName}-th-0`}
@@ -71,6 +73,8 @@ export default function tableHeader( json_table ) {
       //populate the header cell
       row.push(
         <HeaderCell
+          {...json_table.parameters.thProps}
+          style={{...{textAlign:'center'}, ...json_table.parameters.thStyle}}
           Component={json_table.parameters.th}
           defaultValue = {col}
           key = {`${json_table.parameters.tableName}-th-${i}`}
@@ -83,6 +87,8 @@ export default function tableHeader( json_table ) {
   // define the header row
   const headerrow = (
     <Row
+      {...json_table.parameters.trProps}
+      style={{...{textAlign:'center'}, ...json_table.parameters.trStyle}}
       Component={json_table.parameters.tr}
       defaultValue={row}
       key={`${json_table.parameters.tableName}-headerrow`}
@@ -93,6 +99,8 @@ export default function tableHeader( json_table ) {
 
   return (
       <Header
+        {...json_table.parameters.theadProps}
+        style={{...{textAlign:'center'}, ...json_table.parameters.theadStyle}}
         Component={json_table.parameters.thead}
         defaultValue={headerrow}
         key = {`${json_table.parameters.tableName}-thead`}

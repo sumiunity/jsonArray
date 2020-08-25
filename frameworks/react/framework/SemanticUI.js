@@ -59,6 +59,8 @@ export default class jsonSemanticUI {
     table.parameters.tr = SemanticUI.Table.Row
     table.parameters.body = SemanticUI.Table.Body
 
+    table.parameters.button = SemanticUI.Table.Button
+    table.parameters.image = SemanticUI.Table.Image
     return table
   }
 
