@@ -12,6 +12,8 @@ import jsonArrayTable from './jsonArrayTable'
 import cell from './cell'
 
 
+import {Body, Row} from '../framework/Components'
+
 
 
 export default function tableBody( json_table ) {
@@ -40,12 +42,13 @@ export default function tableBody( json_table ) {
   }
 
   return (
-    __body__(
-        json_table,
-        body,
-        `${json_table.parameters.tableName}-body`
-        )
-    )
+    <Body
+      Component={json_table.parameters.body}
+      key={`${json_table.parameters.tableName}-body`}
+      defaultValue={body}
+      />
+  )
+
 
 }
 
@@ -117,11 +120,12 @@ function row( json_table, row_idx, params={} ) {
     }
 
     return (
-      __row__(
-        json_table,
-        row,
-        `${json_table.parameters.tableName}-row--${row_idx}`,
-        rowOnClick)
+      <Row
+        Component={json_table.parameters.tr}
+        key={`${json_table.parameters.tableName}-row--${row_idx}`}
+        onClick={rowOnClick}
+        defaultValue={row}
+        />
     )
 }
 
@@ -183,34 +187,6 @@ function row( json_table, row_idx, params={} ) {
 //
 // }
 
-
-
-// returns the date as a string based on the provided format
-function __row__(json_table, value, key, onClick){
-
-  // return standard html json_table header html component when
-  // a different cell type is not provided
-  if( json_table.parameters.tr === undefined ){
-    return(
-      <tr
-        key={key}
-        style={{textAlign:'center'}}
-        onClick={onClick}>
-          {value}
-      </tr>
-    )
-  }
-
-  return (
-    <json_table.parameters.tr
-      key={key}
-      style={{textAlign:'center'}}
-      onClick={onClick}>
-        {value}
-    </json_table.parameters.tr>
-    );
-
-}
 
 // returns the date as a string based on the provided format
 function __body__(json_table, value, key, onClick){

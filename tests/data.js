@@ -10,7 +10,8 @@ export const data = [
     TYPE: 'Bad',
     NUMBER: '260',
     ARRAY: ['ARRAY1', 'ARRAY2'],
-    __index__: 0
+    __index__: 0,
+    image: '/favicon.ico',
   },
   {
     COUNT: 5,
@@ -23,7 +24,8 @@ export const data = [
     TYPE: 'Bad',
     NUMBER: '260',
     ARRAY: ['ARRAY2'],
-    __index__: 1
+    __index__: 1,
+    image: '/favicon.ico',
   },
   {
     COUNT: 1,

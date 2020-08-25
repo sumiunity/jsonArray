@@ -12,6 +12,7 @@
 import React from 'react';
 
 import {booleanColor, fillAndEdge} from '../../colors/Colors'
+import {Cell} from '../framework/Components'
 // import { Button } from "reactstrap";
 // import {Table, Button, Icon, Checkbox } from 'semantic-ui-react'
 // import {data_type, format_float} from 'components/Data/DataType'
@@ -99,44 +100,18 @@ export default function cell( json_table, row, col ) {
   }
 
   return (
-    __cell__(
-      json_table,
-      cellContent,
-      `${json_table.parameters.tableName}-cell-${col}-${row}`,
-      cellOnClick
-    )
+    <Cell
+      Component={json_table.parameters.td}
+      key = {`${json_table.parameters.tableName}-cell-${col}-${row}`}
+      onClick={cellOnClick}
+      defaultValue= {cellContent}
+      style={{textAlign:'center'}}
+      />
   )
 
 }
 
 
-
-// returns the date as a string based on the provided format
-function __cell__(json_table, value, key, onClick){
-
-  // return standard html json_table header html component when
-  // a different cell type is not provided
-  if( json_table.parameters.td === undefined ){
-    return(
-      <td
-        key={key}
-        style={{textAlign:'center'}}
-        onClick={onClick}>
-          {value}
-      </td>
-    )
-  }
-
-  return (
-    <json_table.parameters.td
-      key={key}
-      style={{textAlign:'center'}}
-      onClick={onClick}>
-        {value}
-    </json_table.parameters.td>
-    );
-
-}
 
 
 

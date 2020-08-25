@@ -22,6 +22,26 @@ export function Input(props){
   return wrapper( props, props.defaultValue, 'input' )
 }
 
+export function Cell(props){
+  return wrapper( props, props.defaultValue, 'td' )
+}
+
+
+export function Header(props){
+  return wrapper( props, props.defaultValue, 'thead' )
+}
+
+export function HeaderCell(props){
+  return wrapper( props, props.defaultValue, 'th' )
+}
+
+export function Row(props){
+  return wrapper( props, props.defaultValue, 'tr' )
+}
+
+export function Body(props){
+  return wrapper( props, props.defaultValue, 'body' )
+}
 
 
 function wrapper( props, value, type ){
@@ -33,6 +53,19 @@ function wrapper( props, value, type ){
 
       case 'input':
         return <input {...props}>{value}</input>
+
+      case 'td':
+        return <td {...props}>{value}</td>
+
+      case 'tr':
+        return <tr {...props}>{value}</tr>
+
+      case 'th':
+        return <th {...props}>{value}</th>
+
+      case 'thead':
+        return <thead {...props}>{value}</thead>
+
 
       default:
         return <div {...props}>{value}</div>

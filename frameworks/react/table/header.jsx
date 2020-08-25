@@ -15,6 +15,7 @@ import React from 'react';
 
 import jsonArrayTable from './jsonArrayTable'
 
+import {HeaderCell, Header, Row} from '../framework/Components'
 
 const debug = false
 
@@ -35,11 +36,11 @@ export default function tableHeader( json_table ) {
   // in the table object
   if( json_table.parameters.accordian === true ){
     row.push(
-      __headercell__(
-        json_table,
-        '',
-        `${json_table.parameters.tableName}-th-0`,
-      )
+      <HeaderCell
+        Component={json_table.parameters.th}
+        defaultValue = {''}
+        key = {`${json_table.parameters.tableName}-th-0`}
+        />
     )
     col_offset = col_offset + 1
   }
@@ -65,121 +66,37 @@ export default function tableHeader( json_table ) {
         })
       }
 
+      // sorted={value === json_table.parameters.sortBy ? direction : null}
+
       //populate the header cell
       row.push(
-        __headercell__(
-          json_table,
-          col,
-          `${json_table.parameters.tableName}-th-${i}`,
-          headerCellOnClick
-        ))
+        <HeaderCell
+          Component={json_table.parameters.th}
+          defaultValue = {col}
+          key = {`${json_table.parameters.tableName}-th-${i}`}
+          onClick={headerCellOnClick}
+          />
+      )
 
   }
 
   // define the header row
-  const headerrow = __headerrow__(
-    json_table,
-    row,
-    `${json_table.parameters.tableName}-headerrow`
+  const headerrow = (
+    <Row
+      Component={json_table.parameters.tr}
+      defaultValue={row}
+      key={`${json_table.parameters.tableName}-headerrow`}
+      style={{textAlign:'center'}}
+      />
   )
 
 
   return (
-      __header__(
-        json_table,
-        headerrow,
-        `${json_table.parameters.tableName}-thead`
-      )
-    );
-
-}
-
-
-
-
-// returns the date as a string based on the provided format
-function __headercell__(json_table, value, key, onClick){
-
-  // return standard html json_table header html component when
-  // a different cell type is not provided
-  if( json_table.parameters.th === undefined ){
-    return(
-      <th
-        key={key}
-        style={{textAlign:'center'}}
-        onClick={onClick}>
-          {value}
-      </th>
-    )
-  }
-
-  var direction = null
-  if( json_table.parameters.sortAscending === true ) direction = 'ascending'
-  if( json_table.parameters.sortAscending === false ) direction = 'descending'
-
-  console.log( value === json_table.parameters.sortBy, json_table.parameters.sortBy, direction,  )
-  return (
-    <json_table.parameters.th
-      key={key}
-      sorted={value === json_table.parameters.sortBy ? direction : null}
-      style={{textAlign:'center'}}
-      onClick={onClick}>
-        {value}
-    </json_table.parameters.th>
-    );
-
-}
-
-// returns the date as a string based on the provided format
-function __headerrow__(json_table, value, key, onClick){
-
-  // return standard html json_table header html component when
-  // a different cell type is not provided
-  if( json_table.parameters.tr === undefined ){
-    return(
-      <tr
-        key={key}
-        style={{textAlign:'center'}}
-        onClick={onClick}>
-          {value}
-      </tr>
-    )
-  }
-
-  return (
-    <json_table.parameters.tr
-      key={key}
-      style={{textAlign:'center'}}
-      onClick={onClick}>
-        {value}
-    </json_table.parameters.tr>
-    );
-
-}
-
-// returns the date as a string based on the provided format
-function __header__(json_table, value, key, onClick){
-
-  // return standard html json_table header html component when
-  // a different cell type is not provided
-  if( json_table.parameters.thead === undefined ){
-    return(
-      <thead
-        key={key}
-        style={{textAlign:'center'}}
-        onClick={onClick}>
-          {value}
-      </thead>
-    )
-  }
-
-  return (
-    <json_table.parameters.thead
-      key={key}
-      style={{textAlign:'center'}}
-      onClick={onClick}>
-        {value}
-    </json_table.parameters.thead>
+      <Header
+        Component={json_table.parameters.thead}
+        defaultValue={headerrow}
+        key = {`${json_table.parameters.tableName}-thead`}
+        />
     );
 
 }
