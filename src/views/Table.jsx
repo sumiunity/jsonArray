@@ -1,10 +1,10 @@
 import React from 'react';
 
-import jsonArray from 'jsonArray'
+import jsonArray from 'jsonArray/jsonArray'
 import {data} from 'jsonArray/tests/data'
 
 
-export default function TAble( props ){
+export default function Table( props ){
 
 
   // var json_table = new jsonArrayTable( data )
