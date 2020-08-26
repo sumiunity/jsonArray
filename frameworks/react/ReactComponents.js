@@ -14,41 +14,44 @@
 import jsonArray from '../../jsonArray'
 import jsonArrayTable from './table/jsonArrayTable'
 
-var enabledComponents = {
-  echarts: false,
-  semanticUI: false,
-  excel: false,
-}
+import {enabledComponents, components} from './pluggins/Pluggins'
 
-// attempt to import the react echarts component
-var components = {
-  echarts: undefined,
-  semanticUI: undefined,
-  excel: undefined,
-}
-
-
-try{
-  components.react = require('./plot/echarts/react').react_echarts
-  enabledComponents.react = true
-}catch{
-  // console.log('failed to load echarts. module not installed')
-}
-
-try{
-  components.semanticUI = require('./framework/SemanticUI').default
-  enabledComponents.semanticUI = true
-}catch{
-  // console.log('failed to load semanticUI. module not installed')
-}
-
-try{
-  components.excel = require('./pluggins/Excel').default
-  enabledComponents.excel = true
-}catch{
-  // console.log('failed to load semanticUI. module not installed')
-}
-
+console.log( enabledComponents)
+// var enabledComponents = {
+//   echarts: false,
+//   semanticUI: false,
+//   excel: false,
+// }
+//
+// // attempt to import the react echarts component
+// var components = {
+//   echarts: undefined,
+//   semanticUI: undefined,
+//   excel: undefined,
+// }
+//
+//
+// try{
+//   components.react = require('./plot/echarts/react').react_echarts
+//   enabledComponents.react = true
+// }catch{
+//   // console.log('failed to load echarts. module not installed')
+// }
+//
+// try{
+//   components.semanticUI = require('./framework/SemanticUI').default
+//   enabledComponents.semanticUI = true
+// }catch{
+//   // console.log('failed to load semanticUI. module not installed')
+// }
+//
+// try{
+//   components.excel = require('./pluggins/Excel').default
+//   enabledComponents.excel = true
+// }catch{
+//   // console.log('failed to load semanticUI. module not installed')
+// }
+//
 
 
 export default class ReactComponents extends Object{
