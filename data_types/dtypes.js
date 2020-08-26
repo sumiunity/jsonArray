@@ -101,6 +101,15 @@ export default class DataTypes extends Object{
 
         return datetime(value).format(params['format'])
 
+      case 'array':
+        if( typeof value !== 'string' ) return value
+        return value
+          .replace(/\[/gi, '')
+          .replace(/\]/gi, '')
+          .replace(/\'/gi, '')
+          .replace(/\, /gi, ',')
+          .split(',');
+
       default :
         return value
     }

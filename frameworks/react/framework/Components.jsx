@@ -26,6 +26,9 @@ export function Image(props){
   return wrapper( props, props.defaultValue, 'img' )
 }
 
+export function Table(props){
+  return wrapper( props, props.defaultValue, 'table' )
+}
 
 export function Cell(props){
   return wrapper( props, props.defaultValue, 'td' )
@@ -60,6 +63,9 @@ function wrapper( props, value, type ){
 
       case 'img':
         return <img src={value}{...props} />
+
+      case 'table':
+        return <table {...props}>{value}</table>
 
       case 'td':
         return <td {...props}>{value}</td>
