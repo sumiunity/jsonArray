@@ -14,6 +14,7 @@ import React, {useState, useEffect} from 'react';
 
 import jsonArray from '../../../jsonArray'
 
+import {Table} from '../framework/Components'
 
 import tableHeader from './header'
 import tableBody from './body'
@@ -55,73 +56,58 @@ export default class jsonArrayTable{
 
   render( props={} ){
 
-    // internal variable to tracke the sorted column and sort order
-    const [sortBy, setSortBy] = useState(this.parameters.sortBy)
-    const [sortAscending, setSortAscending] = useState(this.parameters.sortAscending)
-
-    // enable the column onClick to track the selected column, which will
-    // be sorted when enabled
-    if( this.parameters.sortable === true ){
-        this.parameters.columnOnClick = (content) => {
-          setSortBy( content.col_name );
-          setSortAscending( !sortAscending );
-        }
-    }
-
-    // sort the data based on the column name specified in the parameters
-    // or the internal state variable when selection is enabled
-    var sortedColumn = sortBy
-    if( sortedColumn !== undefined ){
-      this.data = this.data.sort_values( sortedColumn, sortAscending)
-
-      this.parameters.sortBy = sortedColumn
-      this.parameters.sortAscending = sortAscending
-    }
-
     return (
-      __table__(
-        this,
-        [
-          tableHeader(this),
-          tableBody(this)
-        ],
-        props
-      )
-    );
-
+      <Render
+        json_table = {this}
+        />
+    )
   }
 
 
 }
 
 
+// Renders the table based on the data and parameters specified in the
+// json table attribute. This was moved to it's own function in order
+// to be complient with React's requirement for useState functionality
+// to be implemented within a function
+function Render( props ){
 
+  // internal variable to tracke the sorted column and sort order
+  const [sortBy, setSortBy] = useState(props.json_table.parameters.sortBy)
+  const [sortAscending, setSortAscending] = useState(props.json_table.parameters.sortAscending)
 
-// returns the date as a string based on the provided format
-function __table__(json_table, value, props){
+  // enable the column onClick to track the selected column, which will
+  // be sorted when enabled
+  if( props.json_table.parameters.sortable === true ){
+      props.json_table.parameters.columnOnClick = (content) => {
+        setSortBy( content.col_name );
+        setSortAscending( !sortAscending );
+      }
+  }
 
+  // sort the data based on the column name specified in the parameters
+  // or the internal state variable when selection is enabled
+  var sortedColumn = sortBy
+  if( sortedColumn !== undefined ){
+    props.json_table.data = props.json_table.data.sort_values( sortedColumn, sortAscending)
 
-  // if( props.sort)
-  // return standard html json_table header html component when
-  // a different cell type is not provided
-  if( json_table.parameters.table === undefined ){
-    return(
-      <table
-        key={`${json_table.table_name}-table`}
-        style={{textAlign:'center'}}
-        >
-          {value}
-      </table>
-    )
+    props.json_table.parameters.sortBy = sortedColumn
+    props.json_table.parameters.sortAscending = sortAscending
   }
 
   return (
-    <json_table.parameters.table
-      key={`${json_table.table_name}-table`}
-      style={{textAlign:'center'}}
-      >
-        {value}
-    </json_table.parameters.table>
-    );
+    <Table
+      {...props.json_table.parameters.bodyProps}
+      style={{...{textAlign:'center'}, ...props.json_table.parameters.bodyStyle}}
+      Component={props.json_table.parameters.table}
+      key={`${props.json_table.parameters.tableName}-table`}
+      defaultValue={[
+        tableHeader(props.json_table),
+        tableBody(props.json_table)
+        ]}
+      />
+
+  );
 
 }
