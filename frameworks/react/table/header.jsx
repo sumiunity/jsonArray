@@ -5,79 +5,85 @@
  * Add functionality to the base table driver to allow for
  * column header generation
  *
- * :Author: Nik Sumikawa
- * :Date: Aug 4, 2020
+ *  @author Nik Sumikawa
+ *  @date Aug 4, 2020
  */
 
 
 
 import React from 'react';
 
-import jsonArrayTable from './jsonArrayTable'
+import jsonArray from '../../../jsonArray'
 
 import {HeaderCell, Header, Row} from '../framework/Components'
 
 const debug = false
 
-export default function tableHeader( json_table ) {
+export default function TableHeader( props ) {
 
-  if( !(json_table instanceof jsonArrayTable) ){
-    json_table = new jsonArrayTable(json_table)
+  var json_array = props.json_array
+  if( !(props.json_array instanceof jsonArray) ){
+    json_array = new jsonArray(props.json_array)
   }
 
+  // when no columns are provided as props, pull them from the data source
+  var columns = props.columns
+  if( columns === undefined ) columns = json_array.columns
 
   // do not render header when visible is turned off
-  if( json_table.parameters.showHeader === false ) return null
+  if( props.showHeader === false ) return null
 
   var row = []
   var col_offset = 0
 
   // add a leading column when specific parameters are provided
   // in the table object
-  if( json_table.parameters.accordian === true ){
+  if( props.accordian === true ){
     row.push(
       <HeaderCell
-        {...json_table.parameters.thProps}
-        style={{...{textAlign:'center'}, ...json_table.parameters.thStyle}}
-        Component={json_table.parameters.th}
+        {...props.thProps}
+        style={{...{textAlign:'center'}, ...props.thStyle}}
+        Component={props.th}
         defaultValue = {''}
-        key = {`${json_table.parameters.tableName}-th-0`}
+        key = {`${props.tableName}-th-0`}
         />
     )
     col_offset = col_offset + 1
   }
 
 
-  for (var i=col_offset; i < json_table.parameters.columns.length; i++ ){
+  for (var i=col_offset; i < columns.length; i++ ){
       //retrieve the column name from the data structure
-      var col = json_table.parameters.columns[i]
+      var col = columns[i]
 
       //map the column name when the mapping exists
-      if( Object.keys(json_table.parameters.columnNames).includes(col) ){
-        col = json_table.parameters.columnNames[col]
+      if( props.columnNames !== undefined ){
+        if( Object.keys(props.columnNames).includes(col) ){
+          col = props.columnNames[col]
+        }
       }
 
       var headerCellOnClick = null
-      if( json_table.parameters.columnOnClick !== undefined ){
+      if( props.columnOnClick !== undefined ){
         // persist the onClick inputs to avoid mutation
         const col_name = col
         const col_number = i
-        headerCellOnClick = () => json_table.parameters.columnOnClick({
+        headerCellOnClick = () => props.columnOnClick({
           col_name: col_name,
           col_number: col_number
         })
       }
 
-      // sorted={value === json_table.parameters.sortBy ? direction : null}
+      // sorted={value === props.sortBy ? direction : null}
 
       //populate the header cell
       row.push(
         <HeaderCell
-          {...json_table.parameters.thProps}
-          style={{...{textAlign:'center'}, ...json_table.parameters.thStyle}}
-          Component={json_table.parameters.th}
+          {...props.thProps}
+          style={{...{textAlign:'center'}, ...props.thStyle}}
+          component={props.th}
           defaultValue = {col}
-          key = {`${json_table.parameters.tableName}-th-${i}`}
+          key = {`${props.tableName}-th-${i}`}
           onClick={headerCellOnClick}
           />
       )
@@ -87,11 +93,11 @@ export default function tableHeader( json_table ) {
   // define the header row
   const headerrow = (
     <Row
-      {...json_table.parameters.trProps}
-      style={{...{textAlign:'center'}, ...json_table.parameters.trStyle}}
-      Component={json_table.parameters.tr}
+      {...props.trProps}
+      style={{...{textAlign:'center'}, ...props.trStyle}}
+      component={props.tr}
       defaultValue={row}
-      key={`${json_table.parameters.tableName}-headerrow`}
+      key={`${props.tableName}-headerrow`}
       style={{textAlign:'center'}}
       />
   )
@@ -99,11 +105,11 @@ export default function tableHeader( json_table ) {
 
   return (
       <Header
-        {...json_table.parameters.theadProps}
-        style={{...{textAlign:'center'}, ...json_table.parameters.theadStyle}}
-        Component={json_table.parameters.thead}
+        {...props.theadProps}
+        style={{...{textAlign:'center'}, ...props.theadStyle}}
+        component={props.thead}
         defaultValue={headerrow}
-        key = {`${json_table.parameters.tableName}-thead`}
+        key = {`${props.tableName}-thead`}
         />
     );
 

@@ -12,7 +12,7 @@
 import React from 'react';
 
 import {booleanColor, fillAndEdge} from '../../colors/Colors'
-import {Cell, Button, Image} from '../framework/Components'
+import {Cell as TableCell, Button, Image} from '../framework/Components'
 // import { Button } from "reactstrap";
 // import {Table, Button, Icon, Checkbox } from 'semantic-ui-react'
 // import {data_type, format_float} from 'components/Data/DataType'
@@ -21,30 +21,30 @@ import {Cell, Button, Image} from '../framework/Components'
 
 
 
-export default function cell( json_table, row, col ) {
+export default function Cell( props ) {
   // populute each cell based on the specified column type. When no
   // column type is provided, default to text format
 
 
 
   //add the onclick fundtion. Default to do nothing when the function does not exist
-  var cellOnClick = onClickFunc( json_table, col, row )
-  var componentOnClick = onClickFunc( json_table, col, row )
+  var cellOnClick = onClickFunc( props )
+  var componentOnClick = onClickFunc( props )
 
-  var value = json_table.data[row][col]
+  var value = props.json_array[props.row_idx][props.col]
   var cellContent
 
-  switch( json_table.data.dtypes[col] ){
+  switch( props.json_array.dtypes[props.col] ){
 
     case 'button':
       cellOnClick = null
 
       cellContent = (
         <Button
-          {...json_table.parameters.buttonProps}
-          style={{...{textAlign:'center'}, ...json_table.parameters.buttonStyle}}
-          Component={json_table.parameters.button}
-          key={`${json_table.parameters.tableName}-button-${col}-${row}`}
+          {...props.buttonProps}
+          style={{...{textAlign:'center'}, ...props.buttonStyle}}
+          component={props.button}
+          key={`${props.tableName}-button-${props.col}-${props.row_idx}`}
           defaultValue={value}
           onClick={componentOnClick}
           />
@@ -55,10 +55,10 @@ export default function cell( json_table, row, col ) {
       cellOnClick = null
       cellContent = (
         <Image
-          {...json_table.parameters.imageProps}
-          style={{...{textAlign:'center'}, ...json_table.parameters.imageStyle}}
-          Component={json_table.parameters.image}
-          key={`${json_table.parameters.tableName}-image-${col}-${row}`}
+          {...props.imageProps}
+          style={{...{textAlign:'center'}, ...props.imageStyle}}
+          component={props.image}
+          key={`${props.tableName}-image-${props.col}-${props.row_idx}`}
           defaultValue={value}
           onClick={componentOnClick}
           />
@@ -110,11 +110,11 @@ export default function cell( json_table, row, col ) {
   }
 
   return (
-    <Cell
-      {...json_table.parameters.tdProps}
-      style={{...{textAlign:'center'}, ...json_table.parameters.tdStyle}}
-      Component={json_table.parameters.td}
-      key = {`${json_table.parameters.tableName}-cell-${col}-${row}`}
+    <TableCell
+      {...props.tdProps}
+      style={{...{textAlign:'center'}, ...props.tdStyle}}
+      component={props.td}
+      key = {`${props.tableName}-cell-${props.col}-${props.row_idx}`}
       onClick={cellOnClick}
       defaultValue= {cellContent}
       />
@@ -135,21 +135,23 @@ export default function cell( json_table, row, col ) {
  * @param  {integer} row        row number
  * @return {function}           onClick function
  */
-function onClickFunc( json_table, col, row ){
+function onClickFunc( props ){
 
   var onClick
 
-  // add the onClick function when one exists for the column
-  const onClickColumns = Object.keys(json_table.parameters.cellOnClick)
-  if( onClickColumns.includes(col) ){
-    onClick = () => json_table.parameters.cellOnClick[col]({
-              row: row,
-              col: col,
-              value: json_table.data[row][col],
-              row_data: json_table.data[row]
-              })
-  }
+  if( props.cellOnClick !== undefined ){
 
+    // add the onClick function when one exists for the column
+    const onClickColumns = Object.keys(props.cellOnClick)
+    if( onClickColumns.includes(props.col) ){
+      onClick = () => props.cellOnClick[props.col]({
+        row: props.row_idx,
+        col: props.col,
+        value: props.json_array[props.row_idx][props.col],
+        row_data: props.json_array[props.row_idx]
+        })
+    }
+  }
 
   return onClick
 }

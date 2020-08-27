@@ -1,52 +1,58 @@
 /**
- * Table Compoents
+ * Table Body
  * ================
- * React components used to generate a table
  *
+ * React components used to generate the Table Body
+ *
+ *  @author Nik Sumikawa
+ *  @date Aug 27, 2020
  */
 
 
 
 import React from 'react';
-import jsonArrayTable from './jsonArrayTable'
-import cell from './cell'
+
+import jsonArray from '../../../jsonArray'
+import Cell from './cell'
 
 
-import {Body, Row} from '../framework/Components'
+import {Body, Row as TableRow} from '../framework/Components'
 
 
 
-export default function tableBody( json_table ) {
+export default function TableBody( props ) {
 
-  if( !(json_table instanceof jsonArrayTable) ){
-    json_table = new jsonArrayTable(json_table)
-  }
 
   const body = []
-  for (var i=0; i < json_table.data.length; i++ ){
+  for (var i=0; i < props.json_array.length; i++ ){
 
-      // if( json_table.accordian !== undefined ){
-      //   body.push(
-      //     <AccordianRow
-      //       {...childProps}
-      //       row={i}
-      //       key={'body-' + i}
-      //       />
-      //   )
-      //   continue
-      // }
+      // add an accordian row instead of the standard row
+      // when enabled
+      if( props.accordian !== undefined ){
+        body.push(
+          <AccordianRow
+            {...props}
+            row_idx = {i}
+            />
+        )
+        continue
+      }
 
       body.push(
-        row( json_table, i)
+        <Row
+          {...props}
+          key={`${props.tableName}-Row-${i}`}
+          row_idx = {i}
+          />
       )
   }
 
   return (
     <Body
-      {...json_table.parameters.bodyProps}
-      style={{...{textAlign:'center'}, ...json_table.parameters.bodyStyle}}
-      Component={json_table.parameters.body}
-      key={`${json_table.parameters.tableName}-body`}
+      {...props.bodyProps}
+      style={{...{textAlign:'center'}, ...props.bodyStyle}}
+      component={props.body}
+      key={`${props.tableName}-body`}
       defaultValue={body}
       />
   )
@@ -57,7 +63,7 @@ export default function tableBody( json_table ) {
 
 
 
-function row( json_table, row_idx, params={} ) {
+function Row( props ) {
 
     // // extract the color definition when the index and color data is provided.
     // // Note that the colors will adhere to the same data structure as the data
@@ -78,13 +84,13 @@ function row( json_table, row_idx, params={} ) {
     // }
 
     const row = []
-    for (var i=0; i < json_table.parameters.columns.length; i++ ){
+    for (var i=0; i < props.columns.length; i++ ){
         row.push(
-          cell(
-            json_table,
-            row_idx,
-            json_table.parameters.columns[i]
-          )
+          <Cell
+            {...props}
+            key={`${props.tableName}-cell-${props.row_idx}-${i}`}
+            col = {props.columns[i]}
+            />
         )
     }
     //
@@ -114,19 +120,19 @@ function row( json_table, row_idx, params={} ) {
 
     // define the rowOnClick function to standardize the returned data
     var rowOnClick = null
-    if( json_table.parameters.rowOnClick !== undefined ){
-      rowOnClick = () => json_table.parameters.rowOnClick({
-        row: row_idx,
-        row_data: json_table.data[row_idx]
+    if( props.rowOnClick !== undefined ){
+      rowOnClick = () => props.rowOnClick({
+        row: props.row_idx,
+        row_data: props.json_array[props.row_idx]
       })
     }
 
     return (
-      <Row
-        {...json_table.parameters.trProps}
-        style={{...{textAlign:'center'}, ...json_table.parameters.trStyle}}
-        Component={json_table.parameters.tr}
-        key={`${json_table.parameters.tableName}-row--${row_idx}`}
+      <TableRow
+        {...props.trProps}
+        style={{...{textAlign:'center'}, ...props.trStyle}}
+        component={props.tr}
+        key={`${props.tableName}-row--${props.row_idx}`}
         onClick={rowOnClick}
         defaultValue={row}
         />
@@ -137,7 +143,9 @@ function row( json_table, row_idx, params={} ) {
 // // An accordian row unfolds when the carot icon is selected. It retracts
 // // when the carot icon is selected again. The purpose is to allow for an
 // // unfolding rows to show additional options
-// function AccordianRow( props ){
+function AccordianRow( props ){
+  return <Row {...props} />
+}
 //
 //   const [visible, setVisible] = useState(false)
 //

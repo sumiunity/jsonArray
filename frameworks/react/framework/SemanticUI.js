@@ -10,6 +10,8 @@
  */
 
 
+import React from "react";
+
 import jsonArray from '../../../jsonArray'
 
 var SemanticUI
@@ -52,32 +54,106 @@ export default class jsonSemanticUI {
     var table = this.json_array.react.table
 
     if( SemanticUI === undefined ) return table
-    table.parameters.table = SemanticUI.Table
-    table.parameters.th = SemanticUI.Table.HeaderCell
-    table.parameters.thead = SemanticUI.Table.Header
-    table.parameters.td = SemanticUI.Table.Cell
-    table.parameters.tr = SemanticUI.Table.Row
-    table.parameters.body = SemanticUI.Table.Body
+    table = SemanticUI.Table
+    th = SemanticUI.Table.HeaderCell
+    thead = SemanticUI.Table.Header
+    td = SemanticUI.Table.Cell
+    tr = SemanticUI.Table.Row
+    body = SemanticUI.Table.Body
 
-    table.parameters.button = SemanticUI.Table.Button
-    table.parameters.image = SemanticUI.Table.Image
+    button = SemanticUI.Table.Button
+    image = SemanticUI.Table.Image
     return table
   }
 
   // returns the excel reader using teh Semantic UI Framework for input controls
-  excel(callback){
+  get excel(){
 
-    var excel = this.json_array.react.excel(callback)
-    if( SemanticUI === undefined ) return excel
+    var Excel = this.json_array.react.Excel
 
-    excel.parameters.button = SemanticUI.Button
-    excel.parameters.buttonStyle = {margin:0}
-    excel.parameters.buttonProps = {color: 'blue'}
+    if( SemanticUI === undefined ) return <Excel />
 
-    excel.parameters.input = SemanticUI.Input
-    excel.parameters.inputStyle = {}
-    excel.parameters.inputProps = {icon: 'file', placeholder: 'xlsx, csv, ...' }
+    return(
+      <Excel
+        button = {SemanticUI.Button}
+        buttonStyle = {{margin:0}}
 
-    return excel
+        input = {SemanticUI.Input}
+        />
+      )
+    // excel.parameters.button = SemanticUI.Button
+    // excel.parameters.buttonStyle = {margin:0}
+    // excel.parameters.buttonProps = {color: 'blue'}
+    //
+    // excel.parameters.input = SemanticUI.Input
+    // excel.parameters.inputStyle = {}
+    // excel.parameters.inputProps = {icon: 'file', placeholder: 'xlsx, csv, ...' }
+    //
+    // return excel
   }
+}
+
+
+var json_array
+
+// Sets the global json array value with the provided data. Checks
+// to ensure that the data is the proper type and converts it if
+// it is not
+export function set( array ){
+
+  json_array = array
+  // ensure that the value is jsonArray
+  if( !(array instanceof jsonArray) ){
+    json_array = new jsonArray( array );
+  }
+}
+
+
+// returns the excel reader using teh Semantic UI Framework for input controls
+export function Excel( props ){
+
+  var Excel = json_array.react.Excel
+
+  if( SemanticUI === undefined ){
+    return <Excel />
+  }
+
+  return(
+    <Excel
+      {...props}
+      button = {SemanticUI.Button}
+      buttonStyle = {{margin:0}}
+      buttonProps = {{color: 'blue'}}
+
+      input = {SemanticUI.Input}
+      inputStyle = {{margin:0}}
+      inputProps = {{icon: 'file', placeholder: 'xlsx, csv, ...' }}
+      />
+    )
+}
+
+
+
+// returns a table formatted using the Semantic UI table Framework
+export function Table(props){
+
+  var Table = json_array.react.Table
+
+  if( SemanticUI === undefined ) return Table
+
+  return(
+    <Table
+      {...props}
+      table = {SemanticUI.Table}
+      th = {SemanticUI.Table.HeaderCell}
+      thead = {SemanticUI.Table.Header}
+      td = {SemanticUI.Table.Cell}
+      tr = {SemanticUI.Table.Row}
+      body = {SemanticUI.Table.Body}
+
+      button = {SemanticUI.Table.Button}
+      image = {SemanticUI.Table.Image}
+      />
+    )
+
 }

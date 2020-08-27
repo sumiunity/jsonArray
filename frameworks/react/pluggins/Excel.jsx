@@ -3,7 +3,7 @@
 */
 
 
-import React, {useState} from "react";
+import React from "react";
 
 import {ExcelRenderer} from 'react-excel-renderer';
 
@@ -11,24 +11,15 @@ import {Button, Input} from '../framework/Components'
 
 import jsonArray from '../../../jsonArray'
 
-export default class Excel{
+// export default function DefaultFunction(){ console.log('not implemented')}
+
+export default class Excel extends React.Component{
 
 
-  constructor( props={} ) {
+  constructor( props ) {
+    super(props)
 
-    this.props = props
-
-    this.parameters = {
-      tableName: 'excel',
-      button: undefined,
-      buttonProps: {},
-      buttonStyle: {},
-      input: undefined,
-      inputProps: {},
-      inputStyle: {},
-    }
-
-
+    this.state = { name: 'excel', filename: '' }
   }
 
   // returns the React components used to select the csv file for parsing
@@ -37,36 +28,35 @@ export default class Excel{
 
     var fileInputRef = React.createRef();
 
-    // internal variable to tracke the sorted column and sort order
-    const [filename, setFilename] = useState('')
-
-
     return (
       <>
         <Button
-          {...this.parameters.buttonProps}
-          Component= {this.parameters.button}
-          style={this.parameters.buttonStyle}
+          {...this.props.buttonProps}
+          component= {this.props.button}
+          key={`${this.state.name}-Button`}
+          style={this.props.buttonStyle}
           onClick={() => fileInputRef.current.click()}
           defaultValue='Upload'
           />
 
         <input
+          key={`${this.state.name}-hidden-input`}
           type="file"
           hidden
           ref={fileInputRef}
-          onChange={(event) => this.fileHandler(event, setFilename) }
+          onChange={(event) => this.fileHandler(event) }
           onClick={(event)=> { event.target.value = null }}
           style={{"padding":"10px"}} />
 
 
         <Input
-          {...this.parameters.inputProps}
-          Component= {this.parameters.input}
-          style={this.parameters.inputStyle}
+          {...this.props.inputProps}
+          component= {this.props.input}
+          style={this.props.inputStyle}
+          key={`${this.state.name}-input`}
           type="text"
           className="form-control"
-          value={filename}
+          value={this.state.filename}
           readOnly
           style={{"paddingTop":"0px"}}
           />
@@ -78,12 +68,12 @@ export default class Excel{
   // parses the selected file. An error is thrown when this
   // routine fails. Otherwise a jsonArray object is returned
   // via the callback function
-  fileHandler( event, setFilename ){
+  fileHandler( event ){
 
     if(event.target.files.length){
 
       const fileObj = event.target.files[0];
-      setFilename( fileObj.name )
+      this.setState( {filename: fileObj.name} )
 
       ExcelRenderer(fileObj, (err, response) => {
 

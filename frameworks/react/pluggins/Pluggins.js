@@ -26,7 +26,6 @@ export var components = {
 
 
 try{
-  console.log( 'do we try to require this...')
   components.react = require('../plot/echarts/react').react_echarts
   enabledComponents.react = true
 }catch{
@@ -34,7 +33,7 @@ try{
 }
 
 try{
-  components.semanticUI = require('../framework/SemanticUI').default
+  components.semanticUI = require('../framework/SemanticUI')
   enabledComponents.semanticUI = true
 }catch{
   // console.log('failed to load semanticUI. module not installed')

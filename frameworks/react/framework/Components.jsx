@@ -15,78 +15,82 @@ import React from "react";
 
 
 export function Button(props){
-  return wrapper( props, props.defaultValue, 'button' )
+  return wrapper( props, 'button' )
 }
 
 export function Input(props){
-  return wrapper( props, props.defaultValue, 'input' )
+  return wrapper( props, 'input' )
 }
 
 export function Image(props){
-  return wrapper( props, props.defaultValue, 'img' )
+  return wrapper( props, 'img' )
 }
 
 export function Table(props){
-  return wrapper( props, props.defaultValue, 'table' )
+  return wrapper( props, 'table' )
 }
 
 export function Cell(props){
-  return wrapper( props, props.defaultValue, 'td' )
+  return wrapper( props, 'td' )
 }
 
 export function Header(props){
-  return wrapper( props, props.defaultValue, 'thead' )
+  return wrapper( props, 'thead' )
 }
 
 export function HeaderCell(props){
-  return wrapper( props, props.defaultValue, 'th' )
+  return wrapper( props, 'th' )
 }
 
 export function Row(props){
-  return wrapper( props, props.defaultValue, 'tr' )
+  return wrapper( props, 'tr' )
 }
 
 export function Body(props){
-  return wrapper( props, props.defaultValue, 'body' )
+  return wrapper( props, 'body' )
 }
 
 
-function wrapper( props, value, type ){
+function wrapper( props, type ){
 
-  if( props.Component === undefined ){
+  if( props.component === undefined ){
     switch( type ){
       case 'button':
-        return <button {...props}>{value}</button>
+        return <button {...props}>{props.defaultValue}</button>
 
       case 'input':
-        return <input {...props}>{value}</input>
+        return <input {...props}>{props.defaultValue}</input>
 
       case 'img':
-        return <img src={value}{...props} />
+        return <img src={props.defaultValue}{...props} />
 
       case 'table':
-        return <table {...props}>{value}</table>
+        return <table {...props}>{props.defaultValue}</table>
 
       case 'td':
-        return <td {...props}>{value}</td>
+        return <td {...props}>{props.defaultValue}</td>
 
       case 'tr':
-        return <tr {...props}>{value}</tr>
+        return <tr {...props}>{props.defaultValue}</tr>
 
       case 'th':
-        return <th {...props}>{value}</th>
+        return <th {...props}>{props.defaultValue}</th>
+
+      case 'body':
+        return <tbody {...props}>{props.defaultValue}</tbody>
 
       case 'thead':
-        return <thead {...props}>{value}</thead>
+        return <thead {...props}>{props.defaultValue}</thead>
 
 
       default:
-        return <div {...props}>{value}</div>
+        console.log( 'default type', type)
+        return <div {...props}>{props.defaultValue}</div>
 
 
     }
   }
 
 
-  return <props.Component {...props}>{value}</props.Component>
+  return <props.component {...props}>{props.defaultValue}</props.component>
 }
