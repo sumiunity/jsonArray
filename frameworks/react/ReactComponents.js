@@ -60,41 +60,21 @@ export default class ReactComponents extends Object{
     return components.excel
   }
 
+  // return a dictionary containing the various e-charts plotting routines
+  get echarts(){
 
-  plot( plot_type, params={} ){
-
-    if( this.echarts === false ){
+    if( enabledComponents.echarts === false ){
       alert('echarts module not installed. Install echarts and echarts-for-react')
       return
     }
 
-    var plotOptions
-    const echarts = this.json_array.echartsOptions()
+    components.echarts.set( this.json_array )
 
-      // return the plot options based on the specified plot type
-      switch( plot_type ){
-
-        case 'heatmap':
-          plotOptions = echarts.heatmap( params )
-
-        case 'boxplot':
-          plotOptions = echarts.boxplot( params )
-
-        case 'scatter':
-          plotOptions = echarts.scatter( params )
-
-        case 'bar':
-          plotOptions = echarts.bar( params )
-
-        default:
-          alert('unknown plot type: ' + plot_type)
-      }
-
-    return components.echart(
-      plotOptions,
-      params
-    )
+    return components.echarts
   }
+
+
+
 
 
 }

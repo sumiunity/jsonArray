@@ -43,7 +43,7 @@ export default function TableHeader( props ) {
       <HeaderCell
         {...props.thProps}
         style={{...{textAlign:'center'}, ...props.thStyle}}
-        Component={props.th}
+        component={props.th}
         defaultValue = {''}
         key = {`${props.tableName}-th-0`}
         />

@@ -91,6 +91,12 @@ function wrapper( props, type ){
     }
   }
 
-
-  return <props.component {...props}>{props.defaultValue}</props.component>
+  return(
+    <props.component
+      {...props}
+      component={undefined}
+      >
+      {props.defaultValue}
+    </props.component>
+  )
 }

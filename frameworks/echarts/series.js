@@ -15,9 +15,10 @@ import jsonArray from '../../jsonArray'
 
 var prepareBoxplotData
 try{
-  prepareBoxplotData =  require( 'echarts/extension/dataTool')
+  prepareBoxplotData =  require( 'echarts/extension/dataTool').prepareBoxplotData
 }catch{ console.log( 'echarts module not implemented')}
 
+console.log( 'prep', prepareBoxplotData)
 
 
 
@@ -112,8 +113,9 @@ export default class echartsSeries extends Object {
    * @param  {object} params parameters used to customize the plot
    * @return {Object}       local object contents
    */
-  scatter( col1, col2, params={} ){
+  scatter( col1, col2, props={} ){
 
+    var params = {...props, ...{}}
     const param_keys = Object.keys(params)
 
     // set defaults for missing parameter values
@@ -181,7 +183,9 @@ export default class echartsSeries extends Object {
    * @param  {string} by    color for grouping the samples
    * @return {Array}       Array of x/y cooridnates
    */
-  scatter_by( col1, col2, by, params={} ){
+  scatter_by( col1, col2, by, props={} ){
+
+    var params = {...props, ...{}}
 
     // group samples based on the specified column
     const group = this.json_array.groupby([by])
@@ -248,7 +252,9 @@ export default class echartsSeries extends Object {
    * @param  {Object} params  object containing a plotting parameters
    * @return {Array}          array of echart series objects
    */
-  bar( columns, params={} ){
+  bar( columns, props={} ){
+
+    var params = {...props, ...{}}
 
     // extract the parameter keys
     const param_keys = Object.keys(params)
@@ -282,7 +288,9 @@ export default class echartsSeries extends Object {
    * @param  {object} params parameters used to customize the plot
    * @return {Object}       local object contents
    */
-  boxplot( colx, coly, params={} ){
+  boxplot( colx, coly, props={} ){
+
+    var params = {...props, ...{}}
 
     // extract the parameter keys
     const param_keys = Object.keys(params)

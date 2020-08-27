@@ -613,52 +613,7 @@ export default class jsonArray extends Array{
   //  */
   get echartsFormat( ){ return new echartsFormat( this ) }
   get echartsOptions( ){ return new echartsOptions( this ) }
-  // get reactComponents(){ return new ReactComponents(this) }
+
   get react(){ return new ReactComponents(this) }
 
-}
-
-
-
-
-/**
- * Return an array where each entry has a corresponding
- * key value that does not correspond to an array location
- * @param  {Array} array Array of objects
- * @return {Array}       Array of objects with valid keys
- */
-function validate_columns( array ){
-
-  const columns = Object.keys(array[0])
-  // search for columns that are integer values. These occur when
-  // objects are inserted as an array i.e. without a key
-  var invalid_col = []
-  for( i = 0; i < columns.length; i++ ){
-    if( !isNaN(columns[i]) ) invalid_col.push( columns[i])
-  }
-
-  if( invalid_col.length === 0) return array
-
-  // map all invalid column names
-  for( var i = 0; i < array.length; i++ ){
-    const keys = Object.keys( array[i] )
-
-    // duplicate the content of the invalid column to a valid column name.
-    // We cannot delete the invalid column because of the dependency of
-    // array position
-    for( var j = 0; j < invalid_col.length; j++ ){
-      if( keys.includes( invalid_col[j]) ){
-        array[i][`col-${invalid_col[j]}`] = array[i][invalid_col[j]]
-      }
-    }
-
-    // remove the invalid columns
-    for( j = 0; j < invalid_col.length; j++ ){
-      if( keys.includes( invalid_col[j]) ){
-        array[i].splice(invalid_col[j])
-      }
-    }
-  }
-
-  return array
 }

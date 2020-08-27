@@ -26,8 +26,8 @@ export var components = {
 
 
 try{
-  components.react = require('../plot/echarts/react').react_echarts
-  enabledComponents.react = true
+  components.echarts = require('./echarts')
+  enabledComponents.echarts = true
 }catch{
   // console.log('failed to load echarts. module not installed')
 }
@@ -40,7 +40,7 @@ try{
 }
 
 try{
-  components.excel = require('../pluggins/Excel').default
+  components.excel = require('./Excel').default
   enabledComponents.excel = true
 }catch{
   // console.log('failed to load semanticUI. module not installed')
