@@ -20,16 +20,14 @@ import Excel from 'jsonArray/frameworks/react/pluggins/Excel'
 export default function ExcelComponentTest( props ){
 
   const json_array = new jsonArray()
-  // const excel = new Excel()
-  const excel = json_array.react.semanticUI.excel({callback: callback})
 
-  // console.log( header)
   return (
     <div>
       <h2>Excel dev</h2>
-      {excel.render()}
-
-
+      <json_array.react.semanticUI.Excel
+        callback = {(value) => console.log( 'parent callback', value )}
+      />
+    
     </div>
   )
 
