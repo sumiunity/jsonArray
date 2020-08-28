@@ -7,6 +7,7 @@ import NotFoundPage from './views/NotFoundPage'
 import Table from './views/Table'
 import ExcelComponentTest from './views/Excel'
 import EChartsComponentTest from './views/ECharts'
+import SemanticUIComponents from './views/SemanticUI'
 
 import App from './App'
 
@@ -33,6 +34,12 @@ export var Routes = [
         exact: true,
         component: EChartsComponentTest,
         ...EChartsComponentTest,
+      },
+      {
+        path: "/semanticUI",
+        exact: true,
+        component: SemanticUIComponents,
+        ...SemanticUIComponents,
       },
 
 
