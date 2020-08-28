@@ -157,3 +157,29 @@ export function Table(props){
     )
 
 }
+
+
+export function Dropdown( props ){
+
+  // set ascending order as a default for dropdown content
+  var ascending = true
+  if( props.ascending !== undefined ) ascending = props.ascending
+
+  // retrieve the unique calues from the specified column
+  const values = json_array.unique( props.column )
+
+  var options = []
+
+  // push the values into the array formatted for the dropdown menu
+  values.forEach( element => options.push({
+     key:  element, text: element, value: element
+  }) )
+
+  return(
+    <SemanticUI.Dropdown
+      {...props}
+      options={options}
+      key={`dropdown-${props.column}`}
+    />
+  )
+}
