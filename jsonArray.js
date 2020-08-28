@@ -335,6 +335,7 @@ export default class jsonArray extends Array{
       array[i][col_name] = temp
     }
 
+    array.dtypes[col_name] = 'string'
     return array
   }
 
