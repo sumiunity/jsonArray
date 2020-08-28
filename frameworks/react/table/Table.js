@@ -14,27 +14,30 @@ import React, {useState} from 'react';
 
 import jsonArray from '../../../jsonArray'
 
+import ReactLibraryFramework from '../ReactLibraryFramework'
 
 import {Table as TableComponent} from '../framework/Components'
 import TableHeader from './header'
 import TableBody from './body'
 
 
-var json_array
 
-export default function DefaultFunc(){ console.log( 'default not implemented' )}
+export default class Table extends ReactLibraryFramework{
+  constructor(json_array){
+    super(json_array)
 
-// Sets the global json array value with the provided data. Checks
-// to ensure that the data is the proper type and converts it if
-// it is not
-export function set( array ){
+    // must bind this to all internal functions or they will be
+    // lost when rendering via react
+    this.Table = this.Table.bind(this)
 
-  json_array = array
-  // ensure that the value is jsonArray
-  if( !(array instanceof jsonArray) ){
-    json_array = new jsonArray( array );
   }
+
+  Table( props ){
+    return Render( this.props(props) )
+  }
+
 }
+
 
 
 //     this.parameters = {
@@ -62,15 +65,14 @@ export function set( array ){
 // json table attribute. This was moved to it's own function in order
 // to be complient with React's requirement for useState functionality
 // to be implemented within a function
-export function Table( props ){
+export function Render( props ){
 
   // internal variable to tracke the sorted column and sort order
   const [sortBy, setSortBy] = useState(props.sortBy)
   const [sortAscending, setSortAscending] = useState(props.sortAscending)
 
   // cast the data to a json_array data type
-  var table_data = json_array
-  if( table_data === undefined ) table_data = props.json_array
+  var table_data = props.json_array
   if( !(table_data instanceof jsonArray) ){
     table_data = new jsonArray(table_data)
   }

@@ -31,10 +31,9 @@ export default class ReactComponents extends Object{
 
   get Table(){
 
-    const Table = require('./table/Table')
+    const Table = require('./table/Table').default
 
-    Table.set( this.json_array )
-    return Table.Table
+    return new Table(this.json_array).Table
   }
 
 
@@ -44,11 +43,8 @@ export default class ReactComponents extends Object{
       return {}
     }
 
-    components.semanticUI.set( this.json_array )
-
-    return components.semanticUI
+    return new components.semanticUI( this.json_array )
   }
-
 
 
   get Excel(){
@@ -68,9 +64,7 @@ export default class ReactComponents extends Object{
       return {}
     }
 
-    components.echarts.set( this.json_array )
-
-    return components.echarts
+    return new components.echarts( this.json_array )
   }
 
 

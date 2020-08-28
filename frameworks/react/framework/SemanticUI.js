@@ -12,24 +12,34 @@
 
 import React from "react";
 
-import jsonArray from '../../../jsonArray'
+import ReactLibraryFramework from '../ReactLibraryFramework'
 
 var SemanticUI
 try{ SemanticUI = require('semantic-ui-react') }catch{}
 
 
+export default class SemanticUILibrary extends ReactLibraryFramework{
+  constructor(json_array){
+    super(json_array)
 
-var json_array
+    // must bind this to all internal functions or they will be
+    // lost when rendering via react
+    this.Excel = this.Excel.bind(this)
+    this.Table = this.Table.bind(this)
+    this.Dropdown = this.Dropdown.bind(this)
 
-// Sets the global json array value with the provided data. Checks
-// to ensure that the data is the proper type and converts it if
-// it is not
-export function set( array ){
+  }
 
-  json_array = array
-  // ensure that the value is jsonArray
-  if( !(array instanceof jsonArray) ){
-    json_array = new jsonArray( array );
+  Excel( props ){
+    return Excel( this.props(props) )
+  }
+
+  Table( props ){
+    return Table( this.props(props) )
+  }
+
+  Dropdown( props ){
+    return Dropdown( this.props(props) )
   }
 }
 
@@ -37,7 +47,7 @@ export function set( array ){
 // returns the excel reader using teh Semantic UI Framework for input controls
 export function Excel( props ){
 
-  var Excel = json_array.react.Excel
+  var Excel = props.json_array.react.Excel
 
   if( SemanticUI === undefined ){
     return <Excel />
@@ -61,8 +71,8 @@ export function Excel( props ){
 
 // returns a table formatted using the Semantic UI table Framework
 export function Table(props){
-  
-  var Table = new jsonArray(json_array).react.Table
+
+  var Table = props.json_array.react.Table
 
   if( SemanticUI === undefined ) return Table
 
@@ -91,7 +101,7 @@ export function Dropdown( props ){
   if( props.ascending !== undefined ) ascending = props.ascending
 
   // retrieve the unique calues from the specified column
-  const values = json_array.unique( props.column, ascending )
+  const values = props.json_array.unique( props.column, ascending )
 
   var options = []
 

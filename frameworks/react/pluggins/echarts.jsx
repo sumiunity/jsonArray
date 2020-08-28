@@ -13,20 +13,37 @@
 import React from 'react';
 import ReactEcharts from "echarts-for-react";
 
-import jsonArray from '../../../jsonArray'
-
-var json_array
+import ReactLibraryFramework from '../ReactLibraryFramework'
 
 
-// Sets the global json array value with the provided data. Checks
-// to ensure that the data is the proper type and converts it if
-// it is not
-export function set( array ){
+export default class echartsLibrary extends ReactLibraryFramework{
+  constructor(json_array){
+    super(json_array)
 
-  json_array = array
-  // ensure that the value is jsonArray
-  if( !(array instanceof jsonArray) ){
-    json_array = new jsonArray( array );
+    // must bind this to all internal functions or they will be
+    // lost when rendering via react
+    this.Heatmap = this.Heatmap.bind(this)
+    this.Boxplot = this.Boxplot.bind(this)
+    this.Scatter = this.Scatter.bind(this)
+    this.Bar = this.Bar.bind(this)
+
+
+  }
+
+  Heatmap( props ){
+    return Heatmap( this.props(props) )
+  }
+
+  Boxplot( props ){
+    return Boxplot( this.props(props) )
+  }
+
+  Scatter( props ){
+    return Scatter( this.props(props) )
+  }
+
+  Bar( props ){
+    return Bar( this.props(props) )
   }
 }
 
@@ -41,7 +58,7 @@ export function react_echarts( options, params ){
   )
 }
 
-export default class EchartsReact extends React.Component {
+export class EchartsReact extends React.Component {
     // constructor(props, context) {
     //     super(props, context);
     // }
@@ -83,7 +100,7 @@ export default class EchartsReact extends React.Component {
  */
 export function Heatmap( props ){
 
-  const options = json_array.echartsOptions
+  const options = props.json_array.echartsOptions
 
   return(
     <EchartsReact
@@ -100,7 +117,7 @@ export function Heatmap( props ){
  */
 export function Boxplot( props ){
 
-  const options = json_array.echartsOptions
+  const options = props.json_array.echartsOptions
 
   return(
     <EchartsReact
@@ -117,7 +134,7 @@ export function Boxplot( props ){
  */
 export function Scatter( props ){
 
-  const options = json_array.echartsOptions
+  const options = props.json_array.echartsOptions
 
   return(
     <EchartsReact
@@ -134,7 +151,7 @@ export function Scatter( props ){
  */
 export function Bar( props ){
 
-  const options = json_array.echartsOptions
+  const options = props.json_array.echartsOptions
 
   return(
     <EchartsReact

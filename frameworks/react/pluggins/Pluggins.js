@@ -26,14 +26,14 @@ export var components = {
 
 
 try{
-  components.echarts = require('./echarts')
+  components.echarts = require('./echarts').default
   enabledComponents.echarts = true
 }catch{
   // console.log('failed to load echarts. module not installed')
 }
 
 try{
-  components.semanticUI = require('../framework/SemanticUI')
+  components.semanticUI = require('../framework/SemanticUI').default
   enabledComponents.semanticUI = true
 }catch{
   // console.log('failed to load semanticUI. module not installed')
