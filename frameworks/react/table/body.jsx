@@ -12,10 +12,7 @@
 
 import React from 'react';
 
-import jsonArray from '../../../jsonArray'
 import Cell from './cell'
-
-
 import {Body, Row as TableRow} from '../framework/Components'
 
 

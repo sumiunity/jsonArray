@@ -13,7 +13,6 @@
 import {color} from '../colors/Colors'
 import jsonArray from '../../jsonArray'
 
-const debug = false
 
 
 export default class echartsFormat {

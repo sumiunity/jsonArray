@@ -10,12 +10,12 @@
  */
 
 
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 
 import jsonArray from '../../../jsonArray'
 
-import {Table as TableComponent} from '../framework/Components'
 
+import {Table as TableComponent} from '../framework/Components'
 import TableHeader from './header'
 import TableBody from './body'
 

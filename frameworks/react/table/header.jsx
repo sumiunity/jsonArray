@@ -17,7 +17,7 @@ import jsonArray from '../../../jsonArray'
 
 import {HeaderCell, Header, Row} from '../framework/Components'
 
-const debug = false
+
 
 export default function TableHeader( props ) {
 
@@ -98,7 +98,6 @@ export default function TableHeader( props ) {
       component={props.tr}
       defaultValue={row}
       key={`${props.tableName}-headerrow`}
-      style={{textAlign:'center'}}
       />
   )
 

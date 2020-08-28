@@ -41,7 +41,7 @@ export default class ReactComponents extends Object{
   get semanticUI(){
     if( enabledComponents.semanticUI === false ){
       alert( 'Semantic UI module not installed')
-      return
+      return {}
     }
 
     components.semanticUI.set( this.json_array )
@@ -54,7 +54,7 @@ export default class ReactComponents extends Object{
   get Excel(){
     if( enabledComponents.excel === false ){
       alert( 'react-excel-renderer module not installed')
-      return
+      return {}
     }
 
     return components.excel
@@ -65,7 +65,7 @@ export default class ReactComponents extends Object{
 
     if( enabledComponents.echarts === false ){
       alert('echarts module not installed. Install echarts and echarts-for-react')
-      return
+      return {}
     }
 
     components.echarts.set( this.json_array )

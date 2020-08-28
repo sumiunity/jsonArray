@@ -106,8 +106,8 @@ export default class DataTypes extends Object{
         return value
           .replace(/\[/gi, '')
           .replace(/\]/gi, '')
-          .replace(/\'/gi, '')
-          .replace(/\, /gi, ',')
+          .replace(/'/gi, '')
+          .replace(/, /gi, ',')
           .split(',');
 
       default :
@@ -206,7 +206,7 @@ export default class DataTypes extends Object{
 
     // parse the data types for each column
     const existing = Object.keys(this)
-    for( var i=0; i < columns.length; i++ ){
+    for( i=0; i < columns.length; i++ ){
       // do no overwrite existing datatypes
       if( existing.includes(columns[i]) ) continue
 

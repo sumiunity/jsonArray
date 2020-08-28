@@ -52,13 +52,12 @@ export default class Excel extends React.Component{
         <Input
           {...this.props.inputProps}
           component= {this.props.input}
-          style={this.props.inputStyle}
+          style={{...this.props.inputStyle, ...{"paddingTop":"0px"}}}
           key={`${this.state.name}-input`}
           type="text"
           className="form-control"
           value={this.state.filename}
           readOnly
-          style={{"paddingTop":"0px"}}
           />
       </>
     )

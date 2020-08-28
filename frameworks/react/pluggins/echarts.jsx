@@ -42,9 +42,9 @@ export function react_echarts( options, params ){
 }
 
 export default class EchartsReact extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-    }
+    // constructor(props, context) {
+    //     super(props, context);
+    // }
 
     /**
      * When mounting the eCharts, check if an onClick function is provided.

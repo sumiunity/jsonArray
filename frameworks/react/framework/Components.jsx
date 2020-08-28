@@ -62,7 +62,10 @@ function wrapper( props, type ){
         return <input {...props}>{props.defaultValue}</input>
 
       case 'img':
-        return <img src={props.defaultValue}{...props} />
+        return <img
+          src={props.defaultValue}
+          alt=''
+          {...props} />
 
       case 'table':
         return <table {...props}>{props.defaultValue}</table>

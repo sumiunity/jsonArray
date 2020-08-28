@@ -17,81 +17,6 @@ import jsonArray from '../../../jsonArray'
 var SemanticUI
 try{ SemanticUI = require('semantic-ui-react') }catch{}
 
-//
-// export default class jsonSemanticUI {
-//
-//   // ensure that the data read in is of jsonArray type
-//   // and store it as a local variable
-//   constructor(array) {
-//
-//     this.json_array = array
-//
-//     // ensure that the value is jsonArray
-//     if( !(array instanceof jsonArray) ){
-//       this.json_array = new jsonArray( array );
-//     }
-//   }
-//
-//   dropdown(col, ascending=true){
-//
-//     var dropdown = []
-//     // retrieve the unique calues from the specified column
-//     const values = this.json_array.unique( col, ascending )
-//
-//     var dropdown = []
-//
-//     // push the values into the array formatted for the dropdown menu
-//     values.forEach( element => dropdown.push({
-//        key:  element, text: element, value: element
-//     }) )
-//
-//     return dropdown
-//   }
-//
-//
-//   // returns a table formatted using the Semantic UI table Framework
-//   get table(){
-//     var table = this.json_array.react.table
-//
-//     if( SemanticUI === undefined ) return table
-//     table = SemanticUI.Table
-//     th = SemanticUI.Table.HeaderCell
-//     thead = SemanticUI.Table.Header
-//     td = SemanticUI.Table.Cell
-//     tr = SemanticUI.Table.Row
-//     body = SemanticUI.Table.Body
-//
-//     button = SemanticUI.Table.Button
-//     image = SemanticUI.Table.Image
-//     return table
-//   }
-//
-//   // returns the excel reader using teh Semantic UI Framework for input controls
-//   get excel(){
-//
-//     var Excel = this.json_array.react.Excel
-//
-//     if( SemanticUI === undefined ) return <Excel />
-//
-//     return(
-//       <Excel
-//         button = {SemanticUI.Button}
-//         buttonStyle = {{margin:0}}
-//
-//         input = {SemanticUI.Input}
-//         />
-//       )
-//     // excel.parameters.button = SemanticUI.Button
-//     // excel.parameters.buttonStyle = {margin:0}
-//     // excel.parameters.buttonProps = {color: 'blue'}
-//     //
-//     // excel.parameters.input = SemanticUI.Input
-//     // excel.parameters.inputStyle = {}
-//     // excel.parameters.inputProps = {icon: 'file', placeholder: 'xlsx, csv, ...' }
-//     //
-//     // return excel
-//   }
-// }
 
 
 var json_array
@@ -136,8 +61,8 @@ export function Excel( props ){
 
 // returns a table formatted using the Semantic UI table Framework
 export function Table(props){
-
-  var Table = json_array.react.Table
+  
+  var Table = new jsonArray(json_array).react.Table
 
   if( SemanticUI === undefined ) return Table
 
@@ -166,7 +91,7 @@ export function Dropdown( props ){
   if( props.ascending !== undefined ) ascending = props.ascending
 
   // retrieve the unique calues from the specified column
-  const values = json_array.unique( props.column )
+  const values = json_array.unique( props.column, ascending )
 
   var options = []
 

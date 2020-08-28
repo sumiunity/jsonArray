@@ -13,7 +13,6 @@
 import datetime from './data_types/datetime';
 
 import jsonArray from './jsonArray'
-const debug = false
 
 
 export default class jsonObject extends Object {

@@ -10,14 +10,11 @@
  */
 
 
-import {color} from '../colors/Colors'
 import jsonArray from '../../jsonArray'
 import echartsAxis from './axis'
 import echartsSeries from './series'
 import moment from 'moment'
 
-
-const debug = false
 
 
 
@@ -31,7 +28,7 @@ export default class echartsOptions extends Object {
     this.json_array = data
 
     // cast the variable to a jsonArray type when it is a standard array
-    if( (this.json_array instanceof jsonArray) == false ){
+    if( (this.json_array instanceof jsonArray) === false ){
       this.json_array  = new jsonArray( this.json_array  )
     }
 

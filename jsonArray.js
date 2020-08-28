@@ -9,7 +9,6 @@
  * :Date: Feb 11, 2020
  */
 
- import moment from 'moment';
  import _ from 'lodash'
 
 
@@ -21,7 +20,6 @@ import echartsOptions from './frameworks/echarts/options'
 
 import ReactComponents from './frameworks/react/ReactComponents'
 
-const debug = false
 
 
 
@@ -42,7 +40,7 @@ export default class jsonArray extends Array{
       // it to an array of objects
       if( array[0].hasOwnProperty('length') ){
         for( var i=0; i < array.length; i++ ){
-          array[i] = new Object({... array[i]})
+          array[i] = {...array[i]}
         }
       }
 
@@ -50,7 +48,7 @@ export default class jsonArray extends Array{
 
       // create an internal index attribute when one doesn't exist
       if( !columns.includes('__index__') ){
-        for( var i=0; i < array.length; i++ ){
+        for( i=0; i < array.length; i++ ){
           array[i]['__index__'] = i
         }
       }
@@ -104,7 +102,7 @@ export default class jsonArray extends Array{
 
   // returns the values of the data at the specified index
   loc( idx ){
-    return Object.values([...this].filter(row => row.__index__ == idx))
+    return Object.values([...this].filter(row => row.__index__ === idx))
 
   }
 
@@ -176,7 +174,8 @@ export default class jsonArray extends Array{
 
     const values = [...new Set(json_obj.map(row => row[atts[0]]))]
     for( var i=0; i < values.length; i++ ){
-      const group = json_obj.filter( row => row[atts[0]] === values[i] )
+      const val = values[i]
+      const group = json_obj.filter( row => row[atts[0]] === val )
 
       // deep copy the keys and append with the current key
       var temp_keys = Object.assign({}, keys)
@@ -242,11 +241,14 @@ export default class jsonArray extends Array{
       // initialize the row to contain the column name
       var temp = {row: row_val[i]}
 
-      const by_row = this.filter( r => r[row] === row_val[i] )
+      const rval = row_val[i]
+      const by_row = this.filter( r => r[row] === rval )
 
       // add the column value for each row
       for( var j=0; j < column_val.length; j++ ){
-        const by_col = by_row.filter( r => r[column] === column_val[j] )
+
+        const cval = column_val[j]
+        const by_col = by_row.filter( r => r[column] === cval )
 
         switch( summaryType ){
           // returns the number of rows for the current split
@@ -352,7 +354,7 @@ export default class jsonArray extends Array{
       object[this[i][key]] = this[i][value]
     }
 
-    return new jsonArray( object )
+    return new jsonObject( object )
   }
 
   unique( col, ordered=false ){

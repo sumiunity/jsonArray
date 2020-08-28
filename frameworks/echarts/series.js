@@ -185,8 +185,6 @@ export default class echartsSeries extends Object {
    */
   scatter_by( col1, col2, by, props={} ){
 
-    var params = {...props, ...{}}
-
     // group samples based on the specified column
     const group = this.json_array.groupby([by])
 
