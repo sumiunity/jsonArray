@@ -1,21 +1,22 @@
 import React from 'react';
 
-import jsonArray from 'jsonArray/jsonArray'
-import {data} from 'jsonArray/tests/data'
+import {Grid} from 'semantic-ui-react'
 
-import {Table as TableComponent} from 'jsonArray/frameworks/react/table/Table'
-import TableHeader from 'jsonArray/frameworks/react/table/header'
+import jsonArray from 'jsonArray/jsonArray'
+import {data, array} from 'jsonArray/tests/data'
+
 
 export default function Table( props ){
 
 
   var json_array = new jsonArray( data )
-
   json_array = json_array.astype({image: 'image'})
+
+  var json_array2 = new jsonArray( array )
 
   // console.log( json_array )
   // console.log( json_array.dtypes)
-  //
+
   // const table = json_array.react.semanticUI.table
   // table.parameters.sortable = true
   // table.parameters.button = {TYPE: console.log('test')}
@@ -23,14 +24,33 @@ export default function Table( props ){
   // {table.render()}
   // console.log( header)
 
-  console.log( json_array.react.table)
+  console.log( json_array.react.semanticUI.Table)
+
+
   return (
-    <div>
-      <h2>What is this?? --- </h2>
-      <json_array.react.semanticUI.Table
-        sortable={false}
-        />
-    </div>
+
+    <Grid>
+      <h2>Table</h2>
+      <Grid.Row>
+        <Grid.Column>
+          <json_array.react.semanticUI.Table
+            tableName = {'data'}
+            sortable={true}
+            />
+        </Grid.Column>
+      </Grid.Row>
+
+      <Grid.Row>
+        <Grid.Column>
+            <json_array2.react.semanticUI.Table
+              tableName = {'array'}
+              sortable={true}
+              />
+        </Grid.Column>
+      </Grid.Row>
+
+
+    </Grid>
   )
 
 }

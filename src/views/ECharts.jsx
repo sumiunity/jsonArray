@@ -17,8 +17,6 @@ import {Grid} from 'semantic-ui-react'
 import jsonArray from 'jsonArray/jsonArray'
 import {data} from 'jsonArray/tests/data'
 
-import {set} from 'jsonArray/frameworks/react/pluggins/echarts'
-const test = require('jsonArray/frameworks/react/pluggins/echarts')
 
 export default function EChartsComponentTest( props ){
 
@@ -26,7 +24,6 @@ export default function EChartsComponentTest( props ){
 
   var json_array = new jsonArray( data )
 
-  console.log( 'echarts', json_array.react.echarts )
   return (
     <Grid>
       <h2>E-Charts</h2>

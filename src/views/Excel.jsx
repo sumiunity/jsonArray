@@ -14,8 +14,6 @@ import React from "react";
 
 import jsonArray from 'jsonArray/jsonArray'
 
-import {ExcelRenderer} from 'react-excel-renderer';
-import Excel from 'jsonArray/frameworks/react/pluggins/Excel'
 
 export default function ExcelComponentTest( props ){
 
@@ -27,12 +25,8 @@ export default function ExcelComponentTest( props ){
       <json_array.react.semanticUI.Excel
         callback = {(value) => console.log( 'parent callback', value )}
       />
-    
+
     </div>
   )
 
-}
-
-function callback( value ){
-  console.log( 'callback function', value )
 }
