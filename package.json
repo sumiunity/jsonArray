@@ -2,9 +2,9 @@
   "name": "@nsumikawa/jsonarray",
   "version": "1.0.0",
   "description": "Routines used to manipulate an array of json objects similar to a DataFrame",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
+    "start": "nodemon --exec babel-node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nik Sumikawa",
