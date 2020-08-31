@@ -28,19 +28,40 @@ export default class DataTypes extends Object{
     }
   }
 
+  // returns all columns in the jsonArray
+  columns( array ){
+    var columns = []
+
+    for( var i=0; i < array .length; i++ ){
+      columns = columns.concat(Object.keys(array [i]))
+    }
+
+    return [...new Set(columns.filter(x => !['__index__'].includes(x)))]
+  }
+
   // converts all data types based on the global dtypes definition
   // stored within the jsonArray variable
   init( array ){
 
     // extract the column names based on the data type definition
-    const columns = Object.keys(this)
+    const dtype_col = Object.keys(this)
 
-    for( var i=0; i < columns.length; i++ ){
+    for( var i=0; i < dtype_col.length; i++ ){
       // convert the column to the specified type
-      array = this.convert(array, columns[i], this[columns[i]])
+      array = this.convert(array, dtype_col[i], this[dtype_col[i]])
     }
 
     this.parse(array)
+
+    const columns = this.columns(array)
+    for( i=0; i < columns.length; i++ ){
+      const col = columns[i]
+      if(this[col] === 'intString') array = this.convert( array, col, 'int' )
+      if(this[col] === 'floatString') array = this.convert( array, col, 'float' )
+      if(this[col] === 'booleanString') array = this.convert( array, col, 'boolean' )
+    }
+
+    console.log( 'numericStrings', array)
 
     return array
   }
@@ -67,17 +88,21 @@ export default class DataTypes extends Object{
     if( value instanceof Array ) return 'array'
     if( value instanceof Object ) return 'object'
 
+
+    if( (Number(value) === value)&(value % 1 === 0) ) return 'int'
+    if( (Number(value) === value)&(value % 1 !== 0) ) return 'float'
+
     // attempt to convert the value to a number
     const numeric = Number( value )
 
     // determine the proper type when successfully converted to a number
     if( numeric !== undefined & !isNaN(numeric) ){
       if( value === true | value === false ) return 'boolean'
-      if( value % 1 === 0 ) return 'int'
-      if( value % 1 !== 0 ) return 'float'
+      if( value % 1 === 0 ) return 'intString'
+      if( value % 1 !== 0 ) return 'floatString'
     }
 
-    if(value === 'true' | value === 'false') return 'boolean'
+    if(value === 'true' | value === 'false') return 'booleanString'
     if(typeof value === 'string' || value instanceof String) return 'string'
 
     return 'unknown'
@@ -133,6 +158,18 @@ export default class DataTypes extends Object{
         if( !param_keys.includes('format') ) params['format'] = 'YYYY-MM-DD'
 
         return datetime(value).format(params['format'])
+
+      case 'int' :
+        return Number( value )
+
+      case 'float' :
+        return Number( value )
+
+      case 'boolean' :
+        if( value === 'true' ) return true
+        if( value === 'false' ) return false
+        if( value === false | value === true ) return value 
+        return Numeric( value )
 
       case 'array':
         if( typeof value !== 'string' ) return value
