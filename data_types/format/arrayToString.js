@@ -23,7 +23,7 @@ export default class arrayToString{
 
     this.max_width = 20
 
-    this.columns
+    this.columns = undefined
 
   }
 
