@@ -13,7 +13,10 @@
 
 
 import jsonObject from './jsonObject'
+
 import DataTypes from './data_types/dtypes'
+import strFormat from './data_types/format/strFormat'
+
 
 import echartsFormat from './frameworks/echarts/format'
 import echartsOptions from './frameworks/echarts/options'
@@ -109,6 +112,43 @@ export default class jsonArray extends Array{
   // return the values of the data at the relative row number
   iloc( idx ){
     return Object.values(this[idx])
+  }
+
+  /**
+   * overwrites the local index column with the provided column
+   * @param {String} col Column name
+   */
+  set_index( col, params={} ){
+    var array = this.__inplace__(params['inplace'])
+
+    for( var i=0; i < array.length; i ++ ){
+      array[i].__index__ = array[i][col]
+      delete array[i][col]
+    }
+
+    return array
+  }
+
+
+
+  /**
+   * Converts the contents of the jsonArray into a formatted string
+   * where the columns are equally spaced apart and the values are
+   * formatted based on the internal data type
+   * @return {String} jsonArray contents formatted as a string
+   */
+  toString(){
+    const format = new strFormat(this)
+    return format.table
+  }
+
+  /**
+   * returns the strFormat class used to format matrix components into
+   * strings such as single columns, rows, values, etc.
+   * @return {class} strFormat class with the current jsonArray contents
+   */
+  get strFormat(){
+    return new strFormat(this)
   }
 
   // sorts the json array by the provided column

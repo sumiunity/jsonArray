@@ -61,6 +61,30 @@ export default class DataTypes extends Object{
     return this
   }
 
+  // returns the data type for the given value
+  data_type( value ){
+
+    if( value instanceof Array ) return 'array'
+    if( value instanceof Object ) return 'object'
+    if( Number(value) === value && value % 1 === 0 ) return 'int'
+    if( Number(value) === value && value % 1 !== 0 ) return 'float'
+    if(typeof value === 'string' || value instanceof String) return 'string'
+    if(typeof value === "boolean") return 'boolean'
+
+    return 'unknown'
+  }
+  
+  isNumeric( dtype ){
+
+    switch( dtype ){
+      case 'float' : return true
+      case 'int': return true
+      case 'percentage': return true
+    }
+
+    return false
+  }
+
   /**
    * Convert the specified column based on the data type
    * @param  {string} col       column name
@@ -133,18 +157,7 @@ export default class DataTypes extends Object{
     return this[col]
   }
 
-  // returns the data type for the given value
-  data_type( value ){
 
-    if( value instanceof Array ) return 'array'
-    if( value instanceof Object ) return 'object'
-    if( Number(value) === value && value % 1 === 0 ) return 'int'
-    if( Number(value) === value && value % 1 !== 0 ) return 'float'
-    if(typeof value === 'string' || value instanceof String) return 'string'
-    if(typeof value === "boolean") return 'boolean'
-
-    return 'unknown'
-  }
 
   // compares two data types and returns the one with the
   // highest priority to avoid type conflict
