@@ -31,7 +31,7 @@ test("arrayToString : column spacing", () => {
     image: 12
   }
 
-  const json_array = new jsonArray( data )
+  var json_array = new jsonArray( data )
   const array_to_string = new arrayToString()
   const spacing = array_to_string.col_spacing( json_array )
 
@@ -40,12 +40,12 @@ test("arrayToString : column spacing", () => {
 
 
 test("strFormat : value", () => {
-  const json_array = new jsonArray( data )
+  var json_array = new jsonArray( data )
   expect(json_array.strFormat.value(0, 'VALUE')).toBe( '0.0006');
 });
 
 test("strFormat : percentage", () => {
-  const json_array = new jsonArray( data )
+  var json_array = new jsonArray( data )
   json_array = json_array.astype({VALUE: 'percentage'})
   expect(json_array.strFormat.value(0, 'VALUE')).toBe( '0.06%');
 });

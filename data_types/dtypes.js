@@ -66,14 +66,23 @@ export default class DataTypes extends Object{
 
     if( value instanceof Array ) return 'array'
     if( value instanceof Object ) return 'object'
-    if( Number(value) === value && value % 1 === 0 ) return 'int'
-    if( Number(value) === value && value % 1 !== 0 ) return 'float'
+
+    // attempt to convert the value to a number
+    const numeric = Number( value )
+
+    // determine the proper type when successfully converted to a number
+    if( numeric !== undefined & !isNaN(numeric) ){
+      if( value === true | value === false ) return 'boolean'
+      if( value % 1 === 0 ) return 'int'
+      if( value % 1 !== 0 ) return 'float'
+    }
+
+    if(value === 'true' | value === 'false') return 'boolean'
     if(typeof value === 'string' || value instanceof String) return 'string'
-    if(typeof value === "boolean") return 'boolean'
 
     return 'unknown'
   }
-  
+
   isNumeric( dtype ){
 
     switch( dtype ){

@@ -23,11 +23,9 @@ export default class valueToString{
 
   }
 
-  test(){console.log('test')}
   // returns a formatted string based on the value data type
   toString( value, dtype ){
 
-    console.log( 'to strrrr')
     switch( dtype ){
 
       case 'float': return this.format_float(value)

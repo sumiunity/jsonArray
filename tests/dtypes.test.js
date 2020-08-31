@@ -66,3 +66,21 @@ test("Dtypes : jsonArray parsing", () => {
 
   expect(json_array.dtypes.toString()).toBe(expected.toString());
 });
+
+
+test("dtypes : type parsing", () => {
+
+  const data_types = new DataTypes()
+
+  expect(data_types.data_type( 10 )).toBe('int');
+  expect(data_types.data_type( '10' )).toBe('int');
+  expect(data_types.data_type( 10.1 )).toBe('float');
+  expect(data_types.data_type( '10.1' )).toBe('float');
+  expect(data_types.data_type( '.1' )).toBe('float');
+  expect(data_types.data_type( true )).toBe('boolean');
+  expect(data_types.data_type( false )).toBe('boolean');
+  expect(data_types.data_type( 'true' )).toBe('boolean');
+  expect(data_types.data_type( 'false' )).toBe('boolean');
+  expect(data_types.data_type( 'String' )).toBe('string');
+
+});
