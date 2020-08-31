@@ -32,8 +32,8 @@ export default class DataTypes extends Object{
   columns( array ){
     var columns = []
 
-    for( var i=0; i < array .length; i++ ){
-      columns = columns.concat(Object.keys(array [i]))
+    for( var i=0; i < array.length; i++ ){
+      columns = columns.concat(Object.keys(array[i]))
     }
 
     return [...new Set(columns.filter(x => !['__index__'].includes(x)))]
@@ -53,6 +53,7 @@ export default class DataTypes extends Object{
 
     this.parse(array)
 
+    // converting all numeric Strings to their proper non-string type
     const columns = this.columns(array)
     for( i=0; i < columns.length; i++ ){
       const col = columns[i]
@@ -61,7 +62,6 @@ export default class DataTypes extends Object{
       if(this[col] === 'booleanString') array = this.convert( array, col, 'boolean' )
     }
 
-    console.log( 'numericStrings', array)
 
     return array
   }
@@ -108,15 +108,18 @@ export default class DataTypes extends Object{
     return 'unknown'
   }
 
+  /**
+   * returns True when the data type is numeric. Otherwise False
+   * @param  {String}  dtype Data type string
+   * @return {Boolean}       True when the data type is numeric, otherwise false
+   */
   isNumeric( dtype ){
-
     switch( dtype ){
       case 'float' : return true
       case 'int': return true
       case 'percentage': return true
+      default : return false
     }
-
-    return false
   }
 
   /**

@@ -99,7 +99,11 @@ export default function Cell( props ) {
       break
 
     case 'float':
-      cellContent = format_float(value)
+      cellContent = props.json_array.strFormat.value(props.row_idx, props.col)
+      break
+
+    case 'percentage':
+      cellContent = props.json_array.strFormat.value(props.row_idx, props.col)
       break
 
     default:
