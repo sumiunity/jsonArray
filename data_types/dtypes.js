@@ -168,8 +168,8 @@ export default class DataTypes extends Object{
       case 'boolean' :
         if( value === 'true' ) return true
         if( value === 'false' ) return false
-        if( value === false | value === true ) return value 
-        return Numeric( value )
+        if( value === false | value === true ) return value
+        return Number( value )
 
       case 'array':
         if( typeof value !== 'string' ) return value
