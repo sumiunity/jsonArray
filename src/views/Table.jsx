@@ -10,7 +10,7 @@ export default function Table( props ){
 
 
   var json_array = new jsonArray( data )
-  json_array = json_array.astype({image: 'image'})
+  json_array = json_array.astype({image: 'image', VALUE:'percentage'})
 
   var json_array2 = new jsonArray( array )
 
@@ -24,7 +24,7 @@ export default function Table( props ){
   // {table.render()}
   // console.log( header)
 
-  console.log( json_array.react.semanticUI.Table)
+  console.log( json_array.dtypes)
 
 
   return (
