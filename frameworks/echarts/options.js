@@ -179,12 +179,11 @@ export default class echartsOptions extends Object {
     }
 
     // set the x axis values using the Axis class
-    this.xAxis = new echartsAxis()
-    this.xAxis.label(params.colx)
+    this.xAxis = new echartsAxis( this.json_array, params.colx )
 
     // set the y axis values using the Axis class
-    this.yAxis = new echartsAxis()
-    this.yAxis.label(params.coly)
+    this.yAxis = new echartsAxis( this.json_array, params.coly )
+
 
     // convert the x-axis to date type when of moment type
     if( this.json_array[0][params.colx] instanceof moment ){

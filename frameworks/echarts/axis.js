@@ -15,11 +15,11 @@ import moment from 'moment'
 
 export default class echartsAxis extends Object {
 
-  constructor() {
+  constructor( json_array=[], col='' ) {
     super()
     // super(...array)
     //
-    this.default()
+    this.initialize( json_array, col )
   }
 
   // default axis parameters
@@ -27,6 +27,50 @@ export default class echartsAxis extends Object {
     this.type = 'value'
     this.scale = true
   }
+
+  /**
+   * Initializes the axis based on the data type. this
+   * attempts to define the axis automatically. It's
+   * possible to overwrite this for custom plotting
+   * @param  {Array} json_array  jsonArray
+   * @param  {String} col       Column name
+   * @return {null}             nothing is returned
+   */
+  initialize( json_array, col ){
+
+    if( json_array === undefined ) return null
+    if( json_array.length === 0 ) return null
+    if( col === undefined ) return null
+    if( col === '' ) return null
+
+    // set the axis label
+    this.name = col
+
+    switch( json_array.dtypes[col] ){
+      case 'string' :
+        this.type = 'category'
+        this.data = json_array.unique(col)
+        break
+
+      // format date columns
+      case 'datetime':
+      case 'strftime':
+        this.type = 'time'
+        this.axisLabel = {
+          formatter: (function(value){
+            return moment(value).format('YYYY-MM-DD')
+          })
+        }
+        break;
+
+      default:
+        this.type = 'value'
+        this.scale = true
+    }
+  }
+
+
+
 
   label( label ){
     if( label !== undefined ){

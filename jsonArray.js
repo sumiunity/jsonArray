@@ -137,10 +137,10 @@ export default class jsonArray extends Array{
    * formatted based on the internal data type
    * @return {String} jsonArray contents formatted as a string
    */
-  toString(){
-    const format = new strFormat(this)
-    return format.table
-  }
+  // toString(){
+  //   const format = new strFormat(this)
+  //   return format.table
+  // }
 
   /**
    * returns the strFormat class used to format matrix components into

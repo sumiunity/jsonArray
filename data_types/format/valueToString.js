@@ -26,6 +26,7 @@ export default class valueToString{
   // returns a formatted string based on the value data type
   toString( value, dtype ){
 
+    console.log( 'to_string', value, dtype )
     switch( dtype ){
 
       case 'float': return this.format_float(value)

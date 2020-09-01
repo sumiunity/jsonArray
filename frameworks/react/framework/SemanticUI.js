@@ -101,7 +101,20 @@ export function Dropdown( props ){
   if( props.ascending !== undefined ) ascending = props.ascending
 
   // retrieve the unique calues from the specified column
-  const values = props.json_array.unique( props.column, ascending )
+  var values
+  switch( props.plottype ){
+    case 'column':
+      values = props.json_array.columns
+      break
+
+    case 'value' :
+      values = props.json_array.unique( props.column, ascending )
+      break
+
+    default :
+      values = props.json_array.unique( props.column, ascending )
+      break
+  }
 
   var options = []
 
@@ -110,9 +123,13 @@ export function Dropdown( props ){
      key:  element, text: element, value: element
   }) )
 
+  const child_props = props
+  delete child_props.json_array
+
+  console.log( props)
   return(
     <SemanticUI.Dropdown
-      {...props}
+      {...child_props}
       options={options}
       key={`dropdown-${props.column}`}
     />
