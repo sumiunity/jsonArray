@@ -625,6 +625,57 @@ export default class jsonArray extends Array{
   }
 
 
+  /**
+   * Discretizes (bins) the values for a specific column
+   * based on the users specifications
+   * @param  {String} col         Column name
+   * @param  {Object} [params={}] parameters to define the binning
+   * @return {Object}             jsonArray containing the binning results
+   */
+  binning( col, params={} ){
+
+    // placeholder for the bins
+    var bins = [];
+
+    // extract the parameters
+    const param_keys = Object.keys(params)
+
+    const min = this.min(col)
+
+    // set defaults when none are provided
+    if( !param_keys.includes('bins') ) params['bins'] = 10
+    if( !param_keys.includes('interval') ){
+      const max = this.max(col)
+      params['interval'] = (max-min)/params['bins']
+    }
+
+
+    //Setup Bins
+    for(var i = 0; i < params['bins']; i++ ){
+      bins.push({
+        binNum: i,
+        minNum: min + i*params['interval'],
+        maxNum: min + (i+1)*params['interval'],
+        count: 0
+      })
+    }
+
+    //Loop through data and add to bin's count
+    for (i = 0; i < this.length; i++){
+      var item = this[i][col];
+
+      for (var j = 0; j < bins.length; j++){
+        var bin = bins[j];
+        if(item > bin.minNum && item <= bin.maxNum){
+          bin.count++;
+          break
+        }
+      }
+    }
+
+    return new jsonArray( bins )
+  }
+
   /********************************************************************************
   *  Math Functions
   *  ===============================
