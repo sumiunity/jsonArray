@@ -19,21 +19,17 @@ import {enabledComponents, components} from './pluggins/Pluggins'
 
 export default class ReactComponents extends Object{
 
-  constructor(json_array) {
+  constructor(data) {
     super()
 
-    this.json_array = json_array
-    if( !(json_array instanceof jsonArray) ){
-      this.json_array = new jsonArray( json_array )
-    }
-
+    this.data = data
   }
 
   get Table(){
 
     const Table = require('./table/Table').default
 
-    return new Table(this.json_array).Table
+    return new Table(this.data).Table
   }
 
 
@@ -43,7 +39,7 @@ export default class ReactComponents extends Object{
       return {}
     }
 
-    return new components.semanticUI( this.json_array )
+    return new components.semanticUI( this.data )
   }
 
 
@@ -64,7 +60,7 @@ export default class ReactComponents extends Object{
       return {}
     }
 
-    return new components.echarts( this.json_array )
+    return new components.echarts( this.data )
   }
 
 

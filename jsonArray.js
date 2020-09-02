@@ -14,6 +14,7 @@
 
 import jsonObject from './jsonObject'
 
+import Series from './Series'
 import DataTypes from './data_types/dtypes'
 import strFormat from './data_types/format/strFormat'
 
@@ -105,13 +106,16 @@ export default class jsonArray extends Array{
 
   // returns the values of the data at the specified index
   loc( idx ){
-    return Object.values([...this].filter(row => row.__index__ === idx))
-
+    const index = this.columns
+    const value = Object.values([...this].filter(row => row.__index__ === idx))
+    return new Series({index: index, value: value, dtypes: this.dtypes})
   }
 
   // return the values of the data at the relative row number
   iloc( idx ){
-    return Object.values(this[idx])
+    const index = Object.keys(this[idx])
+    const value = Object.values(this[idx])
+    return new Series({index: index, value: value, dtypes: this.dtypes})
   }
 
   /**
@@ -624,94 +628,6 @@ export default class jsonArray extends Array{
     return new jsonArray( this )
   }
 
-
-  /**
-   * Discretizes (bins) the values for a specific column
-   * based on the users specifications
-   * @param  {String} col         Column name
-   * @param  {Object} [params={}] parameters to define the binning
-   * @return {Object}             jsonArray containing the binning results
-   */
-  binning( col, params={} ){
-
-    // placeholder for the bins
-    var bins = [];
-
-    // extract the parameters
-    const param_keys = Object.keys(params)
-
-    const min = this.min(col)
-
-    // set defaults when none are provided
-    if( !param_keys.includes('bins') ) params['bins'] = 10
-    if( !param_keys.includes('interval') ){
-      const max = this.max(col)
-      params['interval'] = (max-min)/params['bins']
-    }
-
-
-    //Setup Bins
-    for(var i = 0; i < params['bins']; i++ ){
-      bins.push({
-        binNum: i,
-        minNum: min + i*params['interval'],
-        maxNum: min + (i+1)*params['interval'],
-        count: 0
-      })
-    }
-
-    //Loop through data and add to bin's count
-    for (i = 0; i < this.length; i++){
-      var item = this[i][col];
-
-      for (var j = 0; j < bins.length; j++){
-        var bin = bins[j];
-        if(item > bin.minNum && item <= bin.maxNum){
-          bin.count++;
-          break
-        }
-      }
-    }
-
-    return new jsonArray( bins )
-  }
-
-
-  /**
-   * Counts the number of occurences for each unique value in the
-   * specified column and returns a jsonArray of the statistics
-   * @param  {String} col         Column name
-   * @param  {Object} [params={}] parameters to define the binning
-   * @return {Object}             jsonArray containing the binning results
-   */
-  count( col, params={} ){
-
-    // placeholder for the bins
-    var results = {};
-
-    const unique_values = this.unique(col)
-
-    // setup the results 
-    for(var i = 0; i < unique_values.length; i++ ){
-      const value = unique_values[i]
-      results[value] = 0
-    }
-
-    //Loop through data and add to bin's count
-    for (i = 0; i < this.length; i++){
-      var item = this[i][col];
-
-      for (var j = 0; j < bins.length; j++){
-        var bin = bins[j];
-        if(item > bin.minNum && item <= bin.maxNum){
-          bin.count++;
-          break
-        }
-      }
-    }
-
-    return new jsonArray( bins )
-  }
 
   /********************************************************************************
   *  Math Functions

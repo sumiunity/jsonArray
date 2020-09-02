@@ -14,8 +14,8 @@ import valueToString from './valueToString'
 
 export default class strFormat{
 
-  constructor( json_array ){
-    this.json_array = json_array
+  constructor( data ){
+    this.data = data
   }
 
 
@@ -27,7 +27,7 @@ export default class strFormat{
    */
   get table(){
     const format = new arrayToString()
-    return format.toString( this.json_array )
+    return format.toString( this.data )
   }
 
   row( index ){
@@ -47,8 +47,8 @@ export default class strFormat{
   value( row, col ){
     const format = new valueToString()
     return format.toString(
-      this.json_array[row][col],
-      this.json_array.dtypes[col]
+      this.data[row][col],
+      this.data.dtypes[col]
     )
   }
 

@@ -12,6 +12,8 @@
 
 import React from 'react';
 
+import Series from '../../../Series'
+
 import Cell from './cell'
 import {Body, Row as TableRow} from '../framework/Components'
 
@@ -19,29 +21,32 @@ import {Body, Row as TableRow} from '../framework/Components'
 
 export default function TableBody( props ) {
 
+  // default to using the DataFrame Row Format
+  var Component = Row
+  var rows = props.table_data.length
+
+  // overwrite the component with Accordian rows when specified
+  if( props.accordian === true ) Component = AccordianRow
+
+  // change component types when the data is of series type
+  if( props.table_data instanceof Series ){
+    Component = SeriesRow
+    rows = props.table_data.values.length
+  }
+
 
   const body = []
-  for (var i=0; i < props.json_array.length; i++ ){
+  for (var i=0; i < rows; i++ ){
 
-      // add an accordian row instead of the standard row
-      // when enabled
-      if( props.accordian !== undefined ){
-        body.push(
-          <AccordianRow
-            {...props}
-            row_idx = {i}
-            />
-        )
-        continue
-      }
+    body.push(
+      <Component
+        {...props}
+        key={`${props.tableName}-Row-${i}`}
+        row_idx = {i}
+        />
+    )
 
-      body.push(
-        <Row
-          {...props}
-          key={`${props.tableName}-Row-${i}`}
-          row_idx = {i}
-          />
-      )
+
   }
 
   return (
@@ -62,57 +67,20 @@ export default function TableBody( props ) {
 
 function Row( props ) {
 
-    // // extract the color definition when the index and color data is provided.
-    // // Note that the colors will adhere to the same data structure as the data
-    // // meaning the columns are the keys and the rows are referenced by the index
-    // // attribute.
-    // // The default is not custom coloring
-    // var color = {}
-    // if( (props.table.index !== undefined)&(props.table.color !== undefined) ){
-    //   var row_id = props.table.data[props.row][props.table.index]
-    //   color = props.table.color.filter(row => row[props.table.index] === row_id)
-    //
-    //   //format the color variable
-    //   if( color.length > 0 ){
-    //     color = color[0]
-    //   }else{
-    //     color = {}
-    //   }
-    // }
-
     const row = []
     for (var i=0; i < props.columns.length; i++ ){
-        row.push(
-          <Cell
-            {...props}
-            key={`${props.tableName}-cell-${props.row_idx}-${i}`}
-            col = {props.columns[i]}
-            />
-        )
+      const col = props.columns[i]
+      row.push(
+        <Cell
+          {...props}
+          row={props.table_data[props.row_idx]}
+          value={props.table_data[props.row_idx][col]}
+          dtype={props.table_data.dtypes[col]}
+          key={`${props.tableName}-cell-${props.row_idx}-${i}`}
+          col = {col}
+          />
+      )
     }
-    //
-    // // When extract buttons are specified in the column types that do not have
-    // // corresponding data in the data array, the table is extended to add buttons
-    // // at the end of the table. The purpose is to allow for buttons that control
-    // // some functionality based on the selected row
-    // for( var col_name in props.table.col_type ){
-    //
-    //   if( (props.table.columns.includes(col_name) === false) &
-    //       (props.table.col_type[col_name] === 'button') ){
-    //     row.push(
-    //       <Cell
-    //         {...props}
-    //         col_name={col_name}
-    //         col_type={'Button'}
-    //         col={props.col}
-    //         key={`tr-button-${col_name+ i++}`  }
-    //         /> )
-    //   }
-    // }
-
-    // // when specified, return the cell data only. The purpose is to extend
-    // // the cells for internal table components such as accordian rows
-    // if( props.cellDataOnly === true ) return row
 
 
     // define the rowOnClick function to standardize the returned data
@@ -120,7 +88,7 @@ function Row( props ) {
     if( props.rowOnClick !== undefined ){
       rowOnClick = () => props.rowOnClick({
         row: props.row_idx,
-        row_data: props.json_array[props.row_idx]
+        row_data: props.table_data[props.row_idx]
       })
     }
 
@@ -136,6 +104,68 @@ function Row( props ) {
     )
 }
 
+
+
+
+/**
+ * Returns a Row of Cell components based on data Formatted
+ * as a Series
+ * @param       {Object} props data and style parameters
+ */
+function SeriesRow( props ) {
+
+  const index = props.table_data.index
+  const values = props.table_data.values
+
+  // format the row data to return in onClick functions
+  const row_data = {
+    __index__: index[props.row_idx],
+    __value__: values[props.row_idx],
+  }
+
+  const row = [
+    <Cell
+      {...props}
+      row={row_data}
+      value={row_data['__index__']}
+      dtype={'string'}
+      key={`${props.tableName}-cell-${props.row_idx}-${0}`}
+      col = {'__index__'}
+      />,
+
+    <Cell
+      {...props}
+      row={row_data}
+      value={row_data['__value__']}
+      dtype={props.table_data.dtypes[row_data['__index__']]}
+      key={`${props.tableName}-cell-${props.row_idx}-${1}`}
+      col = {'__value__'}
+      />
+
+  ]
+
+
+
+  // define the rowOnClick function to standardize the returned data
+  var rowOnClick = null
+  if( props.rowOnClick !== undefined ){
+    rowOnClick = () => props.rowOnClick({
+      row: props.row_idx,
+      row_data: row_data
+    })
+  }
+
+  return (
+    <TableRow
+      {...props.trProps}
+      style={{...{textAlign:'center'}, ...props.trStyle}}
+      component={props.tr}
+      key={`${props.tableName}-row--${props.row_idx}`}
+      onClick={rowOnClick}
+      defaultValue={row}
+      />
+  )
+}
 
 // // An accordian row unfolds when the carot icon is selected. It retracts
 // // when the carot icon is selected again. The purpose is to allow for an

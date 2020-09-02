@@ -17,20 +17,16 @@ import jsonArray from '../../jsonArray'
 
 export default class ReactLibraryFramework{
 
-  constructor(json_array){
-
+  constructor(data){
     // cast the data to a json_array data type
-    this.json_array = json_array
-    if( !(json_array instanceof jsonArray) ){
-      this.json_array  = new jsonArray(json_array)
-    }
+    this.data = data
   }
 
   props( props ){
     return {
       ...props,
       ...{
-        json_array: this.json_array
+        data: this.data
       }}
   }
 

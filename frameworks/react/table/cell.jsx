@@ -11,13 +11,11 @@
 
 import React from 'react';
 
+
 import {booleanColor, fillAndEdge} from '../../colors/Colors'
 import {Cell as TableCell, Button, Image} from '../framework/Components'
-// import { Button } from "reactstrap";
-// import {Table, Button, Icon, Checkbox } from 'semantic-ui-react'
-// import {data_type, format_float} from 'components/Data/DataType'
-// import {shadeHexColor} from 'components/Plot/Utils/Colors'
 
+import valueToString from '../../../data_types/format/valueToString'
 
 
 
@@ -26,15 +24,16 @@ export default function Cell( props ) {
   // column type is provided, default to text format
 
 
+  const format = new valueToString()
 
   //add the onclick fundtion. Default to do nothing when the function does not exist
   var cellOnClick = onClickFunc( props )
   var componentOnClick = onClickFunc( props )
 
-  var value = props.json_array[props.row_idx][props.col]
+  var value = props.value
   var cellContent
 
-  switch( props.json_array.dtypes[props.col] ){
+  switch( props.dtype ){
 
     case 'button':
       cellOnClick = null
@@ -99,11 +98,11 @@ export default function Cell( props ) {
       break
 
     case 'float':
-      cellContent = props.json_array.strFormat.value(props.row_idx, props.col)
+      cellContent = format.toString(value, props.dtype)
       break
 
     case 'percentage':
-      cellContent = props.json_array.strFormat.value(props.row_idx, props.col)
+      cellContent = format.toString(value, props.dtype)
       break
 
     default:
@@ -151,8 +150,8 @@ function onClickFunc( props ){
       onClick = () => props.cellOnClick[props.col]({
         row: props.row_idx,
         col: props.col,
-        value: props.json_array[props.row_idx][props.col],
-        row_data: props.json_array[props.row_idx]
+        value: props.value,
+        row_data: props.row
         })
     }
   }

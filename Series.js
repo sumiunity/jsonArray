@@ -11,8 +11,10 @@
 
 
 import DataTypes from './data_types/dtypes';
+import ReactComponents from './frameworks/react/ReactComponents'
 
 import jsonArray from './jsonArray'
+
 
 
 export default class Series extends Object {
@@ -35,20 +37,38 @@ export default class Series extends Object {
       }
     }
 
-    this.dtype = new DataTypes().parse_series( this )
+    // allow for mixed datatype, referenced by the keys.
+    // This is only applicable when the data types are provided.
+    // Otherwise, it is assumed that the data is from a single
+    // data type which will be parsed out
+    if( props.dtypes !== undefined ){
+      this.dtypes = props.dtypes
+      this.dtype = 'mixed'
+
+    }else{
+      this.dtype = new DataTypes().parse_series( this )
+    }
     // this.dtype.parse_series( this )
   }
 
   get index(){
-    var values = {...this}
-    delete values.dtype
-    return Object.keys(values)
+    return Object.keys(this.data)
   }
+
   get values(){
-    var values = {...this}
-    delete values.dtype
-    return Object.values(values)
+    return Object.values(this.data)
   }
+
+  // copies the local data removes all metadata elements
+  get data(){
+    var data = {...this}
+    delete data.dtype
+    delete data.dtypes
+    delete data.name
+
+    return data
+  }
+
 
   /**
    * Discretizes (bins) the values for a specific column
@@ -65,12 +85,12 @@ export default class Series extends Object {
     // extract the parameters
     const param_keys = Object.keys(params)
 
-    const min = this.min(col)
+    const min = this.min
 
     // set defaults when none are provided
     if( !param_keys.includes('bins') ) params['bins'] = 10
     if( !param_keys.includes('interval') ){
-      const max = this.max(col)
+      const max = this.max
       params['interval'] = (max-min)/params['bins']
     }
 
@@ -193,5 +213,10 @@ export default class Series extends Object {
     if( this.values.length === 1 ) return this[0]
     return this.sum / this.values.length
   }
+
+
+
+
+  get react(){ return new ReactComponents(this) }
 
 }

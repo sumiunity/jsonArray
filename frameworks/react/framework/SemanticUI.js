@@ -19,8 +19,8 @@ try{ SemanticUI = require('semantic-ui-react') }catch{}
 
 
 export default class SemanticUILibrary extends ReactLibraryFramework{
-  constructor(json_array){
-    super(json_array)
+  constructor(data){
+    super(data)
 
     // must bind this to all internal functions or they will be
     // lost when rendering via react
@@ -47,7 +47,7 @@ export default class SemanticUILibrary extends ReactLibraryFramework{
 // returns the excel reader using teh Semantic UI Framework for input controls
 export function Excel( props ){
 
-  var Excel = props.json_array.react.Excel
+  var Excel = props.data.react.Excel
 
   if( SemanticUI === undefined ){
     return <Excel />
@@ -72,7 +72,7 @@ export function Excel( props ){
 // returns a table formatted using the Semantic UI table Framework
 export function Table(props){
 
-  var Table = props.json_array.react.Table
+  var Table = props.data.react.Table
 
   if( SemanticUI === undefined ) return Table
 
@@ -104,15 +104,15 @@ export function Dropdown( props ){
   var values
   switch( props.plottype ){
     case 'column':
-      values = props.json_array.columns
+      values = props.data.columns
       break
 
     case 'value' :
-      values = props.json_array.unique( props.column, ascending )
+      values = props.data.unique( props.column, ascending )
       break
 
     default :
-      values = props.json_array.unique( props.column, ascending )
+      values = props.data.unique( props.column, ascending )
       break
   }
 
@@ -124,7 +124,7 @@ export function Dropdown( props ){
   }) )
 
   const child_props = props
-  delete child_props.json_array
+  delete child_props.data
 
   console.log( props)
   return(
