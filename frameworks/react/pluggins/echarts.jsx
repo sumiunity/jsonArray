@@ -17,8 +17,8 @@ import ReactLibraryFramework from '../ReactLibraryFramework'
 
 
 export default class echartsLibrary extends ReactLibraryFramework{
-  constructor(json_array){
-    super(json_array)
+  constructor(data){
+    super(data)
 
     // must bind this to all internal functions or they will be
     // lost when rendering via react
@@ -100,7 +100,7 @@ export class EchartsReact extends React.Component {
  */
 export function Heatmap( props ){
 
-  const options = props.json_array.echartsOptions
+  const options = props.data.echartsOptions
 
   return(
     <EchartsReact
@@ -117,7 +117,7 @@ export function Heatmap( props ){
  */
 export function Boxplot( props ){
 
-  const options = props.json_array.echartsOptions
+  const options = props.data.echartsOptions
 
   return(
     <EchartsReact
@@ -134,7 +134,7 @@ export function Boxplot( props ){
  */
 export function Scatter( props ){
 
-  const options = props.json_array.echartsOptions
+  const options = props.data.echartsOptions
 
   return(
     <EchartsReact
@@ -151,7 +151,7 @@ export function Scatter( props ){
  */
 export function Bar( props ){
 
-  const options = props.json_array.echartsOptions
+  const options = props.data.echartsOptions
 
   return(
     <EchartsReact
