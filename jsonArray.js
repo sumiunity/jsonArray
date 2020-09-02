@@ -104,6 +104,62 @@ export default class jsonArray extends Array{
     return [...this].map(row => row[col])
   }
 
+  /**
+   * Returns an array of index values
+   * @return {Array} Array of index values
+   */
+  get index(){
+    return [...this].map(row => row.__index__)
+  }
+
+  /**
+   * Returns a Series containing the data for the specified column
+   * @param  {string} col column name
+   * @return {Series}     Series containing the column data
+   */
+  col( col ){
+    const index = this.index
+    const value = [...this].map(row => row[col])
+    return new Series({
+      index: index,
+      value: value,
+      dtype: this.dtypes[col],
+      name: col
+    })
+  }
+
+  /**
+   * Combines the column series with the local DataFrame
+   * @param {Series} series Series containing data for a single column
+   */
+  set_col( series, params={} ){
+    // duplicate the jsonArray
+    var array = this.__inplace__(params['inplace'])
+
+    // retrieve index and convert to string type to match the
+    // index from the Series
+    var index = this.index.map( row => row.toString() )
+
+    for (var [key, value] of Object.entries(series.data)) {
+      var id = index.indexOf(key)
+
+      // extend the DataFrame with a new row containing the
+      // sample with an unmatched id
+      if( id === -1 ){
+        array.push({
+          [series.name]: value,
+          __index__: key
+        })
+        continue
+      }
+
+      // overwrite existing or create new entries for the value
+      array[id][series.name] = value
+    }
+
+    return array
+  }
+
   // returns the values of the data at the specified index
   loc( idx ){
     const index = this.columns

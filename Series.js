@@ -46,8 +46,16 @@ export default class Series extends Object {
       this.dtype = 'mixed'
 
     }else{
-      this.dtype = new DataTypes().parse_series( this )
+      this.dtype = props.dtype
+
+      // parse the data type from the data when one is not provided
+      if( this.dtype === undefined ){
+        this.dtype = new DataTypes().parse_series( this )
+      }
+
     }
+
+    this.name = props.name
     // this.dtype.parse_series( this )
   }
 
@@ -201,14 +209,17 @@ export default class Series extends Object {
     if( this.values.length === 1 ) return this.values[0]
     return Math.max(...this.values)
   }
+
   get min(){
     if( this.values.length === 1 ) return this.values[0]
     return Math.min(...this.values)
   }
+
   get sum(){
     if( this.values.length === 1 ) return this.values[0]
     return this.values.reduce((a,b) => a + b, 0)
   }
+
   get mean(){
     if( this.values.length === 1 ) return this[0]
     return this.sum / this.values.length
@@ -216,6 +227,91 @@ export default class Series extends Object {
 
 
 
+  /**
+   * Applies the function using the variable and the local series
+   * as inputs. this is intended for arithmetic Functions
+   * @param  {mixed} variable variable or series
+   * @param  {function} func     function to apply on the local and variable data
+   * @return {Series}            Series containing the resuting data
+   */
+  compute(variable, func){
+
+    var data = {...this}
+
+    var obj = Number(variable)
+
+    // apply the function on the objects sharing the same key
+    if( isNaN(obj) ){
+
+      for (var [key, value] of Object.entries(variable)) {
+        var val = data[key]
+        if( val === undefined ) val = 0
+        data[key] = func( val, value)
+      }
+
+    // perform the function using the object value directly
+    }else{
+      for (var [key, value] of Object.entries(data)) {
+        data[key] = func( value, obj)
+      }
+    }
+
+    // return the data as a series
+    return new Series({
+      object: data,
+      dtype: this.dtype,
+      dtypes: this.dtypes,
+      name: this.name,
+    })
+  }
+
+  /**
+   * Performs addition on the local Series with the variable
+   * data. The variable can be an integer, string, or another
+   * series object. When a Series is given, the data is added
+   * based on the index
+   * @param  {mixed} variable input data (supports mixed type)
+   * @return {Series}         Series containing the results
+   */
+  add( variable ){
+    return this.compute( variable, (x, y) => {return x + y} )
+  }
+
+  /**
+   * Performs subtraction on the local Series with the variable
+   * data. The variable can be an integer, string, or another
+   * series object. When a Series is given, the data is added
+   * based on the index
+   * @param  {mixed} variable input data (supports mixed type)
+   * @return {Series}         Series containing the results
+   */
+  sub( variable ){
+    return this.compute( variable, (x, y) => {return x - y} )
+  }
+
+  /**
+   * Performs multiplication on the local Series with the variable
+   * data. The variable can be an integer, string, or another
+   * series object. When a Series is given, the data is added
+   * based on the index
+   * @param  {mixed} variable input data (supports mixed type)
+   * @return {Series}         Series containing the results
+   */
+  multiply( variable ){
+    return this.compute( variable, (x, y) => {return x * y} )
+  }
+
+  /**
+   * Performs division on the local Series with the variable
+   * data. The variable can be an integer, string, or another
+   * series object. When a Series is given, the data is added
+   * based on the index
+   * @param  {mixed} variable input data (supports mixed type)
+   * @return {Series}         Series containing the results
+   */
+  divide( variable ){
+    return this.compute( variable, (x, y) => {return x/y} )
+  }
 
   get react(){ return new ReactComponents(this) }
 
