@@ -676,6 +676,43 @@ export default class jsonArray extends Array{
     return new jsonArray( bins )
   }
 
+
+  /**
+   * Counts the number of occurences for each unique value in the
+   * specified column and returns a jsonArray of the statistics
+   * @param  {String} col         Column name
+   * @param  {Object} [params={}] parameters to define the binning
+   * @return {Object}             jsonArray containing the binning results
+   */
+  count( col, params={} ){
+
+    // placeholder for the bins
+    var results = {};
+
+    const unique_values = this.unique(col)
+
+    // setup the results 
+    for(var i = 0; i < unique_values.length; i++ ){
+      const value = unique_values[i]
+      results[value] = 0
+    }
+
+    //Loop through data and add to bin's count
+    for (i = 0; i < this.length; i++){
+      var item = this[i][col];
+
+      for (var j = 0; j < bins.length; j++){
+        var bin = bins[j];
+        if(item > bin.minNum && item <= bin.maxNum){
+          bin.count++;
+          break
+        }
+      }
+    }
+
+    return new jsonArray( bins )
+  }
+
   /********************************************************************************
   *  Math Functions
   *  ===============================

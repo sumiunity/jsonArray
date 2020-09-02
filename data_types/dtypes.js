@@ -279,4 +279,40 @@ export default class DataTypes extends Object{
     return this
   }
 
+
+  /**
+   * Returns the data type for the provided series
+   * @param  {Object} series Series object
+   * @return {String}        Data type string
+   */
+  parse_series( series ){
+
+    var dtype
+    for( var i=0; i < series.values.length; i++ ){
+
+      const value = series.values[i]
+
+      if( value !== undefined ){
+        // extract the datatype for the current cell
+        var temp_dtype = this.data_type( value )
+
+        // set the dtype during the first pass when it's not set
+        if( dtype === undefined ){
+          dtype = temp_dtype
+          continue
+        }
+
+        // set the dtype based on the priority when the cell dtype
+        // differs from the global definition
+        if( dtype !== temp_dtype ){
+          temp_dtype = this.dtypePriority( dtype, temp_dtype)
+        }
+
+        dtype = temp_dtype
+      }
+    }
+
+    return dtype
+  }
+
 }

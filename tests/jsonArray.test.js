@@ -27,7 +27,7 @@ import moment from 'moment';
 
 test("jsonArray : test filter functionality", () => {
   var json_array = new jsonArray( data );
-  json_array = json_array.filter( row => row.NUMBER === '260' );
+  json_array = json_array.filter( row => row.NUMBER === 260 );
   expect(json_array.length).toBe(16);
 });
 
@@ -35,7 +35,7 @@ test("jsonArray : test filter functionality", () => {
 
 test("jsonArray : label when all in one class", () => {
   var json_array = new jsonArray( data );
-  json_array = json_array.filter( row => row.NUMBER === '260' );
+  json_array = json_array.filter( row => row.NUMBER === 260 );
   json_array = json_array.label( row => row.VALUE > 0.01 );
   expect(json_array.filter(row => row.label === false).length).toBe(16);
   expect(json_array.filter(row => row.label === true).length).toBe(0);
@@ -44,7 +44,7 @@ test("jsonArray : label when all in one class", () => {
 
 test("jsonArray : label when a split occurs", () => {
   var json_array = new jsonArray( data );
-  json_array = json_array.filter( row => row.NUMBER === '260' );
+  json_array = json_array.filter( row => row.NUMBER === 260 );
   json_array = json_array.label( row => row.VALUE > 0.0005 );
   expect(json_array.filter(row => row.label === false).length).toBe(6);
   expect(json_array.filter(row => row.label === true).length).toBe(10);
