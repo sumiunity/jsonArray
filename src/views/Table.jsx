@@ -11,6 +11,7 @@ export default function Table( props ){
 
   var json_array = new jsonArray( data )
   json_array = json_array.astype({image: 'image', VALUE:'percentage'})
+  // json_array = json_array.astype({VALUE:'float'})
 
   var json_array2 = new jsonArray( array )
 
@@ -35,7 +36,7 @@ export default function Table( props ){
         <Grid.Column>
           <json_array.react.semanticUI.Table
             tableName = {'data'}
-            sortable={true}
+            sortable={false}
             />
         </Grid.Column>
       </Grid.Row>
