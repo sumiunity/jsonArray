@@ -161,17 +161,43 @@ export default class jsonArray extends Array{
   }
 
   // returns the values of the data at the specified index
-  loc( idx ){
-    const index = this.columns
-    const value = Object.values([...this].filter(row => row.__index__ === idx))
-    return new Series({index: index, value: value, dtypes: this.dtypes})
+  loc( idx, props={Series:true} ){
+
+    // return a DataFrame when a list of index are proived
+    if( typeof idx === 'object' | typeof idx === 'array' ){
+      return  new jsonArray([...this].filter(row => idx.includes(row.__index__) ))
+    }
+
+    // return the row after it has been converted to a series
+    if( props.Series === true ){
+      const index = this.columns
+      const value = Object.values([...this].filter(row => row.__index__ === idx))
+      return new Series({index: index, value: value, dtypes: this.dtypes})
+    }
+
+
+      return [...this].filter(row => row.__index__ === idx )
   }
 
   // return the values of the data at the relative row number
-  iloc( idx ){
-    const index = Object.keys(this[idx])
-    const value = Object.values(this[idx])
-    return new Series({index: index, value: value, dtypes: this.dtypes})
+  iloc( idx, props={Series:true} ){
+
+    // return a DataFrame when a list of index are proived
+    if( typeof idx === 'object' | typeof idx === 'array' ){
+      var array = []
+      for( var i=0; i < idx.length; i++ ){
+        array.push( this[i] )
+      }
+      return new jsonArray(array)
+    }
+
+    if( props.Series === true ){
+      const index = Object.keys(this[idx])
+      const value = Object.values(this[idx])
+      return new Series({index: index, value: value, dtypes: this.dtypes})
+    }
+
+    return this[idx]
   }
 
   /**
@@ -197,10 +223,10 @@ export default class jsonArray extends Array{
    * formatted based on the internal data type
    * @return {String} jsonArray contents formatted as a string
    */
-  // toString(){
-  //   const format = new strFormat(this)
-  //   return format.table
-  // }
+  to_string(){
+    const format = new strFormat(this)
+    return format.table
+  }
 
   /**
    * returns the strFormat class used to format matrix components into
