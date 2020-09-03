@@ -107,8 +107,8 @@ export default class Series extends Object {
     for(var i = 0; i < params['bins']; i++ ){
       bins.push({
         binNum: i,
-        minNum: min + i*params['interval'],
-        maxNum: min + (i+1)*params['interval'],
+        value: min + i*params['interval'],
+        max: min + (i+1)*params['interval'],
         count: 0
       })
     }
@@ -119,7 +119,13 @@ export default class Series extends Object {
 
       for (var j = 0; j < bins.length; j++){
         var bin = bins[j];
-        if(item > bin.minNum && item <= bin.maxNum){
+
+        // condition logic to account for the first step
+        // to include the minimum value
+        var logic = item > bin.value && item <= bin.max
+        if( j === 0) logic = item >= bin.value && item <= bin.max
+
+        if(logic){
           bin.count++;
           break
         }
