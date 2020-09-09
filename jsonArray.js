@@ -491,6 +491,26 @@ export default class jsonArray extends Array{
     return new jsonObject( object )
   }
 
+  /**
+   * creates a single column with the hex color string based
+   * on the RGB color values taken from separate columns
+   * @param  {string} rcol red color column
+   * @param  {string} gcol green color column
+   * @param  {string} bcol blue color column
+   * @return {[type]}      [description]
+   */
+  to_rgb( rcol, gcol, bcol){
+    const toHex = require('./frameworks/colors/Colors').rgbToHex
+
+    for( var i=0; i < this.length; i++ ){
+      this[i]['rgb'] = toHex( this[i][rcol], this[i][gcol], this[i][bcol])
+    }
+
+    this.dtypes['rgb'] = 'hexcolor'
+    return this
+  }
+
+
   unique( col, ordered=false ){
     // return all unique values for the specified column. When
     // ordered is set to true, these values are sorted.

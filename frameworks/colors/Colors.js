@@ -192,5 +192,27 @@ export function fillAndEdge( colorHex ){
   }
 }
 
+/**
+ * Converts a single RGB component to hex string
+ * @param  {8bit integer} c 8 bit color integer
+ * @return {string}   hex string for the specified component
+ */
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+/**
+ * returns the hex string based on the provided components
+ * @param  {string} r red color component integer value
+ * @param  {string} g green color component integer value
+ * @param  {string} b blue color component integer value
+ * @return {string}   hex color string
+ */
+export function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+
 export default {get_color, int_to_color, shadeHexColor};
 export {get_color, int_to_color, shadeHexColor};

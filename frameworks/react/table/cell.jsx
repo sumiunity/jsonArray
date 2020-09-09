@@ -92,6 +92,10 @@ export default function Cell( props ) {
       cellContent = coloredSquare(value, componentOnClick)
       break
 
+    case 'hexcolor':
+      cellOnClick = null
+      cellContent = coloredSquare(value, componentOnClick)
+      break
 
     case 'text':
       cellContent = value
