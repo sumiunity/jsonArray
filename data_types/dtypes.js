@@ -22,6 +22,11 @@ export default class DataTypes extends Object{
   constructor(array) {
     super()
 
+    // global definition to prevent excessive processing
+    // when determining data type. This essentially limits
+    // the number of checks per column
+    this.max_length = 50
+
     // set default dtypes. Ideally, extract them from the jsonArray when available
     if( array instanceof jsonArray ){
       this.set_dtypes( array.dtypes )
@@ -32,10 +37,11 @@ export default class DataTypes extends Object{
   columns( array ){
     var columns = []
 
-    var max_length = array.length
-    if( max_length > 50 ) max_length = 50
+    // ensure that the max length is not greater than the
+    // array size, to avoid checking non-existing rows
+    if( this.max_length > array.length ) this.max_length  = array.length
 
-    for( var i=0; i < max_length; i++ ){
+    for( var i=0; i < this.max_length; i++ ){
       columns = columns.concat(Object.keys(array[i]))
     }
 
@@ -45,8 +51,6 @@ export default class DataTypes extends Object{
   // converts all data types based on the global dtypes definition
   // stored within the jsonArray variable
   init( array ){
-
-    const {performance} = require('perf_hooks');
 
     // extract the column names based on the data type definition
     const dtype_col = Object.keys(this)
@@ -59,7 +63,6 @@ export default class DataTypes extends Object{
     this.max_length = array.length
     if( this.max_length > 50 ) this.max_length = 50
 
-    var t0 = performance.now()
     this.parse(array)
 
 
