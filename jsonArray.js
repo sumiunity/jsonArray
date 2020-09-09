@@ -135,7 +135,7 @@ export default class jsonArray extends Array{
   set_col( series, params={} ){
     // duplicate the jsonArray
     var array = this.__inplace__(params['inplace'])
-
+    
     // retrieve index and convert to string type to match the
     // index from the Series
     var index = this.index.map( row => row.toString() )
