@@ -13,7 +13,7 @@
 
 import jsonArray from '../../jsonArray'
 
-import {enabledComponents, components} from './pluggins/Pluggins'
+import {enabledComponents, components} from './plugins/Plugins'
 
 
 

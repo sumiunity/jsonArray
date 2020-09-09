@@ -1,15 +1,15 @@
 /**
- * Pluggins Test
+ * plugins Test
  * =====================
  *
- * Test the functionality of the various pluggins
+ * Test the functionality of the various plugins
  *
  * :Author: Nik Sumikawa
  * :Date: Aug 03, 2020
 
  */
 
-import {from_file} from '../pluggins/fromCsv.js'
+import {from_file} from '../plugins/fromCsv.js'
 const fs = require('fs');
 
 

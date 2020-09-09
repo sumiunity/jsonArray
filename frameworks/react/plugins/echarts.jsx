@@ -86,11 +86,8 @@ export function EchartsReact( props ) {
 
       const index = params.batch[0].selected[0].dataIndex;
 
-      console.log( 'index!!!', index)
       const batch = params.batch
-      console.log( 'what?', batch[0])
       if( params.batch[0].selected !== undefined ){
-        console.log( 'do i get here??')
         props.onSelect( index )
       }
     }
@@ -188,7 +185,6 @@ export function Histogram( props ){
 
   const series = props.data.col( props.colx )
   const hist = series.binning({bins: 30})
-  console.log( hist )
   const options = hist.echartsOptions
 
   // console.log( options.bar({colx: 'value', coly: 'count'}) )

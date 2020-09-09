@@ -18,9 +18,6 @@ try{
   prepareBoxplotData =  require( 'echarts/extension/dataTool').prepareBoxplotData
 }catch{ console.log( 'echarts module not implemented')}
 
-console.log( 'prep', prepareBoxplotData)
-
-
 
 export default class echartsSeries extends Object {
 
