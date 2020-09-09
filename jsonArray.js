@@ -62,10 +62,14 @@ export default class jsonArray extends Array{
       array = dtypes.init(array)
     }
 
-    super(...array);
+    super()
+
+    // to avoid max recursion depth, we push each row separately
+    array.map( row => this.push(row))
 
     // dictionary containing column data types
     this.dtypes = dtypes
+
   }
 
 
@@ -73,7 +77,10 @@ export default class jsonArray extends Array{
   get columns(){
     var columns = []
 
-    for( var i=0; i < this.length; i++ ){
+    var max_length = this.length
+    if( max_length > 50 ) max_length = 50
+
+    for( var i=0; i < max_length; i++ ){
       columns = columns.concat(Object.keys(this[i]))
     }
 
@@ -135,7 +142,7 @@ export default class jsonArray extends Array{
   set_col( series, params={} ){
     // duplicate the jsonArray
     var array = this.__inplace__(params['inplace'])
-    
+
     // retrieve index and convert to string type to match the
     // index from the Series
     var index = this.index.map( row => row.toString() )

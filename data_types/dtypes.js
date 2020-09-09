@@ -32,7 +32,10 @@ export default class DataTypes extends Object{
   columns( array ){
     var columns = []
 
-    for( var i=0; i < array.length; i++ ){
+    var max_length = array.length
+    if( max_length > 50 ) max_length = 50
+
+    for( var i=0; i < max_length; i++ ){
       columns = columns.concat(Object.keys(array[i]))
     }
 
@@ -43,6 +46,8 @@ export default class DataTypes extends Object{
   // stored within the jsonArray variable
   init( array ){
 
+    const {performance} = require('perf_hooks');
+
     // extract the column names based on the data type definition
     const dtype_col = Object.keys(this)
 
@@ -51,18 +56,26 @@ export default class DataTypes extends Object{
       array = this.convert(array, dtype_col[i], this[dtype_col[i]])
     }
 
+    this.max_length = array.length
+    if( this.max_length > 50 ) this.max_length = 50
+
+    var t0 = performance.now()
     this.parse(array)
+
 
     // converting all numeric Strings to their proper non-string type
     const columns = this.columns(array)
     for( i=0; i < columns.length; i++ ){
+
+
       const col = columns[i]
       if(this[col] === 'intString') array = this.convert( array, col, 'int' )
       if(this[col] === 'floatString') array = this.convert( array, col, 'float' )
       if(this[col] === 'booleanString') array = this.convert( array, col, 'boolean' )
+
     }
 
-
+    delete this.max_length
     return array
   }
 
@@ -134,8 +147,9 @@ export default class DataTypes extends Object{
     for( var i=0; i < array.length; i++ ){
 
       // do not process the row when data doesn't exist for the column
-      const columns = Object.keys(array[i])
-      if( !columns.includes( col) ) continue
+      // const columns = Object.keys(array[i])
+      // if( !columns.includes( col) ) continue
+      if( array[i][col] === undefined ) continue
 
       array[i][col] = this.apply(array[i][col], dtype, params )
     }
@@ -232,7 +246,7 @@ export default class DataTypes extends Object{
   parse_column( array, col ){
 
     var dtype
-    for( var i=0; i < array.length; i++ ){
+    for( var i=0; i < this.max_length; i++ ){
       if( array[i][col] !== undefined ){
         // extract the datatype for the current cell
         var temp_dtype = this.data_type( array[i][col] )
@@ -261,7 +275,7 @@ export default class DataTypes extends Object{
 
     // parse a unique set of column names from the array of objects
     var columns = []
-    for( var i=0; i < array.length; i++ ){
+    for( var i=0; i < this.max_length; i++ ){
       columns = columns.concat( Object.keys(array[i]))
     }
     columns = [...new Set(columns)]
