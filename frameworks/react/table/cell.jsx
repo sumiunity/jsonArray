@@ -166,14 +166,6 @@ function onClickFunc( props ){
 
 
 
-// formats a float by removing resolution to 4 decimal points or
-// converting it to scientific notation
-function format_float( data ){
-
-  if( data/0.0001 > 0 ) return data.toFixed(4)
-
-  return data.toExponential(2)
-}
 
 /**
  * Creates a green or red circle based on the value of the cell

@@ -11,7 +11,6 @@
  */
 
 
-import jsonArray from '../../jsonArray'
 
 import {enabledComponents, components} from './plugins/Plugins'
 

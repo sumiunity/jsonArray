@@ -171,7 +171,7 @@ export default class jsonArray extends Array{
   loc( idx, props={Series:true} ){
 
     // return a DataFrame when a list of index are proived
-    if( typeof idx === 'object' | typeof idx === 'array' ){
+    if( typeof idx == "object" ){
       return  new jsonArray([...this].filter(row => idx.includes(row.__index__) ))
     }
 
@@ -190,7 +190,7 @@ export default class jsonArray extends Array{
   iloc( idx, props={Series:true} ){
 
     // return a DataFrame when a list of index are proived
-    if( typeof idx === 'object' | typeof idx === 'array' ){
+    if( typeof idx == "object" ){
       var array = []
       for( var i=0; i < idx.length; i++ ){
         array.push( this[i] )

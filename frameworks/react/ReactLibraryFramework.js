@@ -13,8 +13,6 @@
  */
 
 
-import jsonArray from '../../jsonArray'
-
 export default class ReactLibraryFramework{
 
   constructor(data){

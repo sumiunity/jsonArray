@@ -85,8 +85,6 @@ export function EchartsReact( props ) {
       if( params.batch === undefined ) return
 
       const index = params.batch[0].selected[0].dataIndex;
-
-      const batch = params.batch
       if( params.batch[0].selected !== undefined ){
         props.onSelect( index )
       }

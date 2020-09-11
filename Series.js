@@ -32,7 +32,7 @@ export default class Series extends Object {
 
     if( keys.includes('object') ){
       const keys = Object.keys(props.object)
-      for( var i=0; i < keys.length; i++ ){
+      for( i=0; i < keys.length; i++ ){
         this[keys[i]] = props.object[keys[i]]
       }
     }
@@ -246,10 +246,12 @@ export default class Series extends Object {
 
     var obj = Number(variable)
 
+    var key, value
+    
     // apply the function on the objects sharing the same key
     if( isNaN(obj) ){
 
-      for (var [key, value] of Object.entries(variable)) {
+      for ([key, value] of Object.entries(variable)) {
         var val = data[key]
         if( val === undefined ) val = 0
         data[key] = func( val, value)
@@ -257,7 +259,7 @@ export default class Series extends Object {
 
     // perform the function using the object value directly
     }else{
-      for (var [key, value] of Object.entries(data)) {
+      for ([key, value] of Object.entries(data)) {
         data[key] = func( value, obj)
       }
     }
