@@ -103,7 +103,6 @@ export async function from_gz_url( url, callback, params={} ){
   // buffer to store the streamed decompression
   var buffer = [];
 
-  console.log( 'do i get here??')
   http.get(url, function(res) {
       // pipe the response into the gunzip to decompress
       var gunzip = zlib.createGunzip();
@@ -114,7 +113,6 @@ export async function from_gz_url( url, callback, params={} ){
           buffer.push(data.toString())
 
       }).on("end", function() {
-        console.log( 'parsed successfully')
         parser.parse(
           buffer.join(""),
           { ...{params},
@@ -125,8 +123,8 @@ export async function from_gz_url( url, callback, params={} ){
 
                 var data = results.data
                 data = data.filter( row => row.VALUE !== '1')
-                console.log( data )
-                console.log( callback )
+
+
                 if( callback !== undefined ){
                   // convert to a json Array and remove all missing rows
                   var json_array = new jsonArray( data )

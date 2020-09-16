@@ -95,11 +95,13 @@ export function EchartsReact( props ) {
     onEvents['brushselected'] = onSelect
   }
 
+  console.log( 'what are the props...', props)
   // when an onClick event is provided, add it to the Events
   if( props.onClick !== undefined ){
-    onEvents['onClick'] = props.onClick
+    onEvents['click'] = props.onClick
   }
 
+  console.log( onEvents )
   return (
     <ReactEcharts
       option = {option}
