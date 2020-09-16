@@ -30,8 +30,6 @@ export default class Table extends ReactLibraryFramework{
     // must bind this to all internal functions or they will be
     // lost when rendering via react
     this.Table = this.Table.bind(this)
-
-    console.log( 'data type', this.data instanceof Series )
   }
 
   Table( props ){
@@ -41,7 +39,6 @@ export default class Table extends ReactLibraryFramework{
       return SeriesTable( this.props(props) )
     }
 
-    console.log( 'these are the props', this.props)
     // default to render the table as a DataFrame type
     return Render( this.props(props) )
   }

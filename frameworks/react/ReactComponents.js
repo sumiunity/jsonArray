@@ -27,8 +27,6 @@ export default class ReactComponents extends Object{
   get Table(){
 
     const Table = require('./table/Table').default
-
-    console.log( 'Table..', this.data, Table)
     return new Table(this.data).Table
   }
 

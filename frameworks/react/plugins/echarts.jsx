@@ -22,6 +22,7 @@ export default class echartsLibrary extends ReactLibraryFramework{
 
     // must bind this to all internal functions or they will be
     // lost when rendering via react
+    this.Echarts = this.Echarts.bind(this)
     this.Heatmap = this.Heatmap.bind(this)
     this.Boxplot = this.Boxplot.bind(this)
     this.Scatter = this.Scatter.bind(this)
@@ -29,6 +30,10 @@ export default class echartsLibrary extends ReactLibraryFramework{
     this.Histogram = this.Histogram.bind(this)
 
 
+  }
+
+  Echarts( props ){
+    return EchartsReact( this.props(props) )
   }
 
   Heatmap( props ){
@@ -93,13 +98,11 @@ export function EchartsReact( props ) {
     onEvents['brushselected'] = onSelect
   }
 
-  console.log( 'what are the props...', props)
   // when an onClick event is provided, add it to the Events
   if( props.onClick !== undefined ){
     onEvents['click'] = props.onClick
   }
 
-  console.log( onEvents )
   return (
     <ReactEcharts
       option = {option}

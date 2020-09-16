@@ -18,7 +18,7 @@ import Series from './Series'
 import DataTypes from './data_types/dtypes'
 import strFormat from './data_types/format/strFormat'
 
-
+import eChartsComponents from './frameworks/echarts/components'
 import echartsFormat from './frameworks/echarts/format'
 import echartsOptions from './frameworks/echarts/options'
 
@@ -769,6 +769,8 @@ export default class jsonArray extends Array{
   //  */
   get echartsFormat( ){ return new echartsFormat( this ) }
   get echartsOptions( ){ return new echartsOptions( this ) }
+
+  get echarts( ){ return new eChartsComponents( this ) }
 
   get react(){ return new ReactComponents(this) }
 
