@@ -62,7 +62,7 @@ export async function from_url( file, callback, params={} ){
 
   // var data
 
-  const data = await parser.parse(
+  return await parser.parse(
     file,
     { ...{params},
       ...{
