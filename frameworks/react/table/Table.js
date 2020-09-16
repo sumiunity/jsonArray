@@ -41,6 +41,7 @@ export default class Table extends ReactLibraryFramework{
       return SeriesTable( this.props(props) )
     }
 
+    console.log( 'these are the props', this.props)
     // default to render the table as a DataFrame type
     return Render( this.props(props) )
   }

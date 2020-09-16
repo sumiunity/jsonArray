@@ -10,7 +10,7 @@
 
 
 
-import React from 'react';
+import React, {useState} from 'react';
 
 import Series from '../../../Series'
 
@@ -20,6 +20,8 @@ import {Body, Row as TableRow} from '../framework/Components'
 
 
 export default function TableBody( props ) {
+
+  const [selectedRow, setSelectedRow] = useState()
 
   // default to using the DataFrame Row Format
   var Component = Row
@@ -43,6 +45,8 @@ export default function TableBody( props ) {
         {...props}
         key={`${props.tableName}-Row-${i}`}
         row_idx = {i}
+        selectedRow = {selectedRow}
+        setSelectedRow = {setSelectedRow}
         />
     )
 
@@ -86,16 +90,26 @@ function Row( props ) {
     // define the rowOnClick function to standardize the returned data
     var rowOnClick = null
     if( props.rowOnClick !== undefined ){
-      rowOnClick = () => props.rowOnClick({
-        row: props.row_idx,
-        row_data: props.table_data[props.row_idx]
-      })
+      rowOnClick = () => {
+        props.setSelectedRow( props.row_idx );
+        props.rowOnClick({
+          row: props.row_idx,
+          row_data: props.table_data[props.row_idx]
+        })
+      }
     }
+
+    // set the background color when the row is selected
+    var rowStyle = {textAlign:'center'}
+    if( props.row_idx === props.selectedRow ){
+      rowStyle = {textAlign:'center', backgroundColor: '#8c9ac0'}
+    }
+
 
     return (
       <TableRow
         {...props.trProps}
-        style={{...{textAlign:'center'}, ...props.trStyle}}
+        style={{...rowStyle, ...props.trStyle}}
         component={props.tr}
         key={`${props.tableName}-row--${props.row_idx}`}
         onClick={rowOnClick}
