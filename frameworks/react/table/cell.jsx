@@ -116,10 +116,23 @@ export default function Cell( props ) {
 
   }
 
+  var style = {textAlign:'center'}
+
+  // the background color can be provided as a field of table object.
+  // The background color parameter requires a json array with the
+  // same fields as the data table. What would normally contain the
+  // data now contains colors
+  if( props.cellBackgroundColor !== undefined ){
+    try{
+      const color = props.cellBackgroundColor[props.row_idx][props.col]
+      if( color !== undefined ) style['backgroundColor'] = color
+    }catch{}
+  }
+
   return (
     <TableCell
       {...props.tdProps}
-      style={{...{textAlign:'center'}, ...props.tdStyle}}
+      style={{...style, ...props.tdStyle}}
       component={props.td}
       key = {`${props.tableName}-cell-${props.col}-${props.row_idx}`}
       onClick={cellOnClick}
