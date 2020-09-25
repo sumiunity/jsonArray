@@ -71,14 +71,15 @@ export default function TableBody( props ) {
 
 function Row( props ) {
 
+    const row_data = props.table_data[props.row_idx]
     const row = []
     for (var i=0; i < props.columns.length; i++ ){
       const col = props.columns[i]
       row.push(
         <Cell
           {...props}
-          row={props.table_data[props.row_idx]}
-          value={props.table_data[props.row_idx][col]}
+          row={row_data}
+          value={row_data[col]}
           dtype={props.table_data.dtypes[col]}
           key={`${props.tableName}-cell-${props.row_idx}-${i}`}
           col = {col}
@@ -94,7 +95,7 @@ function Row( props ) {
         props.setSelectedRow( props.row_idx );
         props.rowOnClick({
           row: props.row_idx,
-          row_data: props.table_data[props.row_idx]
+          row_data: row_data
         })
       }
     }
@@ -105,6 +106,13 @@ function Row( props ) {
       rowStyle = {textAlign:'center', backgroundColor: '#8c9ac0'}
     }
 
+    // Row background color allows for the control of the background
+    // color of multiple rows based on the index number
+    if( props.rowBackgroundColor !== undefined ){
+      if( props.rowBackgroundColor.includes(row_data.__index__) ){
+        rowStyle = {textAlign:'center', backgroundColor: '#8c9ac0'}
+      }
+    }
 
     return (
       <TableRow

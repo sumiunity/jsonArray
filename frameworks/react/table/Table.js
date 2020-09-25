@@ -22,7 +22,28 @@ import {SeriesHeader, DataFrameHeader} from './header'
 import TableBody from './body'
 
 
-
+/**
+ * Integrated table component  build into the jsonArray
+ * @param       {String} props.tableName
+ * @param       {Component} props.table base html component that can be overwritten by Framework component
+ * @param       {Component} props.tr    base html component that can be overwritten by Framework component
+ * @param       {Component} props.td    base html component that can be overwritten by Framework component
+ * @param       {Component} props.th    base html component that can be overwritten by Framework component
+ * @param       {Component} props.body  base html component that can be overwritten by Framework component
+ * @param       {Component} props.button base html component that can be overwritten by Framework component
+ * @param       {function} props.columnOnClick  function exectued when a column is selected
+ * @param       {function} props.rowOnClick     function exectued when a row is selected
+ * @param       {function} props.cellOnClick    function exectued when a cell is selected
+ * @param       {Boolean} props.accordian  Not implemented
+ * @param       {Boolean} props.showHeader when True, the table header will be shown
+ * @param       {Boolean} props.sortable   When True, the table can be sorted by the columns
+ * @param       {Array} props.columns     Array of column names
+ * @param       {Array} props.columnNames Array of column names
+ * @param       {String} props.sortBy     column name that will be presorted
+ * @param       {String} props.sortAscending  sort column direction
+ * @param       {Array} props.rowBackgroundColor set the background color of multiple rows based on the index number
+ * @constructor
+ */
 export default class Table extends ReactLibraryFramework{
   constructor(data){
     super(data)
@@ -68,10 +89,15 @@ export default class Table extends ReactLibraryFramework{
 //     }
 //
 
-// Renders the table based on the data and parameters specified in the
-// json table attribute. This was moved to it's own function in order
-// to be complient with React's requirement for useState functionality
-// to be implemented within a function
+
+/**
+ * Renders the table based on the data and parameters specified in the
+ // json table attribute. This was moved to it's own function in order
+ // to be complient with React's requirement for useState functionality
+ // to be implemented within a function
+ * @param       {[type]} props [description]
+ * @constructor
+ */
 export function Render( props ){
 
   // internal variable to tracke the sorted column and sort order
