@@ -68,27 +68,6 @@ export default class Table extends ReactLibraryFramework{
 
 
 
-//     this.parameters = {
-//       tableName: 'table',
-//       table: undefined,
-//       td: undefined,
-//       th: undefined,
-//       tr: undefined,
-//       body: undefined,
-//       showHeader: true,
-//       columnOnClick: undefined,
-//       rowOnClick: undefined,
-//       cellOnClick:{},
-//       button: {},
-//       accordian: false,
-//       columns: this.data.columns,
-//       columnNames: {},
-//       sortable: false,
-//       sortBy: undefined,
-//       sortAscending : false,
-//     }
-//
-
 
 /**
  * Renders the table based on the data and parameters specified in the

@@ -142,4 +142,15 @@ export default class echartsAxis extends Object {
 
   }
 
+
+  // format the axis to display dates
+  scientific(units=2){
+    this.axisLabel = {
+      formatter: (function(value){
+        return value.toExponential(units)
+      })
+    }
+  }
+
+
 }
