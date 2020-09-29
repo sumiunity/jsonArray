@@ -321,21 +321,33 @@ export default class jsonArray extends Array{
   }
 
 
-  // removes json ojects with the same values
-  drop_duplicates(){
+  // Drops duplicates based on the specified column names. Only
+  // the first occurance is kept. Other duplicate management must
+  // be implemented
+  drop_duplicates( columns=[]){
 
-    var cleaned = [];
-    [...this].forEach(function(itm) {
-        var unique = true;
-        cleaned.forEach(function(itm2) {
-            if (_.isEqual(itm, itm2)) unique = false;
-        });
-        if (unique)  cleaned.push(itm);
-    });
+    if( columns.length === 0 ) columns = this.columns
 
-    return new jsonArray(cleaned)
+    const values = this.map(r => columns.map(s => r[s]).toString())
 
+    // create a buffer to hold the unique values
+    // and the rows corresponding to the unique values
+    var unique = []
+    var buffer = []
+
+    // track the unique values and only add the row to
+    // the buffer when it's value is unique
+    for( var i=0; i < values.length; i++ ){
+      if( !unique.includes(values[i]) ){
+          unique.push( values[i] )
+          buffer.push( this[i] )
+      }
+    }
+
+    return new jsonArray( buffer )
   }
+
+
 
   pivot( columns ){
 
