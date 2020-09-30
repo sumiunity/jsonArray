@@ -10,7 +10,6 @@
  * :Date: Sept 29, 2020
  */
 
-import moment from 'moment'
 
 export default class echartsTooltip extends Object {
 
