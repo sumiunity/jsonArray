@@ -260,11 +260,132 @@ export default class jsonArray extends Array{
     return new jsonArray( array )
   }
 
+  /**
+   * Merge two DataFrames together
+   * @param  {Array} json_array           DataFrame to be merged
+   * @param  {Object} [params={how:'left'] how the DataFrames should be merged
+   * @param  {string} on                   index (col) to use for merging
+   * @return {Array}                      DataFrame containing the merged columns
+   */
+  merge( json_array, params={how:'left', on:'__index__'}  ){
 
-  merge( json_array, on  ){
+    var array = []
+    var df1, df2, index
 
+    var col_left, col_right
+
+    // determine the columns to use for merging the left/right
+    // DataFrames based on the specified parameters
+    if( params.on !== undefined ){
+      col_left = params.on
+      col_right = params.on
+    }
+    if( params.on_right !== undefined ) col_right = params.on_right
+    if( params.on_left !== undefined ) col_left = params.on_left
+
+
+    // determine the merging criteria
+    switch( params.how ){
+      case 'left':
+        df1 = this
+        df2 = json_array
+        index = this.unique(col_left)
+        break;
+
+      case 'right':
+        df1 = json_array
+        df2 = this
+        index = this.unique(col_right)
+        break;
+
+      // default to merge on left
+      default:
+        df1 = this
+        df2 = json_array
+        index = this.unique(col_left)
+        break;
+    }
+
+    // pull the rows corresponding to the provided index value
+    for( var i=0; i < index.length; i++ ){
+      const df1_rows = df1.filter(r => r[col_left] === index[i])
+      const df2_rows = df2.filter(r => r[col_right] === index[i])
+
+      // merge rows with similar index values (intersection). Create
+      // multiple rows when duplicate index values are present
+      if( (df1_rows.length > 0)&(df2_rows.length > 0) ){
+        for( var a=0; a < df1_rows.length; a++ ){
+          for( var b=0; b < df2_rows.length; b++ ){
+            array.push({...df1_rows[a], ...df2_rows[b]})
+          }
+        }
+      }
+
+      // add the rows that have no overlap
+      if( (df1_rows.length > 0)&(df2_rows.length == 0) ){
+        for( var a=0; a < df1_rows.length; a++ ){
+            array.push(df1_rows[a])
+        }
+      }
+
+    }
+
+    return new jsonArray( array )
 
   }
+
+  /**
+   * Replaces undefined data with a given value. The values
+   * can be assigned globally or by column
+   * @param  {Object} [params={}] When a value is provided, it is assigned to all columns.
+   *                              Values can be assigne by column, by providing a value
+   *                              per colum in the parameter dictionary
+   * @return {Array}             DataFrame with missing values replaed
+   */
+  fillna( params={} ){
+
+    // duplicate the array to avoid mutation
+    var array = this.__inplace__(params['inplace'])
+
+    var i, j, columns, col, val
+
+    // fill missing values with unique values per column
+    // This assumes that the input is an object with a
+    // value for each column name
+    if( typeof params === 'object'){
+      columns = Object.keys(params)
+
+      // nothing to do when no inputs are provided
+      if( columns.length === 0) return array
+
+      for( var i=0; i < array.length; i ++ ){
+        for( var j=0; j < columns.length; j++ ){
+          col = columns[j]
+          val = params[col]
+          if( array[i][col] === undefined ) array[i][col] = val
+          // if( isNaN(array[i][col]) ) array[i][col] = val
+        }
+      }
+
+    }else{
+
+      // fill all missing values with the same value
+      columns = array.columns
+
+      for( var i=0; i < array.length; i ++ ){
+        for( var j=0; j < columns.length; j++ ){
+          col = columns[j]
+          if( array[i][col] === undefined ) array[i][col] = params
+          // if( isNaN(array[i][col]) ) array[i][col] = params
+        }
+      }
+    }
+
+    return array
+  }
+
+
+
 
   // filters the json array based on the column and the provided value.
   // The value can be either a single variable or an array
@@ -635,6 +756,32 @@ export default class jsonArray extends Array{
     return new jsonArray( array )
   }
 
+
+  /**
+   * Returns a DataFrame containing only the specified column
+   * and the index
+   * @param  {array} columns array of column names
+   * @return {array}         json array containing the specified columns
+   */
+  select_columns( columns ){
+
+    var array = []
+
+    // delete the specified column(s) from the DataFrame
+    for( var i = 0; i < this.length; i++ ){
+
+      var row = {__index__: this[i].__index__}
+      // copy the specified columns for each row
+      for( var j=0; j < columns.length; j++ ){
+        const col = columns[j]
+        row[col] = this[i][col]
+      }
+
+      array.push( row )
+    }
+
+    return new jsonArray( array )
+  }
 
   /**
    * Drops columns from the DataFrame

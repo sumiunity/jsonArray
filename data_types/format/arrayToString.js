@@ -138,7 +138,9 @@ export default class arrayToString{
           whitespace = spacing[col] - value.length
         }
 
-        row_array.push( new Array(whitespace + 1).join(' ') + value )
+        try{
+          row_array.push( new Array(whitespace + 1).join(' ') + value )
+        }catch{row_array.push(value)}
       }
 
       return row_array
