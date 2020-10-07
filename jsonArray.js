@@ -270,7 +270,7 @@ export default class jsonArray extends Array{
   merge( json_array, params={how:'left', on:'__index__'}  ){
 
     var array = []
-    var df1, df2, index
+    var df1, df2, index, a, b
 
     var col_left, col_right
 
@@ -308,22 +308,23 @@ export default class jsonArray extends Array{
 
     // pull the rows corresponding to the provided index value
     for( var i=0; i < index.length; i++ ){
-      const df1_rows = df1.filter(r => r[col_left] === index[i])
-      const df2_rows = df2.filter(r => r[col_right] === index[i])
+      const value = index[i]
+      const df1_rows = df1.filter(r => r[col_left] === value)
+      const df2_rows = df2.filter(r => r[col_right] === value)
 
       // merge rows with similar index values (intersection). Create
       // multiple rows when duplicate index values are present
       if( (df1_rows.length > 0)&(df2_rows.length > 0) ){
-        for( var a=0; a < df1_rows.length; a++ ){
-          for( var b=0; b < df2_rows.length; b++ ){
+        for( a=0; a < df1_rows.length; a++ ){
+          for( b=0; b < df2_rows.length; b++ ){
             array.push({...df1_rows[a], ...df2_rows[b]})
           }
         }
       }
 
       // add the rows that have no overlap
-      if( (df1_rows.length > 0)&(df2_rows.length == 0) ){
-        for( var a=0; a < df1_rows.length; a++ ){
+      if( (df1_rows.length > 0)&(df2_rows.length === 0) ){
+        for( a=0; a < df1_rows.length; a++ ){
             array.push(df1_rows[a])
         }
       }
@@ -358,8 +359,8 @@ export default class jsonArray extends Array{
       // nothing to do when no inputs are provided
       if( columns.length === 0) return array
 
-      for( var i=0; i < array.length; i ++ ){
-        for( var j=0; j < columns.length; j++ ){
+      for( i=0; i < array.length; i ++ ){
+        for( j=0; j < columns.length; j++ ){
           col = columns[j]
           val = params[col]
           if( array[i][col] === undefined ) array[i][col] = val
@@ -372,8 +373,8 @@ export default class jsonArray extends Array{
       // fill all missing values with the same value
       columns = array.columns
 
-      for( var i=0; i < array.length; i ++ ){
-        for( var j=0; j < columns.length; j++ ){
+      for( i=0; i < array.length; i ++ ){
+        for( j=0; j < columns.length; j++ ){
           col = columns[j]
           if( array[i][col] === undefined ) array[i][col] = params
           // if( isNaN(array[i][col]) ) array[i][col] = params

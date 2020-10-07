@@ -31,6 +31,12 @@ export default class ReactComponents extends Object{
   }
 
 
+  get FileIO(){
+
+    const FileIO = require('./plugins/fileIO').default
+    return new FileIO(this.data)
+  }
+
   get semanticUI(){
     if( enabledComponents.semanticUI === false ){
       alert( 'Semantic UI module not installed')

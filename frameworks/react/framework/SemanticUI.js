@@ -27,6 +27,7 @@ export default class SemanticUILibrary extends ReactLibraryFramework{
     this.Excel = this.Excel.bind(this)
     this.Table = this.Table.bind(this)
     this.Dropdown = this.Dropdown.bind(this)
+    this.ToCsv = this.ToCsv.bind(this)
 
   }
 
@@ -41,6 +42,13 @@ export default class SemanticUILibrary extends ReactLibraryFramework{
   Dropdown( props ){
     return Dropdown( this.props(props) )
   }
+
+  ToCsv( props ){
+    const fileIO = require('../plugins/fileIO')
+    return fileIO.ToCsv( {...this.props(props), ...{button: SemanticUI.Button}})
+  }
+
+
 }
 
 
