@@ -139,7 +139,10 @@ export default class echartsSeries extends Object {
       //   temp = [this.json_array[i][col1], this.json_array[i][col2]]
       // }
 
-      temp = [this.json_array[i][col1], this.json_array[i][col2]]
+      // the dataframe index was pushed into the plot data in addition to the
+      // data used for plotting. This was used to locate the part by index
+      // number after splitting it for visualization purposes 
+      temp = [this.json_array[i][col1], this.json_array[i][col2], this.json_array[i]['__index__']]
 
       if( params['label'] !== undefined) temp.push( params['label'] )
 

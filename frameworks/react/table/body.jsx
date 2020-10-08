@@ -280,7 +280,6 @@ function AccordianRow( props ){
         { visible ?
           <TableRow
             {...props.trProps}
-            trStyle={{...{margin:0, padding:0}, ...props.trStyle}}
             component={props.tr}
             key={`${props.tableName}-accordian-row-${props.row_idx}`}
             defaultValue={
@@ -294,10 +293,10 @@ function AccordianRow( props ){
                 col = {'accordianTable'}
                 value={
                   <AccordianTable.react.semanticUI.Table
+                    {...props.accordianProps}
                     tableName={`accordianTable - ${props.row_idx}`}
                     tableStyle={{padding:0, margin:0}}
                     columns={columns}
-                    trStyle={{margin:0, padding:0}}
                     tdStyle={{margin:0, padding:0}}
                     />
                 }

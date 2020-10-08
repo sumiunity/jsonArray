@@ -62,8 +62,9 @@ export function DataFrameHeader( props ) {
       var headerCellOnClick = null
       if( props.columnOnClick !== undefined ){
         // persist the onClick inputs to avoid mutation
+        const col_name = col
         headerCellOnClick = () => props.columnOnClick({
-          col_name: col,
+          col_name: col_name,
           col_number: col_number
         })
       }
