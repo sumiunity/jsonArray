@@ -47,9 +47,10 @@ export function DataFrameHeader( props ) {
   }
 
 
-  for (var i=col_offset; i < columns.length; i++ ){
+  for (var i=0; i < columns.length; i++ ){
       //retrieve the column name from the data structure
       var col = columns[i]
+      const col_number = i + col_offset
 
       //map the column name when the mapping exists
       if( props.columnNames !== undefined ){
@@ -61,10 +62,8 @@ export function DataFrameHeader( props ) {
       var headerCellOnClick = null
       if( props.columnOnClick !== undefined ){
         // persist the onClick inputs to avoid mutation
-        const col_name = col
-        const col_number = i
         headerCellOnClick = () => props.columnOnClick({
-          col_name: col_name,
+          col_name: col,
           col_number: col_number
         })
       }
@@ -78,7 +77,7 @@ export function DataFrameHeader( props ) {
           style={{...{textAlign:'center'}, ...props.thStyle}}
           component={props.th}
           defaultValue = {col}
-          key = {`${props.tableName}-th-${i}`}
+          key = {`${props.tableName}-th-${col_number}`}
           onClick={headerCellOnClick}
           />
       )

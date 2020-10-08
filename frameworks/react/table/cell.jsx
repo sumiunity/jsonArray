@@ -159,6 +159,17 @@ function onClickFunc( props ){
 
   var onClick
 
+  // select the onClick function when provided globally
+  if( props.onClick !== undefined ){
+    onClick = () => props.onClick({
+      row: props.row_idx,
+      col: props.col,
+      value: props.value,
+      row_data: props.row
+      })
+  }
+
+  // extract the onClick function for the specific cell
   if( props.cellOnClick !== undefined ){
 
     // add the onClick function when one exists for the column
@@ -235,6 +246,7 @@ function coloredSquare( colorHex ){
       style={{
         display: "inline-block",
         width: "40px",
+        height: '100%',
         overflow: "visible",
       }}>
 
@@ -242,7 +254,7 @@ function coloredSquare( colorHex ){
         x="0"
         y="0"
         width="40"
-        height="20"
+        height="100%"
         stroke={colors.edge}
         strokeWidth="1"
         fill={colors.fill}

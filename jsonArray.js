@@ -167,6 +167,27 @@ export default class jsonArray extends Array{
     return array
   }
 
+  /**
+   * Applies a given function to a column and returns a DataFrame
+   * with the results. The results can be written inplace or a nedw
+   * column created when specified as a parameter
+   * @param  {string} col     column name
+   * @param  {function} func  function to apply to the column
+   * @param  {string} newCol  when provided a new column is produced
+   * @return {[type]}      [description]
+   */
+  apply( col, func, newCol ){
+
+    if( newCol === undefined ) newCol = col
+
+    for( var i=0; i < this.length; i++ ){
+      this[i][newCol] = func(this[i][col])
+    }
+
+    return this
+  }
+
+
   // returns the values of the data at the specified index
   loc( idx, props={Series:true} ){
 
