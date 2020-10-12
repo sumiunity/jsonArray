@@ -96,6 +96,7 @@ export function Table(props){
 
       button = {SemanticUI.Table.Button}
       image = {SemanticUI.Table.Image}
+      icon = {SemanticUI.Icon}
       />
     )
 
