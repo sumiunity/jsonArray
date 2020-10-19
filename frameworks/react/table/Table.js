@@ -35,6 +35,9 @@ import TableBody from './body'
  * @param       {function} props.rowOnClick     function exectued when a row is selected
  * @param       {function} props.cellOnClick    function exectued when a cell is selected
  * @param       {Boolean} props.accordian  Not implemented
+ * @param       {Boolean} props.accordianHeader  Not implemented
+ * @param       {Boolean} props.accordianColumns  Not implemented
+ * @param       {Boolean} props.accordianFunc  Not implemented
  * @param       {Boolean} props.showHeader when True, the table header will be shown
  * @param       {Boolean} props.sortable   When True, the table can be sorted by the columns
  * @param       {Array} props.columns     Array of column names

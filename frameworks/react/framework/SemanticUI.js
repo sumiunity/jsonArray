@@ -135,12 +135,22 @@ export function Dropdown( props ){
   const child_props = props
   delete child_props.data
 
-  console.log( props)
   return(
-    <SemanticUI.Dropdown
+    <SemanticUI.Form.Field
       {...child_props}
-      options={options}
       key={`dropdown-${props.column}`}
+      control={SemanticUI.Select}
+      label={props.column}
+      options={options}
+      search={true}
+      clearable={true}
+      placeholder={props.column}
     />
   )
 }
+
+// <SemanticUI.Dropdown
+//   {...child_props}
+//   options={options}
+//   key={`dropdown-${props.column}`}
+//   />
