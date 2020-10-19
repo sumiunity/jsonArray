@@ -9,14 +9,38 @@
  * @date Aug 20, 2020
  */
 
-import jsonArray from '../jsonArray'
+import jsonArray from '../../jsonArray'
 
 // import papaparser when available
 var parser
 try{ parser = require("papaparse"); }catch{}
 
-var http = require("http"),
-    zlib = require("zlib");
+var http = require("http"), zlib = require("zlib");
+
+
+export default class fromFileLibrary{
+  constructor(data){
+
+    // must bind this to all internal functions or they will be
+    // lost when rendering via react
+    this.fromUrl = this.fromUrl.bind(this)
+  }
+
+  async fromUrl( url, callback, params={} ){
+
+    // // retrieve the data from the url and parse out the text
+    // const res = await fetch( url )
+    // var text = await res.text();
+    //
+    // // parse the csv and return a json array containing the data
+    // return from_file(text, {header: true})
+
+    return from_url( url, callback, params )
+  }
+
+}
+
+
 
 /**
  * Returns a json array with the contents of the csv file
@@ -52,7 +76,7 @@ export function from_file( file, params={} ){
 * @param  {string} url url address where the data is stored
 * @return {Array}     jsonArray containing the csv data
 */
-export async function from_url( file, callback, params={} ){
+export async function from_url( url, callback, params={} ){
 
   if( parser === undefined ){
     console.log( 'papaparser not installed' )
@@ -63,7 +87,7 @@ export async function from_url( file, callback, params={} ){
   // var data
 
   return await parser.parse(
-    file,
+    url,
     { ...{params},
       ...{
         download: true,

@@ -21,7 +21,7 @@ import jsonArray from '../../../jsonArray'
 
 export default function TableBody( props ) {
 
-  const [selectedRow, setSelectedRow] = useState()
+  const [selectedRow, setSelectedRow] = useState(props.selectedRow)
 
   // default to using the DataFrame Row Format
   var Component = Row
@@ -46,7 +46,7 @@ export default function TableBody( props ) {
         key={`${props.tableName}-Row-${i}`}
         row_idx = {i}
         selectedRow = {selectedRow}
-        setSelectedRow = {setSelectedRow}
+        setSelectedRow = {(value) => setSelectedRow(value)}
         />
     )
 
@@ -221,12 +221,13 @@ function AccordianRow( props ){
         props.setSelectedRow( props.row_idx );
         props.rowOnClick({
           row: props.row_idx,
-          row_data: row_data
+          row_data: row_data,
         })
       }
     }
   }
 
+  // console.log( props.selectedRow, props)
   // set the background color when the row is selected
   var rowStyle = {textAlign:'center'}
   if( props.row_idx === props.selectedRow ){
@@ -298,6 +299,7 @@ function AccordianRow( props ){
                     tableStyle={{padding:0, margin:0}}
                     columns={columns}
                     tdStyle={{margin:0, padding:0}}
+                    showHeader={props.accordianHeader}
                     />
                 }
                 />

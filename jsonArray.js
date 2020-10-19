@@ -467,6 +467,49 @@ export default class jsonArray extends Array{
   // Drops duplicates based on the specified column names. Only
   // the first occurance is kept. Other duplicate management must
   // be implemented
+  count_values( columns=[]){
+
+    if( columns.length === 0 ) columns = this.columns
+
+    const values = this.map(r => columns.map(s => r[s]).toString())
+
+    // create a buffer to hold the unique values
+    // and the rows corresponding to the unique values
+    var unique = []
+    var counts = []
+
+    // track the unique values and only add the row to
+    // the buffer when it's value is unique
+    for( var i=0; i < values.length; i++ ){
+      const val = values[i]
+      if( !unique.includes(val) ){
+        unique.push(val)
+        counts[val] = 0
+      }
+      counts[val]++
+    }
+
+    // map the unique object count back to a flat object
+    var buffer = []
+    for( i=0; i < unique.length; i++ ){
+      const split_val = unique[i].split(',')
+
+      //
+      const obj = {count: counts[unique[i]]}
+      for( var j=0; j < split_val.length; j++ ){
+        obj[columns[j]] = split_val[j]
+      }
+
+      buffer.push( obj )
+    }
+
+    return new jsonArray( buffer )
+  }
+
+
+  // Drops duplicates based on the specified column names. Only
+  // the first occurance is kept. Other duplicate management must
+  // be implemented
   drop_duplicates( columns=[]){
 
     if( columns.length === 0 ) columns = this.columns
@@ -955,4 +998,8 @@ export default class jsonArray extends Array{
 
   get react(){ return new ReactComponents(this) }
 
+  get fileIO(){
+    const fromFileLibrary = require('./frameworks/fileIO/fromFile').default
+    return new fromFileLibrary()
+  }
 }
