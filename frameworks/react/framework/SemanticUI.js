@@ -66,7 +66,7 @@ export function Excel( props ){
       {...props}
       button = {SemanticUI.Button}
       buttonStyle = {{margin:0}}
-      buttonProps = {{color: 'blue'}}
+      buttonProps = {{...{color: 'blue'}, ...props.buttonProps}}
 
       input = {SemanticUI.Input}
       inputStyle = {{margin:0}}
