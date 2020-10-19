@@ -50,6 +50,9 @@ export function Body(props){
   return wrapper( props, 'body' )
 }
 
+export function Icon(props){
+  return wrapper( props, 'icon' )
+}
 
 function wrapper( props, type ){
 
@@ -85,6 +88,8 @@ function wrapper( props, type ){
       case 'thead':
         return <thead {...props}>{props.defaultValue}</thead>
 
+      case 'icon':
+        return <i {...props}>{props.defaultValue}</i>
 
       default:
         console.log( 'default type', type)

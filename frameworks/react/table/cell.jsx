@@ -13,7 +13,7 @@ import React from 'react';
 
 
 import {booleanColor, fillAndEdge} from '../../colors/Colors'
-import {Cell as TableCell, Button, Image} from '../framework/Components'
+import {Cell as TableCell, Button, Image, Icon} from '../framework/Components'
 
 import valueToString from '../../../data_types/format/valueToString'
 
@@ -59,6 +59,20 @@ export default function Cell( props ) {
           component={props.image}
           key={`${props.tableName}-image-${props.col}-${props.row_idx}`}
           defaultValue={value}
+          onClick={componentOnClick}
+          />
+      )
+      break;
+
+    case 'icon':
+      cellOnClick = null
+      cellContent = (
+        <Icon
+          {...props.IconProps}
+          key={`${props.tableName}-icon-${props.col}-${props.row_idx}`}
+          style={{...{textAlign:'center'}, ...props.iconStyle}}
+          component={props.icon}
+          name={value}
           onClick={componentOnClick}
           />
       )
