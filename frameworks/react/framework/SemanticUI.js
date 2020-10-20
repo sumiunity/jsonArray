@@ -109,6 +109,7 @@ export function Dropdown( props ){
   var ascending = true
   if( props.ascending !== undefined ) ascending = props.ascending
 
+
   // retrieve the unique calues from the specified column
   var values
   switch( props.plottype ){
@@ -117,11 +118,15 @@ export function Dropdown( props ){
       break
 
     case 'value' :
-      values = props.data.unique( props.column, ascending )
+      values = props.data
+        .filter(r => r[props.column] !== undefined )
+        .unique( props.column, ascending )
       break
 
     default :
-      values = props.data.unique( props.column, ascending )
+      values = props.data
+        .filter(r => r[props.column] !== undefined )
+        .unique( props.column, ascending )
       break
   }
 
