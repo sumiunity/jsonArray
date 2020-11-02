@@ -10,23 +10,65 @@
  */
 
 
-import React from "react";
+import React, {useState} from "react";
 
-import jsonArray from 'jsonArray/jsonArray'
+import {Grid} from 'semantic-ui-react'
+import jsonArray from '../../../jsonArray'
 
+import {FixedDocument} from './CodeDocumentation'
 
-export default function ExcelComponentTest( props ){
+export default function Excel( props ){
+
+  const [xlsx, setXlsx] = useState([])
 
   const json_array = new jsonArray()
+  const xlsx_array = new jsonArray(xlsx)
 
   return (
-    <div>
-      <h2>Excel dev</h2>
-      <json_array.react.semanticUI.Excel
-        callback = {(value) => console.log( 'parent callback', value )}
-      />
+    <Grid style={{padding: '0 30px 0 30px'}}>
+      <Grid.Row>
+        <Grid.Column>
 
-    </div>
+          <FixedDocument
+            visible={true}
+            title={'Excel Import'}
+            code={`
+
+              const [xlsx, setXlsx] = useState([])
+
+              var json_array = new jsonArray( data )
+              const xlsx_array = new jsonArray(xlsx)
+
+
+              return (
+                <div>
+                  <json_array.react.semanticUI.Excel
+                    callback = {(value) => setXlsx( value )}
+                    />
+                  <xlsx_array.react.semanticUI.Table
+                    tableName = {'data'}
+                    sortable={true}
+                    />
+                </div>
+              )
+              `}
+              component={
+                <div>
+                  <json_array.react.semanticUI.Excel
+                    callback = {(value) => setXlsx( value )}
+                    />
+                  <xlsx_array.react.semanticUI.Table
+                    tableName = {'data'}
+                    sortable={true}
+                    />
+                </div>
+              }
+            />
+
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+
   )
 
 }

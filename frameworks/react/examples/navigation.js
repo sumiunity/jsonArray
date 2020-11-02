@@ -11,9 +11,12 @@
 
 import Table from "./Table"
 
+import ECharts from "./ECharts"
+import Excel from "./Excel"
+
 
 export const Examples = [
-  { menu: 'jsonArray Examples',
+  { menu: 'jsonArray',
     name: 'Table',
     path:'/Table',
     component: Table,
@@ -22,4 +25,21 @@ export const Examples = [
     admin: true,
   },
 
+  { menu: 'jsonArray',
+    name: 'ECharts',
+    path:'/ECharts',
+    component: ECharts,
+    auth: 'public',
+    show: true,
+    admin: true,
+  },
+
+  { menu: 'jsonArray',
+    name: 'Excel',
+    path:'/Excel',
+    component: Excel,
+    auth: 'public',
+    show: true,
+    admin: true,
+  },
 ]
