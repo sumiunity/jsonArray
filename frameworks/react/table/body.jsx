@@ -28,7 +28,9 @@ export default function TableBody( props ) {
   var rows = props.table_data.length
 
   // when lazy loading is implemented, limited the number of rows to render
-  if( props.lazyLoading === true ) rows = props.renderedRows
+  if( (props.lazyLoading === true)&(props.renderedRows < rows) ){
+    rows = props.renderedRows
+  }
 
   // overwrite the component with Accordian rows when specified
   if( props.accordian === true ) Component = AccordianRow
@@ -52,8 +54,27 @@ export default function TableBody( props ) {
         setSelectedRow = {(value) => setSelectedRow(value)}
         />
     )
+  }
 
-
+  // add a row to show more rows, when there are more rows to show
+  if( (props.lazyLoading === true)&(props.renderedRows < props.table_data.length) ){
+    body.push(
+      <TableRow
+        {...props.trProps}
+        style={{...props.trStyle}}
+        component={props.tr}
+        key={`${props.tableName}-row--lazyloading`}
+        onClick={() => {
+          const step = (props.lazyLoadingStep === undefined ? 100 : props.lazyLoadingStep)
+          props.setRenderedRows(props.renderedRows + step)
+        }}
+        defaultValue={
+          <td colSpan={props.columns.length}>
+            <h3>'show more rows'</h3>
+          </td>
+        }
+        />
+    )
   }
 
   return (

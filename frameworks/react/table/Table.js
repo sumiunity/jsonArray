@@ -44,6 +44,9 @@ import TableBody from './body'
  * @param       {Array} props.columnNames Array of column names
  * @param       {String} props.sortBy     column name that will be presorted
  * @param       {String} props.sortAscending  sort column direction
+ * @param       {boolean} props.lazingLoading  when True, only part of the table will be rendered with the ability to render in steps (lazy loading)
+ * @param       {Integer} props.lazyLoadingStart  Number of rows to render on init
+ * @param       {Integer} props.lazyLoadingStep   Number of rows to add when rerendering
  * @param       {Array} props.rowBackgroundColor set the background color of multiple rows based on the index number
  * @constructor
  */
@@ -85,7 +88,7 @@ export function Render( props ){
   // internal variable to tracke the sorted column and sort order
   const [sortBy, setSortBy] = useState(props.sortBy)
   const [sortAscending, setSortAscending] = useState(props.sortAscending)
-  const [renderedRows, setRenderedRows] = useState(100)
+  const [renderedRows, setRenderedRows] = useState((props.lazyLoadingStart === undefined) ? 100 : props.lazyLoadingStart)
 
   // cast the data to a json_array data type
   var table_data = props.data
