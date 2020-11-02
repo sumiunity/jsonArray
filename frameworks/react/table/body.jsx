@@ -27,6 +27,9 @@ export default function TableBody( props ) {
   var Component = Row
   var rows = props.table_data.length
 
+  // when lazy loading is implemented, limited the number of rows to render
+  if( props.lazyLoading === true ) rows = props.renderedRows
+
   // overwrite the component with Accordian rows when specified
   if( props.accordian === true ) Component = AccordianRow
 

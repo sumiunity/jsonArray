@@ -77,6 +77,7 @@ export function Render( props ){
   // internal variable to tracke the sorted column and sort order
   const [sortBy, setSortBy] = useState(props.sortBy)
   const [sortAscending, setSortAscending] = useState(props.sortAscending)
+  const [renderedRows, setRenderedRows] = useState(100)
 
   // cast the data to a json_array data type
   var table_data = props.data
@@ -133,6 +134,8 @@ export function Render( props ){
           tableName = {tableName}
           table_data={table_data}
           columns = {columns}
+          renderedRows = {renderedRows}
+          setRenderedRows = {setRenderedRows}
           />
         ]}
       />
