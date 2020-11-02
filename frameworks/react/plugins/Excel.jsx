@@ -28,6 +28,7 @@ export default class Excel extends React.Component{
 
     var fileInputRef = React.createRef();
 
+    console.log( 'button props', this.props)
     return (
       <>
         <Button
@@ -36,7 +37,7 @@ export default class Excel extends React.Component{
           key={`${this.state.name}-Button`}
           style={this.props.buttonStyle}
           onClick={() => fileInputRef.current.click()}
-          defaultValue='Upload'
+          defaultValue={this.props.defaultValue === undefined ? 'Upload' : this.props.defaultValue}
           />
 
         <input

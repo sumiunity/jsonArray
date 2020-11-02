@@ -16,12 +16,12 @@ import Series from '../../../Series'
 
 import Cell from './cell'
 import {Body, Row as TableRow} from '../framework/Components'
-
+import jsonArray from '../../../jsonArray'
 
 
 export default function TableBody( props ) {
 
-  const [selectedRow, setSelectedRow] = useState()
+  const [selectedRow, setSelectedRow] = useState(props.selectedRow)
 
   // default to using the DataFrame Row Format
   var Component = Row
@@ -49,7 +49,7 @@ export default function TableBody( props ) {
         key={`${props.tableName}-Row-${i}`}
         row_idx = {i}
         selectedRow = {selectedRow}
-        setSelectedRow = {setSelectedRow}
+        setSelectedRow = {(value) => setSelectedRow(value)}
         />
     )
 
@@ -74,14 +74,15 @@ export default function TableBody( props ) {
 
 function Row( props ) {
 
+    const row_data = props.table_data[props.row_idx]
     const row = []
     for (var i=0; i < props.columns.length; i++ ){
       const col = props.columns[i]
       row.push(
         <Cell
           {...props}
-          row={props.table_data[props.row_idx]}
-          value={props.table_data[props.row_idx][col]}
+          row={row_data}
+          value={row_data[col]}
           dtype={props.table_data.dtypes[col]}
           key={`${props.tableName}-cell-${props.row_idx}-${i}`}
           col = {col}
@@ -97,7 +98,7 @@ function Row( props ) {
         props.setSelectedRow( props.row_idx );
         props.rowOnClick({
           row: props.row_idx,
-          row_data: props.table_data[props.row_idx]
+          row_data: row_data
         })
       }
     }
@@ -108,6 +109,19 @@ function Row( props ) {
       rowStyle = {textAlign:'center', backgroundColor: '#8c9ac0'}
     }
 
+    // Row background color allows for the control of the background
+    // color of multiple rows based on the index number
+    if( props.rowBackgroundColor !== undefined ){
+      if( props.rowBackgroundColor.includes(row_data.__index__) ){
+        rowStyle = {textAlign:'center', backgroundColor: '#8c9ac0'}
+      }
+    }
+
+    // return the cell content not wrapped in a row element. This
+    // is needed for row extensions such as the accordian rows.
+    if( props.cellContentOnly === true ){
+      return row
+    }
 
     return (
       <TableRow
@@ -184,61 +198,139 @@ function SeriesRow( props ) {
   )
 }
 
-// // An accordian row unfolds when the carot icon is selected. It retracts
-// // when the carot icon is selected again. The purpose is to allow for an
-// // unfolding rows to show additional options
+/**
+ * Accordian Tables are available after performing the groupby
+ * function, where both metadata and the json object are available
+ * based on the split.
+ *
+ * The accordian table shows the data based on the split described
+ * by the parent table
+ * @param       {[type]} props [description]
+ * @constructor
+ */
 function AccordianRow( props ){
-  return <Row {...props} />
+
+  // state variable to track the visibility state of the accordian
+  const [visible, setVisible] = useState(false)
+
+  const row_data = props.table_data[props.row_idx]
+
+  // map the rowOnClick function to cellonClick to
+  // disable the onClick function of the icon row
+  var cellOnClick = {}
+  if( props.rowOnClick !== undefined ){
+    for( var i=0; i < props.columns.length; i++ ){
+      cellOnClick[props.columns[i]] = () => {
+        props.setSelectedRow( props.row_idx );
+        props.rowOnClick({
+          row: props.row_idx,
+          row_data: row_data,
+        })
+      }
+    }
+  }
+
+  // console.log( props.selectedRow, props)
+  // set the background color when the row is selected
+  var rowStyle = {textAlign:'center'}
+  if( props.row_idx === props.selectedRow ){
+    rowStyle = {textAlign:'center', backgroundColor: '#8c9ac0'}
+  }
+
+  // select an icon based on the visible flag
+  var icon = '^'
+  if( visible === true ) icon = '>'
+
+
+  var AccordianTable = new jsonArray(row_data.json_obj)
+
+  // when provided, apply the the function to transform the subgroup
+  if( props.accordianFunc !== undefined) AccordianTable = props.accordianFunc(AccordianTable)
+
+  var columns = AccordianTable.columns
+  if( props.accordianColumns !== undefined ) columns = props.accordianColumns
+
+  return (
+    <>
+      <TableRow
+        {...props.trProps}
+        style={{...rowStyle, ...props.trStyle}}
+        component={props.tr}
+        key={`${props.tableName}-row--${props.row_idx}`}
+        defaultValue={
+          <>
+            <Cell
+              {...props}
+              style={{maxWidth:'50px'}}
+              row={props.row_idx}
+              value={icon}
+              dtype={'icon'}
+              key={`${props.tableName}-accordian-control-${props.row_idx}`}
+              col = {'accordianEnable'}
+              onClick={() => {setVisible(!visible)} }
+              />
+
+            <Row
+              {...props}
+              cellContentOnly={true}
+              cellOnClick={cellOnClick}
+              />
+          </>
+        }
+        />
+
+
+
+        { visible ?
+          <TableRow
+            {...props.trProps}
+            component={props.tr}
+            key={`${props.tableName}-accordian-row-${props.row_idx}`}
+            defaultValue={
+              <Cell
+                {...props}
+                tdProps={{colSpan:4}}
+                tdStyle={{margin:0, padding:0}}
+                row={props.row_idx}
+                dtype={'table'}
+                key={`${props.tableName}-accordian-dropodwn-${props.row_idx}-${-1}`}
+                col = {'accordianTable'}
+                value={
+                  <AccordianTable.react.semanticUI.Table
+                    {...props.accordianProps}
+                    tableName={`accordianTable - ${props.row_idx}`}
+                    tableStyle={{padding:0, margin:0}}
+                    columns={columns}
+                    tdStyle={{margin:0, padding:0}}
+                    showHeader={props.accordianHeader}
+                    />
+                }
+                />
+
+
+            }
+            />
+          : null
+        }
+
+
+    </>
+  )
+
 }
+// <Table.Row>
+//   <Cell
+//     {...props}
+//     row={-1}
+//     value={icon}
+//     dtype={'icon'}
+//     key={`${props.tableName}-cell-${props.row_idx}-${-1}`}
+//     col = {'accordianEnable'}
 //
-//   const [visible, setVisible] = useState(false)
+//     >
+//     {icon}
+//   </Cell>
 //
+//   <Row {...props} />
 //
-//   if( props.table.accordian === undefined ) return null
-//
-//
-//   // when the content of the accordian data is less than the
-//   // row number, post warning and return the data as a standard
-//   // row
-//   if( props.row >= props.table.accordian.length ){
-//     console.log( 'WARN - accordian data not long enough', props.row, props.table.accordian.length )
-//     return <TableBodyRow {...props} />
-//   }
-//
-//   // select an icon based on the visible flag
-//   var icon = <Icon name='caret up' />
-//   if( visible === true ) icon = <Icon name='caret down' />
-//
-//   // extract the number of columns for the specified row
-//   const columns = Object.keys(props.table.data[props.row]).length
-//
-//   return (
-//     <>
-//       <Table.Row>
-//         <Table.Cell
-//           style={{width:'50px'}}
-//           onClick={() => setVisible(!visible)}
-//           >
-//           {icon}
-//         </Table.Cell>
-//
-//         <TableBodyRow
-//           cellDataOnly={true}
-//           {...props}
-//           />
-//
-//       </Table.Row>
-//
-//       { visible ?
-//         <Table.Row>
-//           <Table.Cell colSpan={columns} style={{padding:'0'}}>
-//             {props.table.accordian[props.row]}
-//           </Table.Cell>
-//         </Table.Row>
-//         : null
-//       }
-//
-//     </>
-//   )
-//
-// }
+// </Table.Row>

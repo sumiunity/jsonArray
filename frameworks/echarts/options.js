@@ -13,6 +13,7 @@
 import jsonArray from '../../jsonArray'
 import echartsAxis from './axis'
 import echartsSeries from './series'
+import echartsTooltip from './tooltips'
 import moment from 'moment'
 
 
@@ -43,13 +44,7 @@ export default class echartsOptions extends Object {
     // default animations to off for performance
     this.animation = false
 
-    this.tooltip = {
-        trigger: 'item',
-        position: 'top',
-        axisPointer: {
-            type: 'shadow'
-        }
-    }
+    this.tooltip = new echartsTooltip()
 
     this.grid = {
         left: '10%',
@@ -263,10 +258,11 @@ export default class echartsOptions extends Object {
       markLine: {
           symbol: "none",
           data: [{
-            name: value,
+            tooltip: {show:false},
+            name: value.toExponential(3),
             yAxis: value,
             label: {
-              formatter: value,
+              formatter: value.toExponential(3),
               position: 'end'
             }
           }]
@@ -285,10 +281,11 @@ export default class echartsOptions extends Object {
       markLine: {
           symbol: "none",
           data: [{
-            name: value,
+            tooltip: {show:false},
+            name: value.toExponential(3),
             xAxis: value,
             label: {
-              formatter: value,
+              formatter: value.toExponential(3),
               position: 'end'
             }
           }]

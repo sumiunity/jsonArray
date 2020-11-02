@@ -186,9 +186,9 @@ export default class DataTypes extends Object{
         return Number( value )
 
       case 'boolean' :
-        if( value === 'true' ) return true
-        if( value === 'false' ) return false
         if( value === false | value === true ) return value
+        if( value.toLowerCase() === 'true' ) return true
+        if( value.toLowerCase() === 'false' ) return false
         return Number( value )
 
       case 'array':

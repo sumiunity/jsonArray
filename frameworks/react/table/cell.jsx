@@ -13,7 +13,7 @@ import React from 'react';
 
 
 import {booleanColor, fillAndEdge} from '../../colors/Colors'
-import {Cell as TableCell, Button, Image} from '../framework/Components'
+import {Cell as TableCell, Button, Image, Icon} from '../framework/Components'
 
 import valueToString from '../../../data_types/format/valueToString'
 
@@ -59,6 +59,20 @@ export default function Cell( props ) {
           component={props.image}
           key={`${props.tableName}-image-${props.col}-${props.row_idx}`}
           defaultValue={value}
+          onClick={componentOnClick}
+          />
+      )
+      break;
+
+    case 'icon':
+      cellOnClick = null
+      cellContent = (
+        <Icon
+          {...props.IconProps}
+          key={`${props.tableName}-icon-${props.col}-${props.row_idx}`}
+          style={{...{textAlign:'center'}, ...props.iconStyle}}
+          component={props.icon}
+          name={value}
           onClick={componentOnClick}
           />
       )
@@ -116,10 +130,23 @@ export default function Cell( props ) {
 
   }
 
+  var style = {textAlign:'center'}
+
+  // the background color can be provided as a field of table object.
+  // The background color parameter requires a json array with the
+  // same fields as the data table. What would normally contain the
+  // data now contains colors
+  if( props.cellBackgroundColor !== undefined ){
+    try{
+      const color = props.cellBackgroundColor[props.row_idx][props.col]
+      if( color !== undefined ) style['backgroundColor'] = color
+    }catch{}
+  }
+
   return (
     <TableCell
       {...props.tdProps}
-      style={{...{textAlign:'center'}, ...props.tdStyle}}
+      style={{...style, ...props.tdStyle}}
       component={props.td}
       key = {`${props.tableName}-cell-${props.col}-${props.row_idx}`}
       onClick={cellOnClick}
@@ -146,6 +173,17 @@ function onClickFunc( props ){
 
   var onClick
 
+  // select the onClick function when provided globally
+  if( props.onClick !== undefined ){
+    onClick = () => props.onClick({
+      row: props.row_idx,
+      col: props.col,
+      value: props.value,
+      row_data: props.row
+      })
+  }
+
+  // extract the onClick function for the specific cell
   if( props.cellOnClick !== undefined ){
 
     // add the onClick function when one exists for the column
@@ -222,6 +260,7 @@ function coloredSquare( colorHex ){
       style={{
         display: "inline-block",
         width: "40px",
+        height: '100%',
         overflow: "visible",
       }}>
 
@@ -229,7 +268,7 @@ function coloredSquare( colorHex ){
         x="0"
         y="0"
         width="40"
-        height="20"
+        height="100%"
         stroke={colors.edge}
         strokeWidth="1"
         fill={colors.fill}

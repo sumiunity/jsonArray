@@ -27,6 +27,7 @@ export default class SemanticUILibrary extends ReactLibraryFramework{
     this.Excel = this.Excel.bind(this)
     this.Table = this.Table.bind(this)
     this.Dropdown = this.Dropdown.bind(this)
+    this.ToCsv = this.ToCsv.bind(this)
 
   }
 
@@ -41,6 +42,13 @@ export default class SemanticUILibrary extends ReactLibraryFramework{
   Dropdown( props ){
     return Dropdown( this.props(props) )
   }
+
+  ToCsv( props ){
+    const fileIO = require('../plugins/fileIO')
+    return fileIO.ToCsv( {...this.props(props), ...{button: SemanticUI.Button}})
+  }
+
+
 }
 
 
@@ -58,7 +66,7 @@ export function Excel( props ){
       {...props}
       button = {SemanticUI.Button}
       buttonStyle = {{margin:0}}
-      buttonProps = {{color: 'blue'}}
+      buttonProps = {{...{color: 'blue'}, ...props.buttonProps}}
 
       input = {SemanticUI.Input}
       inputStyle = {{margin:0}}
@@ -88,6 +96,7 @@ export function Table(props){
 
       button = {SemanticUI.Table.Button}
       image = {SemanticUI.Table.Image}
+      icon = {SemanticUI.Icon}
       />
     )
 
@@ -100,6 +109,7 @@ export function Dropdown( props ){
   var ascending = true
   if( props.ascending !== undefined ) ascending = props.ascending
 
+
   // retrieve the unique calues from the specified column
   var values
   switch( props.plottype ){
@@ -108,11 +118,15 @@ export function Dropdown( props ){
       break
 
     case 'value' :
-      values = props.data.unique( props.column, ascending )
+      values = props.data
+        .filter(r => r[props.column] !== undefined )
+        .unique( props.column, ascending )
       break
 
     default :
-      values = props.data.unique( props.column, ascending )
+      values = props.data
+        .filter(r => r[props.column] !== undefined )
+        .unique( props.column, ascending )
       break
   }
 
@@ -126,12 +140,22 @@ export function Dropdown( props ){
   const child_props = props
   delete child_props.data
 
-  console.log( props)
   return(
-    <SemanticUI.Dropdown
+    <SemanticUI.Form.Field
       {...child_props}
-      options={options}
       key={`dropdown-${props.column}`}
+      control={SemanticUI.Select}
+      label={props.column}
+      options={options}
+      search={true}
+      clearable={true}
+      placeholder={props.column}
     />
   )
 }
+
+// <SemanticUI.Dropdown
+//   {...child_props}
+//   options={options}
+//   key={`dropdown-${props.column}`}
+//   />

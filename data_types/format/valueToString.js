@@ -73,7 +73,7 @@ export default class valueToString{
 
   // limits the number of characters in a string
   format_string( value ){
-    if( value.length > this.string ) return value.splice(this.string)
+    if( value.length > this.string ) return value.slice(1, this.string)
     return value
   }
 
