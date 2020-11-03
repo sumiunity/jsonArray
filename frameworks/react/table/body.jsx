@@ -22,6 +22,7 @@ import jsonArray from '../../../jsonArray'
 export default function TableBody( props ) {
 
   const [selectedRow, setSelectedRow] = useState(props.selectedRow)
+  const [onHover, setOnHover] = useState(false)
 
   // default to using the DataFrame Row Format
   var Component = Row
@@ -69,8 +70,12 @@ export default function TableBody( props ) {
           props.setRenderedRows(props.renderedRows + step)
         }}
         defaultValue={
-          <td colSpan={props.columns.length}>
-            <h3>'show more rows'</h3>
+          <td
+            onMouseOver={()=>setOnHover(true)}
+            onMouseOut={()=>setOnHover(false)}
+            style={{backgroundColor: (onHover ? '#AFEEEE' : '#F0FFFF')}}
+            colSpan={props.columns.length}>
+            <h3>show more rows</h3>
           </td>
         }
         />
