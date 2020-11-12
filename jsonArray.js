@@ -338,7 +338,7 @@ export default class jsonArray extends Array{
       if( (df1_rows.length > 0)&(df2_rows.length > 0) ){
         for( a=0; a < df1_rows.length; a++ ){
           for( b=0; b < df2_rows.length; b++ ){
-            array.push({...df1_rows[a], ...df2_rows[b]})
+            array.push({...df2_rows[b], ...df1_rows[a]})
           }
         }
       }
