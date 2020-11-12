@@ -187,6 +187,20 @@ export default class jsonArray extends Array{
     return this
   }
 
+  /**
+   * cretes a new column by applying the provided function to each row
+   * @param  {string} col     name of the column to create
+   * @param  {function} func  function to apply to the column
+   */
+   create_column( col, func){
+
+    for( var i=0; i < this.length; i++ ){
+      this[i][col] = func(this[i])
+    }
+
+    return this
+  }
+
 
   // returns the values of the data at the specified index
   loc( idx, props={Series:true} ){
