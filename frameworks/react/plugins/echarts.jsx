@@ -228,6 +228,19 @@ export function Pareto( props ){
   // format the x axis as a date when specified
   if( (props.dates === true) | (props.colx === 'date') ){
 
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
 
     pivot = pivot.apply('row', (value) => moment(value), 'datetime' )
 
@@ -237,19 +250,16 @@ export function Pareto( props ){
 
     // calculate the number of days between the minimum and maximum date
     const t = new Date(Math.min.apply(null,datetimes))
-    const start_date = moment(t.toLocaleDateString("en-US"))
+    const start_date = moment(formatDate(t))
 
+    // calculate the number of days within the window
     const timeframe = (pivot.max('datetime') - pivot.min('datetime') )/(60*60*24*1000)
-
-    console.log( start_date.format('YYYY-MM-DD'), timeframe )
 
     // add dates not in the pivot table
     for( var i=0; i < timeframe; i++ ){
       const date = moment(start_date).add(i, 'days').format('YYYY-MM-DD')
-      console.log( 'adding date', i, date, start_date  )
       if( !dates.includes(date) ) pivot.push({row: date})
     }
-    console.log( pivot)
   }
 
   // sort the usage by date to ensure proper ordering

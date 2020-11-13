@@ -112,7 +112,7 @@ export default function Cell( props ) {
       break
 
     case 'text':
-      cellContent = value
+      cellContent = <p style={{whiteSpace:'pre'}}>{value}</p>
       break
 
     case 'float':
@@ -124,7 +124,7 @@ export default function Cell( props ) {
       break
 
     default:
-      cellContent = value
+      cellContent = <p style={{whiteSpace:'pre'}}>{value}</p>
 
 
 

@@ -180,6 +180,11 @@ function SeriesRow( props ) {
     __value__: values[props.row_idx],
   }
 
+  // default the data type unless the table contains a datatype array
+  // which is provided manually for table customization
+  var dtype = props.table_data.dtype
+  if( props.table_data.dtypes !== undefined ) dtype = props.table_data.dtypes[row_data['__index__']]
+
   const row = [
     <Cell
       {...props}
@@ -194,7 +199,7 @@ function SeriesRow( props ) {
       {...props}
       row={row_data}
       value={row_data['__value__']}
-      dtype={props.table_data.dtypes[row_data['__index__']]}
+      dtype={dtype}
       key={`${props.tableName}-cell-${props.row_idx}-${1}`}
       col = {'__value__'}
       />
