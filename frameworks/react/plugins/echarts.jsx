@@ -13,6 +13,7 @@
 import React from 'react';
 import ReactEcharts from "echarts-for-react";
 
+import moment from 'moment'
 import ReactLibraryFramework from '../ReactLibraryFramework'
 
 
@@ -28,6 +29,7 @@ export default class echartsLibrary extends ReactLibraryFramework{
     this.Scatter = this.Scatter.bind(this)
     this.Bar = this.Bar.bind(this)
     this.Histogram = this.Histogram.bind(this)
+    this.Pareto = this.Pareto.bind(this)
 
 
   }
@@ -54,6 +56,10 @@ export default class echartsLibrary extends ReactLibraryFramework{
 
   Histogram( props ){
     return Histogram( this.props(props) )
+  }
+
+  Pareto( props ){
+    return Pareto( this.props(props) )
   }
 }
 
@@ -196,6 +202,67 @@ export function Histogram( props ){
     <EchartsReact
       {...props}
       option = {options.bar({colx: 'value', coly: 'count'})}
+      />
+  )
+}
+
+
+/**
+ * Returns a Pareto plot component based on the contents of the
+ * jsonArray DAtaFrame
+ */
+export function Pareto( props ){
+
+  const options = props.data.echartsOptions
+
+  // pivot the user data based the unique users per day
+  var pivot = props.data.pivot_table(
+    props.colx,
+    props.coly,
+    'unique',
+    props.label
+    )
+
+  const split_values = props.data.unique(props.coly)
+
+  // format the x axis as a date when specified
+  if( (props.dates === true) | (props.colx === 'date') ){
+
+
+    pivot = pivot.apply('row', (value) => moment(value), 'datetime' )
+
+    // extract a list of unique day
+    const dates = pivot.unique('row')
+    const datetimes = pivot.unique('datetime')
+
+    // calculate the number of days between the minimum and maximum date
+    const t = new Date(Math.min.apply(null,datetimes))
+    const start_date = moment(t.toLocaleDateString("en-US"))
+
+    const timeframe = (pivot.max('datetime') - pivot.min('datetime') )/(60*60*24*1000)
+
+    console.log( start_date.format('YYYY-MM-DD'), timeframe )
+
+    // add dates not in the pivot table
+    for( var i=0; i < timeframe; i++ ){
+      const date = moment(start_date).add(i, 'days').format('YYYY-MM-DD')
+      console.log( 'adding date', i, date, start_date  )
+      if( !dates.includes(date) ) pivot.push({row: date})
+    }
+    console.log( pivot)
+  }
+
+  // sort the usage by date to ensure proper ordering
+  pivot = pivot.sort_values('row')
+
+
+  return(
+    <Bar
+      {...props}
+      data = {pivot}
+      colx = 'row'
+      coly = {split_values}
+      stacked = {true}
       />
   )
 }
