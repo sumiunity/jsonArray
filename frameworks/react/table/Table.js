@@ -88,6 +88,7 @@ export function Render( props ){
   // internal variable to tracke the sorted column and sort order
   const [sortBy, setSortBy] = useState(props.sortBy)
   const [sortAscending, setSortAscending] = useState(props.sortAscending)
+  const [filters, setFilters] = useState(props.filters)
   const [renderedRows, setRenderedRows] = useState((props.lazyLoadingStart === undefined) ? 100 : props.lazyLoadingStart)
 
   // cast the data to a json_array data type
@@ -115,11 +116,35 @@ export function Render( props ){
       }
   }
 
+  // enable the column onClick to track the selected column, which will
+  // be sorted when enabled
+  var columnFilterOnChange = props.columnFilterOnChange
+  if( props.filterable === true ){
+      columnFilterOnChange = (content) => {
+        var temp = filters
+        // manage initial conditions
+        if( temp === undefined ) temp = []
+
+        temp = temp.filter(r => r.col_name !== content.col_name)
+
+        // only push valid values (accounts for dropdown clearing)
+        if( content.value !== '' ) temp.push( content )
+        setFilters( temp )
+      }
+  }
+
   // sort the data based on the column name specified in the parameters
   // or the internal state variable when selection is enabled
   var sortedColumn = sortBy
   if( sortedColumn !== undefined ){
     table_data = table_data.sort_values( sortedColumn, sortAscending)
+  }
+
+  // filter Table based on the values stored in the filter object array
+  if( filters !== undefined ){
+    for( var i=0; i < filters.length; i ++ ){
+      table_data = table_data.filter(r => r[filters[i].col_name] === filters[i].value)
+    }
   }
 
   return (
@@ -137,6 +162,7 @@ export function Render( props ){
           table_data={table_data}
           columns = {columns}
           columnOnClick = {columnOnClick}
+          columnFilterOnChange = {columnFilterOnChange}
           />,
 
         <TableBody
