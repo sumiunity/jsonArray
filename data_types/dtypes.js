@@ -185,6 +185,9 @@ export default class DataTypes extends Object{
       case 'float' :
         return Number( value )
 
+      case 'string' :
+        return value.toString()
+
       case 'boolean' :
         if( value === false | value === true ) return value
         if( value.toLowerCase() === 'true' ) return true

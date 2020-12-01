@@ -79,12 +79,12 @@ export default class echartsOptions extends Object {
 
     // set the x axis values using the Axis class
     this.xAxis = new echartsAxis()
-    this.xAxis.to_category({values: this.json_array.unique(params.colx) })
+    this.xAxis.to_category({values: this.json_array.unique(params.colx, true) })
     this.xAxis.label( params.colx )
 
     // set the y axis values using the Axis class
     this.yAxis = new echartsAxis()
-    this.yAxis.to_category({ values: this.json_array.unique(params.coly) })
+    this.yAxis.to_category({ values: this.json_array.unique(params.coly, true) })
     this.xAxis.label( params.coly )
 
 
@@ -105,10 +105,14 @@ export default class echartsOptions extends Object {
     this.series = [{
         type: 'heatmap',
         data: this.json_array.map(function (item) {
+
+          var value = Number(item[params.value])
+          if( params.percentage === true ) value = (Number(item[params.value])*100).toFixed(2)
+
             return [
               item[params.colx],
               item[params.coly],
-              (Number(item[params.value])*100).toFixed(2)
+              value
             ]
           }),
         label: {

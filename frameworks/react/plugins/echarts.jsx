@@ -127,10 +127,23 @@ export function Heatmap( props ){
 
   const options = props.data.echartsOptions
 
+  var onClick = (value) => console.log( 'onClick not implemented', value)
+  if( props.onClick !== undefined ){
+    onClick = (value) => {
+      props.onClick(
+        props.data.filter(r =>
+          (r[props.colx] === value.value[0]) &
+          (r[props.coly] === value.value[1])
+        )[0]
+      )
+    }
+  }
+
   return(
     <EchartsReact
       {...props}
       option = {options.heatmap(props)}
+      onClick = {onClick}
       />
   )
 }
