@@ -143,8 +143,10 @@ export function Render( props ){
   // filter Table based on the values stored in the filter object array
   if( filters !== undefined ){
     for( var i=0; i < filters.length; i ++ ){
+      console.log( 'thisis the filter', filters[i])
       table_data = table_data.filter(r => r[filters[i].col_name] === filters[i].value)
     }
+    console.log( table_data)
   }
 
   return (
@@ -161,6 +163,7 @@ export function Render( props ){
           tableName = {tableName}
           table_data={table_data}
           columns = {columns}
+          filters = {filters}
           columnOnClick = {columnOnClick}
           columnFilterOnChange = {columnFilterOnChange}
           />,

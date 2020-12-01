@@ -41,6 +41,20 @@ export default function ColumnFilter( props ){
     })
   }
 
+  var filterValues
+  if( props.filters !== undefined ){
+    filterValues = (props.filters
+      .filter(r => r.col_name === props.col)
+      .map(r => r.value)
+    )
+
+    if( filterValues.length === 0 ){
+      filterValues = undefined
+    }else{
+      filterValues = filterValues[0]
+    }
+  }
+
 
   return(
     <Segment.Group
@@ -58,6 +72,7 @@ export default function ColumnFilter( props ){
       <Segment
         key={`Header-Title-${props.col}`}
         basic
+        textAlign='center'
         onClick={headerCellOnClick}
         style={{
           padding:0,
@@ -73,6 +88,7 @@ export default function ColumnFilter( props ){
         style={{
           padding:0,
           margin:0,
+          maxWidth: '30px',
           backgroundColor:'transparent',
           border: '0'}}
         textAlign='right'>
@@ -87,6 +103,7 @@ export default function ColumnFilter( props ){
           floating
           clearable
           basic
+          value={filterValues}
           onChange={columnFilterOnChange}
           options={options}
           trigger={<></>}
