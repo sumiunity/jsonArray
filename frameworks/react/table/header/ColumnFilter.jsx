@@ -19,7 +19,11 @@ import { Dropdown, Segment } from 'semantic-ui-react'
 export default function ColumnFilter( props ){
 
   const unique_values = props.table_data.unique([props.col])
-  const options = unique_values.map(r => {return {key:`${r}-${_.uniqueId()}`, text:r, value:r}})
+  const options = unique_values.map(r => {
+    return {
+      key:`${r}-${_.uniqueId()}`,
+      text:`${r}`,
+      value:`${r}`}})
 
   var headerCellOnClick = null
   if( props.columnOnClick !== undefined ){
