@@ -20,8 +20,9 @@ export function anova( data, att, label ){
 
   const valArray = []
   for( var i=0; i < unique_values.length; i++ ){
+    const uniqueVal = unique_values[i]
     valArray.push(
-      data.filter(r => r[label] === unique_values[i])
+      data.filter(r => r[label] === uniqueVal)
         .map(r => r[att])
     )
   }
@@ -70,3 +71,5 @@ export function anova_by_group( data, group_att, att, label ){
   return new jsonArray(stats)
 
 }
+
+export default anova_by_group

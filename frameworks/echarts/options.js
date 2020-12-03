@@ -133,6 +133,8 @@ export default class echartsOptions extends Object {
    */
   boxplot( params ){
 
+    const boxplot = require('./series/boxplot').default
+
     // check to ensure the minimum set of parameters are available
     if( (params.colx === undefined)|(params.coly === undefined) ){
       alert( 'boxplot required att : colx and coly' )
@@ -155,8 +157,10 @@ export default class echartsOptions extends Object {
     this.yAxis.splitArea = {show: true}
 
 
-    const echart_series = new echartsSeries( this.json_array )
-    this.series = echart_series.boxplot(params.colx, params.coly, params )
+    this.series = boxplot( {...params, ...{json_array: this.json_array}} )
+    // const echart_series = new echartsSeries( this.json_array )
+    // this.series = echart_series.boxplot(params.colx, params.coly, params )
+
 
     delete this.json_array
 
@@ -171,6 +175,9 @@ export default class echartsOptions extends Object {
    * @param  {string} coly  column y name
    */
   scatter( params={} ){
+
+    const scatter = require('./series/scatter').default
+    const scatter_by = require('./series/scatter/scatterBy').default
 
     // check to ensure the minimum set of parameters are available
     if( (params.colx === undefined)|(params.coly === undefined)){
@@ -198,19 +205,25 @@ export default class echartsOptions extends Object {
     }
 
 
-    const echart_series = new echartsSeries( this.json_array )
-    if( params.label !== undefined ){
-      this.series = echart_series.scatter_by(
-        params.colx,
-        params.coly,
-        params.label,
-        params)
+    // const echart_series = new echartsSeries( this.json_array )
+    if( (params.label !== undefined)|(params.colorBy !== undefined) ){
+
+      var colorBy = params.colorBy
+      if( colorBy === undefined) colorBy = params.label
+
+      this.series = scatter_by({
+        ...params,
+        ...{
+            json_array: this.json_array,
+            colorBy: colorBy
+          }
+      })
 
     }else{
-      this.series = echart_series.scatter(
-        params.colx,
-        params.coly,
-        params )
+      this.series = scatter({
+        ...params,
+        ...{json_array: this.json_array}
+      })
 
     }
 

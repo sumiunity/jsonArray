@@ -144,7 +144,8 @@ export function Render( props ){
   if( filters !== undefined ){
     for( var i=0; i < filters.length; i ++ ){
       console.log( 'thisis the filter', filters[i])
-      table_data = table_data.filter(r => r[filters[i].col_name] === filters[i].value)
+      const filt = filters[i]
+      table_data = table_data.filter(r => r[filt.col_name] === filt.value)
     }
     console.log( table_data)
   }

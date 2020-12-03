@@ -226,7 +226,7 @@ export function Histogram( props ){
  */
 export function Pareto( props ){
 
-  const options = props.data.echartsOptions
+  // const options = props.data.echartsOptions
 
   // pivot the user data based the unique users per day
   var pivot = props.data.pivot_table(
