@@ -324,20 +324,20 @@ export default class jsonArray extends Array{
       case 'left':
         df1 = this
         df2 = json_array
-        index = this.unique(col_left)
+        index = df1.unique(col_left)
         break;
 
       case 'right':
         df1 = json_array
         df2 = this
-        index = this.unique(col_right)
+        index = df1.unique(col_right)
         break;
 
       // default to merge on left
       default:
         df1 = this
         df2 = json_array
-        index = this.unique(col_left)
+        index = df1.unique(col_left)
         break;
     }
 
@@ -399,6 +399,7 @@ export default class jsonArray extends Array{
           col = columns[j]
           val = params[col]
           if( array[i][col] === undefined ) array[i][col] = val
+          if( array[i][col] === null ) array[i][col] = val
           // if( isNaN(array[i][col]) ) array[i][col] = val
         }
       }
@@ -412,6 +413,7 @@ export default class jsonArray extends Array{
         for( j=0; j < columns.length; j++ ){
           col = columns[j]
           if( array[i][col] === undefined ) array[i][col] = params
+          if( array[i][col] === null ) array[i][col] = val
           // if( isNaN(array[i][col]) ) array[i][col] = params
         }
       }
@@ -572,6 +574,35 @@ export default class jsonArray extends Array{
   }
 
 
+  // converts a matrix into a flatten table (opposite of pivot table)
+  flatten( id_att = '__index__' ){
+
+    // extract a list of column names
+    const columns = this.columns
+
+    var table = []
+
+    for( var i=0; i < this.length; i++ ){
+      const row = this[i]
+
+      for( var j=0; j < columns.length; j++ ){
+        const col = columns[j]
+
+        // avoid a duplicate entry as the id attribute
+        if( col === id_att ) continue
+
+        table.push({
+          column: col,
+          row: row[id_att],
+          value:  row[col]
+        })
+      }
+    }
+
+    return new jsonArray( table )
+
+  }
+
   // creates a pivot table based on the specified row and column.
   // The summary type is used to compute the value of the pivot.
   pivot_table( row, column, summaryType='count', value=undefined ){
@@ -595,6 +626,7 @@ export default class jsonArray extends Array{
         const cval = column_val[j]
         const by_col = by_row.filter( r => r[column] === cval )
 
+        var temp_json
         switch( summaryType ){
           // returns the number of rows for the current split
           case 'count':
@@ -606,10 +638,19 @@ export default class jsonArray extends Array{
             // set defaults for missing parameter values
             if( value === undefined ) value = '__index__'
 
-            const temp_json = new jsonArray( by_col )
+            temp_json = new jsonArray( by_col )
             temp[column_val[j]] = temp_json.unique( value ).length
             break;
 
+          case 'sum':
+            temp_json = new jsonArray( by_col )
+            temp[column_val[j]] = temp_json.sum(value)
+            break;
+
+          case 'mean':
+            temp_json = new jsonArray( by_col )
+            temp[column_val[j]] = temp_json.mean(value)
+            break;
 
           default:
             temp[column_val[j]] = by_col.length
