@@ -81,3 +81,5 @@ export function discrete_probability_by_group( data, group_att, att, label ){
   return new jsonArray(stats)
 
 }
+
+export default discrete_probability_by_group

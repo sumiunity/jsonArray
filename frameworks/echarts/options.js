@@ -78,12 +78,12 @@ export default class echartsOptions extends Object {
     }
 
     // set the x axis values using the Axis class
-    this.xAxis = new echartsAxis()
+    this.xAxis = new echartsAxis(params.colx)
     this.xAxis.to_category({values: this.json_array.unique(params.colx, true) })
     this.xAxis.label( params.colx )
 
     // set the y axis values using the Axis class
-    this.yAxis = new echartsAxis()
+    this.yAxis = new echartsAxis(params.coly)
     this.yAxis.to_category({ values: this.json_array.unique(params.coly, true) })
     this.xAxis.label( params.coly )
 
@@ -133,6 +133,8 @@ export default class echartsOptions extends Object {
    */
   boxplot( params ){
 
+    const boxplot = require('./series/boxplot').default
+
     // check to ensure the minimum set of parameters are available
     if( (params.colx === undefined)|(params.coly === undefined) ){
       alert( 'boxplot required att : colx and coly' )
@@ -141,22 +143,23 @@ export default class echartsOptions extends Object {
     const keys = this.json_array.unique( params.colx )
 
     // set the x axis values using the Axis class
-    this.xAxis = new echartsAxis()
+    this.xAxis = new echartsAxis(params.colx)
     this.xAxis.to_category({ values: keys })
-    this.xAxis.boundaryGap = true
-    this.xAxis.nameGap = 30
     this.xAxis.axisLabel = { formatter: '{value}' }
-    this.xAxis.splitLine = {show: false }
+    // this.xAxis.boundaryGap = true
+    // this.xAxis.nameGap = 30
+    // this.xAxis.splitLine = {show: false }
 
     // set the y axis values using the Axis class
-    this.yAxis = new echartsAxis()
+    this.yAxis = new echartsAxis(params.coly)
     this.yAxis.to_value()
-    this.yAxis.label(params.coly)
-    this.yAxis.splitArea = {show: true}
+    this.yAxis.dynamic_range(this.json_array)
+    // this.yAxis.splitArea = {show: true}
 
 
-    const echart_series = new echartsSeries( this.json_array )
-    this.series = echart_series.boxplot(params.colx, params.coly, params )
+    this.series = boxplot( {...params, ...{json_array: this.json_array}} )
+    // const echart_series = new echartsSeries( this.json_array )
+    // this.series = echart_series.boxplot(params.colx, params.coly, params )
 
     delete this.json_array
 
@@ -172,16 +175,19 @@ export default class echartsOptions extends Object {
    */
   scatter( params={} ){
 
+    const scatter = require('./series/scatter').default
+    const scatter_by = require('./series/scatter/scatterBy').default
+
     // check to ensure the minimum set of parameters are available
     if( (params.colx === undefined)|(params.coly === undefined)){
       alert( 'scatter plot required att : colx and coly ')
     }
 
     // set the x axis values using the Axis class
-    this.xAxis = new echartsAxis( this.json_array, params.colx )
+    this.xAxis = new echartsAxis( params.coly, this.json_array )
 
     // set the y axis values using the Axis class
-    this.yAxis = new echartsAxis( this.json_array, params.coly )
+    this.yAxis = new echartsAxis( params.colx, this.json_array )
 
 
     // convert the x-axis to date type when of moment type
@@ -198,19 +204,25 @@ export default class echartsOptions extends Object {
     }
 
 
-    const echart_series = new echartsSeries( this.json_array )
-    if( params.label !== undefined ){
-      this.series = echart_series.scatter_by(
-        params.colx,
-        params.coly,
-        params.label,
-        params)
+    // const echart_series = new echartsSeries( this.json_array )
+    if( (params.label !== undefined)|(params.colorBy !== undefined) ){
+
+      var colorBy = params.colorBy
+      if( colorBy === undefined) colorBy = params.label
+
+      this.series = scatter_by({
+        ...params,
+        ...{
+            json_array: this.json_array,
+            colorBy: colorBy
+          }
+      })
 
     }else{
-      this.series = echart_series.scatter(
-        params.colx,
-        params.coly,
-        params )
+      this.series = scatter({
+        ...params,
+        ...{json_array: this.json_array}
+      })
 
     }
 
@@ -235,12 +247,12 @@ export default class echartsOptions extends Object {
     }
 
     // set the x axis values using the Axis class
-    this.xAxis = new echartsAxis()
+    this.xAxis = new echartsAxis(params.colx)
     this.xAxis.label(params.colx)
     this.xAxis.tick_values(this.json_array.values(params.colx))
 
     // set the y axis values using the Axis class
-    this.yAxis = new echartsAxis()
+    this.yAxis = new echartsAxis(params.coly)
 
     const echart_series = new echartsSeries( this.json_array )
     this.series = echart_series.bar( params.coly, params)

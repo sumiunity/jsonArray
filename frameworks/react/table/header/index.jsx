@@ -13,9 +13,9 @@
 
 import React from 'react';
 
-import {HeaderCell, Header, Row} from '../framework/Components'
+import {HeaderCell, Header, Row} from '../../framework/Components'
 
-
+import ColumnFilter from './ColumnFilter'
 
 export function DataFrameHeader( props ) {
 
@@ -69,6 +69,20 @@ export function DataFrameHeader( props ) {
         })
       }
 
+      var ColComponent = col
+      if( props.columnFilterOnChange !== undefined ){
+        headerCellOnClick = null
+
+        ColComponent = (
+          <ColumnFilter
+            {...props}
+            key = {`Header-ColFilter-${col}`}
+            col = {col}
+            col_number = {col_number}
+            />
+        )
+      }
+
       // sorted={value === props.sortBy ? direction : null}
 
       //populate the header cell
@@ -77,7 +91,7 @@ export function DataFrameHeader( props ) {
           {...props.thProps}
           style={{...{textAlign:'center'}, ...props.thStyle}}
           component={props.th}
-          defaultValue = {col}
+          defaultValue = {ColComponent}
           key = {`${props.tableName}-th-${col_number}`}
           onClick={headerCellOnClick}
           />

@@ -186,6 +186,7 @@ export default class DataTypes extends Object{
         return Number( value )
 
       case 'string' :
+        if (value === null) return ''
         return value.toString()
 
       case 'boolean' :
