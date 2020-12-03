@@ -39,7 +39,6 @@ export default function boxplot( props ){
 
 
   // group the data based on the boxplot groups
-  const keys = json_array.unique( props.colx )
   const groups = json_array.groupby([props.colx])
 
   // group the data based on the unique column values

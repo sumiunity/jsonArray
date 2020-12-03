@@ -462,7 +462,8 @@ export default class jsonArray extends Array{
 
     var results = []
 
-    const values = [...new Set(json_obj.map(row => row[atts[0]]))]
+    // const values = [...new Set(json_obj.map(row => row[atts[0]]))]
+    const values = json_obj.unique(atts[0], true)
     for( var i=0; i < values.length; i++ ){
       const val = values[i]
       const group = json_obj.filter( row => row[atts[0]] === val )
@@ -745,18 +746,23 @@ export default class jsonArray extends Array{
         // try to conver the values to numbers prior to sorting.
         // use a non standard sorting to get the values sorted properly
 
-        // order string type
-        if( typeof unique_values[0] === 'string' ){
-          return unique_values.sort()
+        switch( typeof unique_values[0] ){
+          case "string":
+            return unique_values.sort()
+
+          case "boolean":
+            return unique_values.sort()
+
+          default :
+            try{
+              unique_values = unique_values.map( x => +x)
+              unique_values = unique_values.sort(function(a,b){return a - b})
+            }catch{
+              // default to the standard sort
+              unique_values.sort()
+            }
         }
 
-        try{
-          unique_values = unique_values.map( x => +x)
-          unique_values = unique_values.sort(function(a,b){return a - b})
-        }catch{
-          // default to the standard sort
-          unique_values.sort()
-        }
     }
 
     return unique_values

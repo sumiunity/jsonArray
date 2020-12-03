@@ -15,8 +15,11 @@ import moment from 'moment'
 
 export default class echartsAxis extends Object {
 
-  constructor( json_array=[], col='' ) {
+  constructor( col='', json_array=[] ) {
     super()
+
+    this.axis = col
+    this.name = col
     // super(...array)
     //
     this.initialize( json_array, col )
@@ -85,42 +88,35 @@ export default class echartsAxis extends Object {
     }
   }
 
-  // process the parameters object to configure the plot axis
-  process_params( params ){
-
-    // add the label to the axis configuration
-    this.label( params.label )
-
-    switch( params.type ){
-      case 'category':
-        this.tick_values( [...new Set(params.values)] )
-        break;
-
-      default:
-        break;
-    }
-  }
+  // // process the parameters object to configure the plot axis
+  // process_params( params ){
+  //
+  //   // add the label to the axis configuration
+  //   this.label( params.label )
+  //
+  //   switch( params.type ){
+  //     case 'category':
+  //       this.tick_values( [...new Set(params.values)] )
+  //       break;
+  //
+  //     default:
+  //       break;
+  //   }
+  // }
 
   // formats the axis to display categories
   to_category( params={} ){
     this.type = 'category'
-    this.splitArea ={
-        show: true
-    }
+    this.data = [...new Set(params.values)]
 
-    params['type'] = 'category'
-
-    // set the label when provided
-    this.process_params( params )
-
+    // this.splitArea ={
+    //     show: true
+    // }
   }
 
   // formats the axis to display values
   to_value( params={} ){
     this.type = 'value'
-
-    // set the label when provided
-    this.process_params( params )
   }
 
 
@@ -137,9 +133,6 @@ export default class echartsAxis extends Object {
       })
     }
 
-    // set the label when provided
-    this.process_params( params )
-
   }
 
 
@@ -152,5 +145,14 @@ export default class echartsAxis extends Object {
     }
   }
 
+
+  dynamic_range( json_array ){
+    const min = json_array.min( this.name )
+    const max = json_array.max( this.name )
+    const padding = (max - min) * 0.05
+
+    this.min = min - padding
+    this.max = max + padding
+  }
 
 }
