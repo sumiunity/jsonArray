@@ -38,6 +38,8 @@ export default function boxplot( props ){
   }
 
 
+  json_array = json_array.sort_values(props.colx)
+
   // group the data based on the boxplot groups
   const groups = json_array.groupby([props.colx])
 

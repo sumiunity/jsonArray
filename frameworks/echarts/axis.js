@@ -151,8 +151,9 @@ export default class echartsAxis extends Object {
     const max = json_array.max( this.name )
     const padding = (max - min) * 0.05
 
-    this.min = min - padding
-    this.max = max + padding
+    console.log( min, max, padding)
+    this.min = (min - padding).toFixed(3)
+    this.max = (max + padding).toFixed(3)
   }
 
 }
