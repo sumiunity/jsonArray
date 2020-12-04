@@ -28,5 +28,5 @@ export function sum(data, col){
 
 export function mean(data, col){
   if( data.length === 1 ) return data[0][col]
-  return arrayStats.mean(data.map(row => row[col])) 
+  return arrayStats.mean(data.map(row => row[col]))
 }
