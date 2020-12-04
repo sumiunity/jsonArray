@@ -26,8 +26,6 @@ export function anova( data, att, label ){
         .map(r => r[att])
     )
   }
-  // console.log( data )
-  console.log( valArray)
 
 
   // // split the data by the class label

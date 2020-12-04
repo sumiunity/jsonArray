@@ -305,7 +305,7 @@ export default class jsonArray extends Array{
   merge( json_array, params={how:'left', on:'__index__'}  ){
 
     var array = []
-    var df1, df2, index, a, b
+    var df1, df2, index, a, b, primary_col, secondary_col, value
 
     var col_left, col_right
 
@@ -324,12 +324,16 @@ export default class jsonArray extends Array{
       case 'left':
         df1 = [...this]
         df2 = [...json_array]
+        primary_col = col_left
+        secondary_col = col_right
         index = this.unique(col_left)
         break;
 
       case 'right':
         df1 = [...json_array]
         df2 = [...this]
+        primary_col = col_right
+        secondary_col = col_left
         index = json_array.unique(col_right)
         break;
 
@@ -337,16 +341,51 @@ export default class jsonArray extends Array{
       default:
         df1 = [...this]
         df2 = [...json_array]
+        primary_col = col_left
+        secondary_col = col_right
         index = this.unique(col_left)
         break;
     }
+
+    // var lookup = {}
+    // for( a = 0; a < df2.length; a++ ){
+    //   value = df2[a][secondary_col]
+    //
+    //   const keys = Object.keys(lookup)
+    //   if( keys.includes(value) ){
+    //     lookup[value].push( df2[a] )
+    //   }else{
+    //     lookup[value] = [df2[a]]
+    //   }
+    // }
+    //
+    // // pull the rows corresponding to the provided index value
+    // for( var a=0; a < df1.length; a++ ){
+    //   value = df1[a][secondary_col]
+    //
+    //   const lookupVal = lookup[value ]
+    //
+    //   // merge rows with similar index values (intersection). Create
+    //   // multiple rows when duplicate index values are present
+    //   if( lookupVal.length > 0 ){
+    //     for( b=0; b < lookupVal.length; b++ ){
+    //       array.push({...lookupVal[b], ...df1[a]})
+    //     }
+    //   }
+    //
+    //   // add the rows that have no overlap
+    //   if( lookupVal.length === 0  ){
+    //     array.push(df1[a])
+    //   }
+    //
+    // }
 
     // pull the rows corresponding to the provided index value
     for( var i=0; i < index.length; i++ ){
       const value = index[i]
       const df1_rows = df1.filter(r => r[col_left] === value)
       const df2_rows = df2.filter(r => r[col_right] === value)
-      
+
       // merge rows with similar index values (intersection). Create
       // multiple rows when duplicate index values are present
       if( (df1_rows.length > 0)&(df2_rows.length > 0) ){
@@ -620,13 +659,15 @@ export default class jsonArray extends Array{
 
       const rval = row_val[i]
       // const by_row = this.filter( r => r[row] === rval )
+      const by_row = [...this].filter( r => r[row] === rval )
 
       // add the column value for each row
       for( var j=0; j < column_val.length; j++ ){
 
         const cval = column_val[j]
         // const by_col = by_row.filter( r => r[column] === cval )
-        const by_col = [...this].filter( r => (r[row] === rval)&(r[column] === cval) )
+        const by_col = [...by_row].filter( r => r[column] === cval )
+        // const by_col = [...this].filter( r => (r[row] === rval)&(r[column] === cval) )
         // console.log( by_col )
 
         var temp_json
