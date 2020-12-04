@@ -24,7 +24,7 @@ import echartsOptions from './frameworks/echarts/options'
 
 import ReactComponents from './frameworks/react/ReactComponents'
 
-
+import * as stats from './statistics/matrix'
 
 
 
@@ -322,22 +322,22 @@ export default class jsonArray extends Array{
     // determine the merging criteria
     switch( params.how ){
       case 'left':
-        df1 = this
-        df2 = json_array
-        index = df1.unique(col_left)
+        df1 = [...this]
+        df2 = [...json_array]
+        index = this.unique(col_left)
         break;
 
       case 'right':
-        df1 = json_array
-        df2 = this
-        index = df1.unique(col_right)
+        df1 = [...json_array]
+        df2 = [...this]
+        index = json_array.unique(col_right)
         break;
 
       // default to merge on left
       default:
-        df1 = this
-        df2 = json_array
-        index = df1.unique(col_left)
+        df1 = [...this]
+        df2 = [...json_array]
+        index = this.unique(col_left)
         break;
     }
 
@@ -366,7 +366,7 @@ export default class jsonArray extends Array{
 
     }
 
-    return new jsonArray( array )
+    return new jsonArray( array, true )
 
   }
 
@@ -520,7 +520,7 @@ export default class jsonArray extends Array{
       buffer.push( obj )
     }
 
-    return new jsonArray( buffer )
+    return new jsonArray( buffer, true  )
   }
 
 
@@ -547,7 +547,7 @@ export default class jsonArray extends Array{
       }
     }
 
-    return new jsonArray( buffer )
+    return new jsonArray( buffer, true  )
   }
 
 
@@ -571,7 +571,7 @@ export default class jsonArray extends Array{
       pivot_table.push( temp )
     }
 
-    return new jsonArray(pivot_table)
+    return new jsonArray(pivot_table, true )
   }
 
 
@@ -600,7 +600,7 @@ export default class jsonArray extends Array{
       }
     }
 
-    return new jsonArray( table )
+    return new jsonArray( table, true )
 
   }
 
@@ -619,13 +619,15 @@ export default class jsonArray extends Array{
       var temp = {row: row_val[i]}
 
       const rval = row_val[i]
-      const by_row = this.filter( r => r[row] === rval )
+      // const by_row = this.filter( r => r[row] === rval )
 
       // add the column value for each row
       for( var j=0; j < column_val.length; j++ ){
 
         const cval = column_val[j]
-        const by_col = by_row.filter( r => r[column] === cval )
+        // const by_col = by_row.filter( r => r[column] === cval )
+        const by_col = [...this].filter( r => (r[row] === rval)&(r[column] === cval) )
+        // console.log( by_col )
 
         var temp_json
         switch( summaryType ){
@@ -644,13 +646,11 @@ export default class jsonArray extends Array{
             break;
 
           case 'sum':
-            temp_json = new jsonArray( by_col )
-            temp[column_val[j]] = temp_json.sum(value)
+            temp[column_val[j]] = stats.sum( by_col, value)
             break;
 
           case 'mean':
-            temp_json = new jsonArray( by_col )
-            temp[column_val[j]] = temp_json.mean(value)
+            temp[column_val[j]] = stats.mean( by_col, value)
             break;
 
           default:
@@ -664,7 +664,7 @@ export default class jsonArray extends Array{
       pivot_table.push( temp )
     }
 
-    return new jsonArray(pivot_table)
+    return new jsonArray(pivot_table, true )
   }
 
   /**
@@ -1028,18 +1028,22 @@ export default class jsonArray extends Array{
   *  ===============================
   *  Interface for computing common statistical functions
   ********************************************************************************/
-  max(col){
-    if( this.length === 1 ) return this[0][col]
-    return Math.max(...this.map(row => row[col])) }
-  min(col){
-    if( this.length === 1 ) return this[0][col]
-    return Math.min(...this.map(row => row[col])) }
-  sum(col){
-    if( this.length === 1 ) return this[0][col]
-    return this.map(row => row[col]).reduce((a,b) => a + b, 0) }
-  mean(col){
-    if( this.length === 1 ) return this[0][col]
-    return this.sum(col) / this.length }
+  max(col){ stats.max(this, col)  }
+  min(col){ stats.min(this, col)  }
+  sum(col){ stats.sum(this, col)  }
+  mean(col){ stats.mean(this, col)  }
+  // max(col){
+  //   if( this.length === 1 ) return this[0][col]
+  //   return Math.max(...this.map(row => row[col])) }
+  // min(col){
+  //   if( this.length === 1 ) return this[0][col]
+  //   return Math.min(...this.map(row => row[col])) }
+  // sum(col){
+  //   if( this.length === 1 ) return this[0][col]
+  //   return this.map(row => row[col]).reduce((a,b) => a + b, 0) }
+  // mean(col){
+  //   if( this.length === 1 ) return this[0][col]
+  //   return this.sum(col) / this.length }
 
   /********************************************************************************
   *  ECharts json array interface
