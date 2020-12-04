@@ -346,7 +346,7 @@ export default class jsonArray extends Array{
       const value = index[i]
       const df1_rows = df1.filter(r => r[col_left] === value)
       const df2_rows = df2.filter(r => r[col_right] === value)
-
+      
       // merge rows with similar index values (intersection). Create
       // multiple rows when duplicate index values are present
       if( (df1_rows.length > 0)&(df2_rows.length > 0) ){
@@ -413,7 +413,7 @@ export default class jsonArray extends Array{
         for( j=0; j < columns.length; j++ ){
           col = columns[j]
           if( array[i][col] === undefined ) array[i][col] = params
-          if( array[i][col] === null ) array[i][col] = val
+          if( array[i][col] === null ) array[i][col] = params
           // if( isNaN(array[i][col]) ) array[i][col] = params
         }
       }
