@@ -34,6 +34,9 @@ export default class valueToString{
       case 'object': return this.format_object(value)
       case 'boolean': return this.format_boolean(value)
 
+      case 'scientific': return this.format_scientific( value )
+
+      case 'percent': return this.format_percentage( value )
       case 'percentage': return this.format_percentage( value )
 
       default: return this.format_string( value )
@@ -69,6 +72,10 @@ export default class valueToString{
 
   format_boolean( value ){
     return value
+  }
+
+  format_scientific( value ){
+    return Number.parseFloat(value).toExponential(2)
   }
 
   // limits the number of characters in a string

@@ -1028,10 +1028,10 @@ export default class jsonArray extends Array{
   *  ===============================
   *  Interface for computing common statistical functions
   ********************************************************************************/
-  max(col){ stats.max(this, col)  }
-  min(col){ stats.min(this, col)  }
-  sum(col){ stats.sum(this, col)  }
-  mean(col){ stats.mean(this, col)  }
+  max(col){ return stats.max(this, col)  }
+  min(col){ return stats.min(this, col)  }
+  sum(col){ return stats.sum(this, col)  }
+  mean(col){ return stats.mean(this, col)  }
   // max(col){
   //   if( this.length === 1 ) return this[0][col]
   //   return Math.max(...this.map(row => row[col])) }

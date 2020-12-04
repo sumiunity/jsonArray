@@ -119,9 +119,15 @@ export default function Cell( props ) {
       cellContent = format.toString(value, props.dtype)
       break
 
+    case 'percent':
     case 'percentage':
       cellContent = format.toString(value, props.dtype)
       break
+
+    case 'scientific':
+      cellContent = format.toString(value, props.dtype)
+      break
+
 
     default:
       cellContent = <p style={{whiteSpace:'pre'}}>{value}</p>
