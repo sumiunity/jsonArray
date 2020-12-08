@@ -10,7 +10,6 @@
  */
 
 
-import {color} from '../../../colors/Colors'
 import jsonArray from '../../../../jsonArray'
 
 import scatter_overlay from './scatter_overlay'

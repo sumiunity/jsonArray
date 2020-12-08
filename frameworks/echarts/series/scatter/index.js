@@ -9,7 +9,6 @@
  */
 
 
-import {color} from '../../../colors/Colors'
 import jsonArray from '../../../../jsonArray'
 
 /**

@@ -20,10 +20,22 @@ export function greedy_discrete_prob( data, att, label ){
     const neg = new jsonArray(data.filter(r => r[label] === false))
     const pos = new jsonArray(data.filter(r => r[label] === true))
 
+    // return when the subgroup contains no positive samples
+    if( pos.length === 0 ){
+      return {
+          'tp': pos.length,
+          'fp': neg.length,
+          'subgroup': 'NA',
+          'total': data.length,
+          'pmf': 'NA'
+      }
+    }
+
     // select the
     const pareto = pos.count_values([att])
     const tp = pareto.max('count')
 
+    // console.log( data, pareto, tp )
     // identify the subgroup with the most positives
     const subgroup = pareto.filter(r => r.count === tp)[0][att]
 

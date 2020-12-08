@@ -184,10 +184,10 @@ export default class echartsOptions extends Object {
     }
 
     // set the x axis values using the Axis class
-    this.xAxis = new echartsAxis( params.coly, this.json_array )
+    this.xAxis = new echartsAxis( params.colx, this.json_array )
 
     // set the y axis values using the Axis class
-    this.yAxis = new echartsAxis( params.colx, this.json_array )
+    this.yAxis = new echartsAxis( params.coly, this.json_array )
 
 
     // convert the x-axis to date type when of moment type
@@ -204,11 +204,11 @@ export default class echartsOptions extends Object {
     }
 
 
-    // const echart_series = new echartsSeries( this.json_array )
-    if( (params.label !== undefined)|(params.colorBy !== undefined) ){
+    var colorBy = params.colorBy
+    if( colorBy === undefined) colorBy = params.label
 
-      var colorBy = params.colorBy
-      if( colorBy === undefined) colorBy = params.label
+    // const echart_series = new echartsSeries( this.json_array )
+    if( (colorBy !== undefined)&(this.json_array.columns.includes(colorBy)) ){
 
       this.series = scatter_by({
         ...params,
@@ -225,7 +225,6 @@ export default class echartsOptions extends Object {
       })
 
     }
-
 
     delete this.json_array
 
