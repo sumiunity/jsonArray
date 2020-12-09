@@ -30,13 +30,14 @@ import * as stats from './statistics/matrix'
 
 export default class jsonArray extends Array{
 
-  constructor(array=[], inplace=false) {
+  constructor(array=[], inplace, dtypes) {
 
-    var dtypes = new DataTypes( array )
-
+    var dtypes = dtypes
+    if( dtypes === undefined ) dtypes = new DataTypes( array )
+    // console.log( dtypes )
 
     // add an index column when the array is not empty
-    if( (array.length > 0)&(inplace===false) ){
+    if( (array.length > 0)&(inplace!==true) ){
 
       array = JSON.parse(JSON.stringify(array))
 
@@ -67,6 +68,7 @@ export default class jsonArray extends Array{
     // to avoid max recursion depth, we push each row separately
     array.map( row => this.push(row))
 
+    // console.log( dtypes )
     // dictionary containing column data types
     this.dtypes = dtypes
 
@@ -469,15 +471,23 @@ export default class jsonArray extends Array{
   filter_column( col, value ){
 
     if( Array.isArray(value) ){
-      return new jsonArray( [...this].filter(row => value.includes(row[col])) )
+      return new jsonArray(
+        [...this].filter(row => value.includes(row[col])),
+        false,
+        this.dtypes
+       )
     }else{
-      return new jsonArray( [...this].filter(row => row[col] === value ) )
+      return new jsonArray(
+        [...this].filter(row => row[col] === value ),
+        false,
+        this.dtypes
+      )
     }
   }
 
 
   filter( func ){
-    return new jsonArray( [...this].filter(func) )
+    return new jsonArray( [...this].filter(func), false, this.dtypes )
   }
 
   map( func ){

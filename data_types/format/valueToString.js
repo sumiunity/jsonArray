@@ -10,6 +10,7 @@
  *
  */
 
+import datetime from '../datetime'
 
 export default class valueToString{
 
@@ -38,6 +39,8 @@ export default class valueToString{
 
       case 'percent': return this.format_percentage( value )
       case 'percentage': return this.format_percentage( value )
+
+      case 'datetime': return this.format_datetime( value )
 
       default: return this.format_string( value )
     }
@@ -77,6 +80,11 @@ export default class valueToString{
   format_scientific( value ){
     return Number.parseFloat(value).toExponential(2)
   }
+
+  format_datetime( value ){
+    return datetime(value).format('YYYY-MM-DD')
+  }
+
 
   // limits the number of characters in a string
   format_string( value ){
