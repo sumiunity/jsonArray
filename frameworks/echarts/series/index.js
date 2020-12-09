@@ -288,6 +288,7 @@ export default class echartsSeries extends Object {
    */
   boxplot( colx, coly, props={} ){
 
+    console.log( 'this function is deprecated... ')
     var params = {...props, ...{}}
 
     // extract the parameter keys
@@ -295,11 +296,15 @@ export default class echartsSeries extends Object {
 
     // group the data based on the boxplot groups
     const keys = this.json_array.unique( colx )
-    const groups = this.json_array.groupby([colx])
+    var groups = this.json_array.groupby([colx])
 
+    groups = groups.sort_values(props.colx)
+
+    console.log( '-----------', groups )
     // group the data based on the unique column values
     var group_values = []
     for( var i=0; i < groups.length; i++ ){
+      console.log( groups[i])
       group_values.push(
         groups[i].json_obj.map(row => row[coly])
       )

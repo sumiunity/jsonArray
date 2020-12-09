@@ -140,7 +140,7 @@ export default class echartsOptions extends Object {
       alert( 'boxplot required att : colx and coly' )
     }
 
-    const keys = this.json_array.unique( params.colx )
+    const keys = this.json_array.unique( params.colx, true )
 
     // set the x axis values using the Axis class
     this.xAxis = new echartsAxis(params.colx)
