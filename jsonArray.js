@@ -107,6 +107,17 @@ export default class jsonArray extends Array{
       return this.rename( mapping, {inplace: true} )
   }
 
+  // resets the index value
+  reset_index(props={}){
+
+    // duplicate the array to avoid mutation
+    var array = this.__inplace__(props['inplace'])
+
+    for( var i=0; i < array.length; i++ ){
+      array[i]['__index__'] = i
+    }
+    return array
+  }
 
   // return all values for the specified column
   values( col ){
