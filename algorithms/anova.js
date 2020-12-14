@@ -18,13 +18,27 @@ export function anova( data, att, label ){
 
   const unique_values = new jsonArray(data).unique([label] )
 
+  // return default value when only one class if provided
+  if( unique_values.length < 2 ){
+    return {
+        'f': -1,
+        'p': 1,
+    }
+  }
+
+  var results = {}
+
   const valArray = []
   for( var i=0; i < unique_values.length; i++ ){
     const uniqueVal = unique_values[i]
-    valArray.push(
-      data.filter(r => r[label] === uniqueVal)
-        .map(r => r[att])
+    const values = (data
+      .filter(r => r[label] === uniqueVal)
+      .map(r => r[att])
     )
+
+    results[`${uniqueVal} samples`] = values.length
+
+    valArray.push(values)
   }
 
 
@@ -32,10 +46,15 @@ export function anova( data, att, label ){
   // const neg = data.filter(r => r[label] === false).map(r => r[att])
   // const pos = data.filter(r => r[label] === true).map(r => r[att])
 
-  return {
-      'f': anovafscore(...valArray),
-      'p': anovaftest(...valArray),
-  }
+  // return {
+    //     'f': anovafscore(...valArray),
+    //     'p': anovaftest(...valArray),
+    // }
+
+  results['fscore'] = anovafscore(...valArray)
+  results['pscore'] = anovaftest(...valArray)
+
+  return results
 }
 
 
