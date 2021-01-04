@@ -54,6 +54,10 @@ export function Icon(props){
   return wrapper( props, 'icon' )
 }
 
+export function Checkbox(props){
+  return wrapper( props, 'checkbox' )
+}
+
 function wrapper( props, type ){
 
   if( props.component === undefined ){
@@ -63,6 +67,9 @@ function wrapper( props, type ){
 
       case 'input':
         return <input {...props}>{props.defaultValue}</input>
+
+      case 'checkbox':
+        return <input {...props} type="checkbox" >{props.defaultValue}</input>
 
       case 'img':
         return <img

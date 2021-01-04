@@ -13,7 +13,7 @@ import React from 'react';
 
 
 import {booleanColor, fillAndEdge} from '../../colors/Colors'
-import {Cell as TableCell, Button, Image, Icon} from '../framework/Components'
+import {Cell as TableCell, Button, Image, Icon, Checkbox} from '../framework/Components'
 
 import valueToString from '../../../data_types/format/valueToString'
 
@@ -77,21 +77,20 @@ export default function Cell( props ) {
           />
       )
       break;
-    //
-    //   case 'checkbox':
-    //     return (
-    //       <CellCheckbox
-    //         selectedRow={props.selectedRow}
-    //         value={value}
-    //         col_name={col_name}
-    //         onClick={onClick}
-    //         table={props.table}
-    //         row={props.row}
-    //         col={props.col}
-    //         color={props.color}
-    //         key={'cell-' + props.row + '-' + props.col}
-    //         />
-    //       )
+
+    case 'checkbox':
+      cellOnClick = null
+      cellContent = (
+        <Checkbox
+          {...props.CheckboxProps}
+          key={`${props.tableName}-checkbox-${props.col}-${props.row_idx}`}
+          style={{...{textAlign:'center'}, ...props.checkboxStyle}}
+          component={props.checkbox}
+          name={value}
+          onClick={componentOnClick}
+          />
+      )
+      break;
 
     // case 'function':
     //   return props.table.function[col_name](props)
