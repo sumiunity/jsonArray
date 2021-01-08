@@ -32,7 +32,7 @@ export default class jsonArray extends Array{
 
   constructor(array=[], inplace, dtypes) {
 
-    var dtypes = dtypes
+    // var dtypes = dtypes
     if( dtypes === undefined ) dtypes = new DataTypes( array )
     // console.log( dtypes )
 
@@ -318,7 +318,8 @@ export default class jsonArray extends Array{
   merge( json_array, params={how:'left', on:'__index__'}  ){
 
     var array = []
-    var df1, df2, index, a, b, primary_col, secondary_col, value
+    var df1, df2, index, a, b
+    // var primary_col, secondary_col, value
 
     var col_left, col_right
 
@@ -337,16 +338,16 @@ export default class jsonArray extends Array{
       case 'left':
         df1 = [...this]
         df2 = [...json_array]
-        primary_col = col_left
-        secondary_col = col_right
+        // primary_col = col_left
+        // secondary_col = col_right
         index = this.unique(col_left)
         break;
 
       case 'right':
         df1 = [...json_array]
         df2 = [...this]
-        primary_col = col_right
-        secondary_col = col_left
+        // primary_col = col_right
+        // secondary_col = col_left
         index = json_array.unique(col_right)
         break;
 
@@ -354,8 +355,8 @@ export default class jsonArray extends Array{
       default:
         df1 = [...this]
         df2 = [...json_array]
-        primary_col = col_left
-        secondary_col = col_right
+        // primary_col = col_left
+        // secondary_col = col_right
         index = this.unique(col_left)
         break;
     }

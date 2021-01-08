@@ -214,5 +214,5 @@ export function rgbToHex(r, g, b) {
 }
 
 
-export default {get_color, int_to_color, shadeHexColor};
 export {get_color, int_to_color, shadeHexColor};
+export default get_color;

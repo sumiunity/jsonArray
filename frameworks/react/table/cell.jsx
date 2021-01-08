@@ -86,7 +86,6 @@ export default function Cell( props ) {
           key={`${props.tableName}-checkbox-${props.col}-${props.row_idx}`}
           style={{...{textAlign:'center'}, ...props.checkboxStyle}}
           component={props.checkbox}
-          name={value}
           onClick={componentOnClick}
           />
       )
@@ -132,7 +131,7 @@ export default function Cell( props ) {
       break
 
     default:
-      cellContent = <p style={{whiteSpace:'pre'}}>{value}</p>
+      cellContent = <p style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word', wordBreak: 'break-all' }}>{value}</p>
 
 
 
