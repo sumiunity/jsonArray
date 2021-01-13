@@ -55,7 +55,9 @@ export default class valueToString{
 
   // formats a value of percent data type into a percentage string
   format_percentage( value ){
-    return `${(100*value).toFixed(this.percentage)}%`
+    const formatted = (100*value).toFixed(this.percentage)
+    if( isNaN(formatted) ) return '-'
+    return `${formatted}%`
   }
 
   // limits the resolution of integers. Returns the original

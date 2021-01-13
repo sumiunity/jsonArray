@@ -131,7 +131,7 @@ export default function Cell( props ) {
       break
 
     default:
-      cellContent = <p style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word', wordBreak: 'break-all' }}>{value}</p>
+      cellContent = <p style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word'}}>{value}</p>
 
 
 
