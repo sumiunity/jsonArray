@@ -198,6 +198,8 @@ export function fillAndEdge( colorHex ){
  * @return {string}   hex string for the specified component
  */
 function componentToHex(c) {
+  if ( c === undefined ) return 'FF'
+
   var hex = c.toString(16);
   return hex.length === 1 ? "0" + hex : hex;
 }
