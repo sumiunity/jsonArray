@@ -35,7 +35,7 @@ datetime.prototype.strftime = function(format='YYYY-MM-DD'){
 
 // returns the date as a string based on the provided format
 datetime.prototype.week = function(){
-  return this.isoWeek()
+  return `${this.year()}-${this.isoWeek()}`
 }
 
 
