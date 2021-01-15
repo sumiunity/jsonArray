@@ -13,10 +13,18 @@
 import {color} from '../../colors/Colors'
 import jsonArray from '../../../jsonArray'
 
-var prepareBoxplotData
-try{
-  prepareBoxplotData =  require( 'echarts/extension/dataTool').prepareBoxplotData
-}catch{ console.log( 'echarts module not implemented')}
+import scatter from './scatter'
+import scatter_by from './scatter/scatterBy'
+
+import boxplot from './boxplot'
+import line from './line'
+import bar from './bar'
+import ErrorBars from './features/ErrorBars'
+
+
+
+export {default as scatter} from './scatter'
+export {default as scatter_by} from './scatter/scatterBy'
 
 
 export default class echartsSeries extends Object {
@@ -33,5 +41,10 @@ export default class echartsSeries extends Object {
 
   }
 
-
+  scatter( props ){ return scatter({...props, ...{json_array:this.json_array}}) }
+  scatter_by( props ){ return scatter_by({...props, ...{json_array:this.json_array}}) }
+  boxplot( props ){ return boxplot({...props, ...{json_array:this.json_array}}) }
+  line( props ){ return line({...props, ...{json_array:this.json_array}}) }
+  bar( props ){ return bar({...props, ...{json_array:this.json_array}}) }
+  errorbars( props ){ return ErrorBars({...props, ...{json_array:this.json_array}}) }
 }

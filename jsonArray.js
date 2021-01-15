@@ -21,6 +21,7 @@ import strFormat from './data_types/format/strFormat'
 import eChartsComponents from './frameworks/echarts/components'
 import echartsFormat from './frameworks/echarts/format'
 import echartsOptions from './frameworks/echarts/options'
+import echartsSeries from './frameworks/echarts/series'
 
 import ReactComponents from './frameworks/react/ReactComponents'
 
@@ -1121,6 +1122,7 @@ export default class jsonArray extends Array{
   //  */
   get echartsFormat( ){ return new echartsFormat( this ) }
   get echartsOptions( ){ return new echartsOptions( this ) }
+  get echartsSeries( ){ return new echartsSeries( this ) }
 
   get echarts( ){ return new eChartsComponents( this ) }
 

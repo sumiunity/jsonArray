@@ -139,6 +139,13 @@ export default class echartsOptions extends Object {
     }
   }
 
+  // appends the series
+  append_series( series ){
+    this.series = this.series.concat(series)
+    return this
+  }
+
+
   // creates a horizontal line across the plotting area
   axhline( value, color='red' ){
     this.series = this.series.concat({
