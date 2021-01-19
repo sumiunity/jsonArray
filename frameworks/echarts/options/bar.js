@@ -1,6 +1,5 @@
 
 import echartsAxis from '../axis'
-import echartsSeries from '../series'
 
 /**
  * Convert the json_array to a scatter plot option object

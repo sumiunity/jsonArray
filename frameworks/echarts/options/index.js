@@ -11,11 +11,7 @@
 
 
 import jsonArray from '../../../jsonArray'
-import echartsAxis from '../axis'
-import echartsSeries from '../series'
 import echartsTooltip from '../tooltips'
-import moment from 'moment'
-
 
 
 

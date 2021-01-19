@@ -1,6 +1,5 @@
 
 import echartsAxis from '../axis'
-import moment from 'moment'
 
 /**
  * Convert the json_array to a boxplot plot option object

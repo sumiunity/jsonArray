@@ -11,7 +11,6 @@
 
 
 import React from 'react';
-import ReactEcharts from "echarts-for-react";
 
 import moment from 'moment'
 import ReactLibraryFramework from '../../ReactLibraryFramework'
@@ -100,7 +99,7 @@ export default class echartsLibrary extends ReactLibraryFramework{
         const series = props.data.col( props.colx )
         const hist = series.binning({bins: 30})
         const opt = hist.echartsOptions
-        plot_options = options.bar({colx: 'value', coly: 'count'})
+        plot_options = opt.bar({colx: 'value', coly: 'count'})
         break
 
       default:

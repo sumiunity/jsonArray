@@ -1,7 +1,6 @@
 
 
 import echartsAxis from '../axis'
-import echartsSeries from '../series'
 import moment from 'moment'
 
 

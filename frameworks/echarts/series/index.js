@@ -10,12 +10,10 @@
  */
 
 
-import {color} from '../../colors/Colors'
 import jsonArray from '../../../jsonArray'
 
 import scatter from './scatter'
 import scatter_by from './scatter/scatterBy'
-
 import boxplot from './boxplot'
 import line from './line'
 import bar from './bar'
