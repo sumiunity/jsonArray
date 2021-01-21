@@ -71,6 +71,8 @@ export default function scatter( props ){
     data: coordinates
   }
 
+  if( props.symbol !== undefined ) Series['symbol'] = props.symbol
+
   // add tooltips when the label is provided
   if( props.colorBy !== undefined ){
     Series['emphasis'] = {

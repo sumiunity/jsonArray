@@ -14,7 +14,12 @@ import jsonArray from '../../../jsonArray'
 import echartsTooltip from '../tooltips'
 
 
-
+import Highlight from './features/Highlight'
+import Line from './charts/line'
+import Boxplot from './charts/boxplot'
+import Heatmap from './charts/heatmap'
+import Scatter from './charts/scatter'
+import Bar from './charts/bar'
 
 export default class echartsOptions extends Object {
 
@@ -52,67 +57,18 @@ export default class echartsOptions extends Object {
   }
 
 
+  heatmap( props ){ return this.generate_options( Heatmap, props ) }
+  boxplot( props ){ return this.generate_options( Boxplot, props ) }
+  scatter( props ){ return this.generate_options( Scatter, props ) }
+  bar( props ){ return this.generate_options( Bar, props ) }
+  line( props ){ return this.generate_options( Line, props ) }
 
-  /**
-   *   returns an object for generating a heatmap, similar to
-   *   the calendar example but with data from a jsonArray
-   *   example: https://echarts.apache.org/examples/en/editor.html?c=calendar-heatmap
-   *
-   * @param  {string} colx  column 1 name, which will be used for the x_axis
-   * @param  {string} coly  column 2 name, which will be used for the y_axis
-   * @param  {string} value column name, which will be used for the cell value
-   * @param  {string} tooltip string used in the tool tip
-   * @return {Array}       Array of x/y cooridnates
-   */
-  heatmap( props ){
-    const optionFunc = require('./heatmap').default
-    return this.generate_options( optionFunc, props )
+  highlight( props ){
+    const options = Highlight( this, props )
+    this.local_variables( options )
+    delete this.json_array
+    return this
   }
-
-
-  /**
-   * Convert the json_array to a boxplot options object
-   * @param  {string} colx  column x name
-   * @param  {string} coly  column y name
-   */
-  boxplot( props ){
-    const optionFunc = require('./boxplot').default
-    return this.generate_options( optionFunc, props )
-  }
-
-
-
-  /**
-   * Convert the json_array to a bar plot option object
-   * @param  {string} colx  column x name
-   * @param  {string} coly  column y name
-   */
-  scatter( props={} ){
-    const optionFunc = require('./scatter').default
-    return this.generate_options( optionFunc, props )
-  }
-
-  /**
-   * Convert the json_array to a bar plot option object
-   * @param  {string} colx  column x name
-   * @param  {string} coly  column y name
-   */
-  bar( props={} ){
-    const optionFunc = require('./bar').default
-    return this.generate_options( optionFunc, props )
-  }
-
-  /**
-   * Convert the json_array to a line plot option object
-   * @param  {string} colx  column x name
-   * @param  {string} coly  column y name
-   */
-  line( props={} ){
-    const optionFunc = require('./line').default
-    return this.generate_options( optionFunc, props )
-  }
-
-
 
   // wrapper used to generate the options based on the provided function
   generate_options( func, props ){
@@ -141,6 +97,12 @@ export default class echartsOptions extends Object {
     return this
   }
 
+  xtick_padding(padding){
+    this.grid = {
+      ...this.grid,
+      ...{bottom: padding}
+    }
+  }
 
   // creates a horizontal line across the plotting area
   axhline( value, color='red' ){

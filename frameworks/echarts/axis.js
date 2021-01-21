@@ -74,6 +74,12 @@ export default class echartsAxis extends Object {
 
 
 
+  rotate(){
+    this.axisLabel = {
+      ...this.axisLabel,
+      ...{ rotate: 90 }
+    }
+  }
 
   label( label ){
     if( label !== undefined ){

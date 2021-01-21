@@ -18,8 +18,8 @@ export default function ErrorBars( props ){
 
 
   var errorbars = json_array.map( r => {return [r.__index__, r[props.min], r[props.max]]})
-  console.log( props )
-  console.log( errorbars )
+  // console.log( props )
+  // console.log( errorbars )
 
   var Series = [
     {
@@ -36,19 +36,23 @@ export default function ErrorBars( props ){
             y: [1, 2]
         },
         data: errorbars,
-        z: 100
+        // z: 100
     },
 
     // scatter point for the minimum value
     json_array.echartsSeries.scatter({
       colx:'__index__',
-      coly:props.min
+      coly:props.min,
+      symbol: 'triangle',
+      color: 'green'
     })[0],
 
     // scatter point for the maximum value
     json_array.echartsSeries.scatter({
       colx:'__index__',
-      coly:props.max
+      coly:props.max,
+      symbol: 'diamond',
+      color: 'blue'
     })[0],
   ]
 
@@ -58,7 +62,9 @@ export default function ErrorBars( props ){
     Series.push(
       json_array.echartsSeries.scatter({
         colx:'__index__',
-        coly:props.avg
+        coly:props.avg,
+        symbol: 'square',
+        color: 'red'
       })[0]
     )
   }
