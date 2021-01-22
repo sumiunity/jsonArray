@@ -20,7 +20,7 @@ export default function line( json_array, props={} ){
 
   // set the x axis values using the Axis class
   var xAxis = new echartsAxis( props.colx )
-  xAxis.to_category({values: json_array.unique(props.colx, true) })
+  xAxis.to_category({values: json_array.map(r => r[props.colx]) })
 
   // set the y axis values using the Axis class
   var yAxis = new echartsAxis( props.coly, json_array )
