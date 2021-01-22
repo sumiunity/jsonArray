@@ -40,6 +40,7 @@ export default function EchartsReact( props ) {
     <ReactEcharts
       option = {option}
       onEvents={onEvents}
+      style={props.echartsStyle}
     />
   )
 }
