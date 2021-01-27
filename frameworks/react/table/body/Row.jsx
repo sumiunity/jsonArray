@@ -12,8 +12,6 @@
 
 import React from 'react';
 
-import Series from '../../../../Series'
-
 import Cell from '../cell'
 import {Row as TableRow} from '../../framework/Components'
 

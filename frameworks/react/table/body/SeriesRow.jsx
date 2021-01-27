@@ -10,13 +10,11 @@
 
 
 
-import React, {useState} from 'react';
+import React from 'react';
 
-import Series from '../../../../Series'
 
 import Cell from '../cell'
-import {Body, Row as TableRow} from '../../framework/Components'
-import jsonArray from '../../../../jsonArray'
+import {Row as TableRow} from '../../framework/Components'
 
 
 /**

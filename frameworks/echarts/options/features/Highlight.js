@@ -1,7 +1,5 @@
 
 
-import jsonArray from '../../../../jsonArray'
-
 // Adds a scatter point for the ends of the error bars
 // and a line connecting the scatter poitns
 export default function Highlight( options, props ){

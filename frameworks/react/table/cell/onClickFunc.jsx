@@ -8,11 +8,6 @@
  */
 
 
-
-import React from 'react';
-
-
-
 /**
  * returns the onClick function when specified. Defaults to undefined
  * @param  {object} json_table  jsonTable object

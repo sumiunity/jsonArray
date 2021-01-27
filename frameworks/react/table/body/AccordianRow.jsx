@@ -13,7 +13,7 @@
 import React, {useState} from 'react';
 
 import Cell from '../cell'
-import {Body, Row as TableRow} from '../../framework/Components'
+import {Row as TableRow} from '../../framework/Components'
 import jsonArray from '../../../../jsonArray'
 
 import Row from './Row'
