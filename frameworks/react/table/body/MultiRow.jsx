@@ -29,7 +29,8 @@ export default function MultiRow( props ) {
         ...{
           columns: columns,
           multirow_idx: i,
-          col_span: colSpan(props, columns)
+          col_span: colSpan(props, columns),
+          tdStyle: {textAlign: 'left'}
         }
       })
     )
