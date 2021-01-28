@@ -58,6 +58,8 @@ export default function Row( props ) {
       }
     }
 
+    
+
     // set the background color when the row is selected
     var rowStyle = {textAlign:'center'}
     if( props.row_idx === props.selectedRow ){
