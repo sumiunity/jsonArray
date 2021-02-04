@@ -14,7 +14,7 @@ import jsonArray from '../../../jsonArray'
 import echartsTooltip from '../tooltips'
 
 
-import Highlight from './features/Highlight'
+import * as features from './features'
 import Line from './charts/line'
 import Boxplot from './charts/boxplot'
 import Heatmap from './charts/heatmap'
@@ -63,8 +63,10 @@ export default class echartsOptions extends Object {
   bar( props ){ return this.generate_options( Bar, props ) }
   line( props ){ return this.generate_options( Line, props ) }
 
+  selection( props ){ return features.Selection( this, props ) }
+  zoom( props ){ return features.DataZoom( this, props ) }
   highlight( props ){
-    const options = Highlight( this, props )
+    const options = features.Highlight( this, props )
     this.local_variables( options )
     delete this.json_array
     return this

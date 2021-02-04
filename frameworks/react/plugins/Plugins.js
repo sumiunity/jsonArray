@@ -11,8 +11,11 @@
  *
  */
 
+ // import * as echarts from 'echarts';
+ // import 'echarts-gl';
+
 export var enabledComponents = {
-  echarts: false,
+  echarts: true,
   semanticUI: false,
   excel: false,
 }
@@ -26,6 +29,9 @@ export var components = {
 
 
 try{
+  require("echarts/lib/lang");
+  require.cache[require.resolve('echarts/lib/lang')].exports = require("echarts/lib/langEN");
+  // echarts = require('echarts')
   components.echarts = require('./echarts').default
   enabledComponents.echarts = true
 }catch{

@@ -24,8 +24,6 @@ export default function EchartsReact( props ) {
 
       const index = params.batch[0].selected[0].dataIndex;
       if( params.batch[0].selected !== undefined ){
-        console.log(props.data[index[0]])
-        console.log(index)
         props.onSelect({
             index: index,
             data: props.data.iloc(index)
