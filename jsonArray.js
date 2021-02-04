@@ -181,6 +181,10 @@ export default class jsonArray extends Array{
     return array
   }
 
+  append( df ){
+    return new jsonArray([...this].concat(df))
+  }
+
   /**
    * Applies a given function to a column and returns a DataFrame
    * with the results. The results can be written inplace or a nedw
@@ -239,10 +243,10 @@ export default class jsonArray extends Array{
   iloc( idx, props={Series:true} ){
 
     // return a DataFrame when a list of index are proived
-    if( typeof idx == "object" ){
+    if( Array.isArray(idx) ){
       var array = []
       for( var i=0; i < idx.length; i++ ){
-        array.push( this[i] )
+        array.push( this[idx[i]] )
       }
       return new jsonArray(array)
     }
