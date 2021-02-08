@@ -101,6 +101,7 @@ export default class DataTypes extends Object{
   // returns the data type for the given value
   data_type( value ){
 
+    if( value instanceof jsonArray ) return 'jsonArray'
     if( value instanceof Array ) return 'array'
     if( value instanceof Object ) return 'object'
 

@@ -512,7 +512,18 @@ export default class jsonArray extends Array{
   }
 
   groupby( col ){
-    return new jsonArray( this.__groupby__( this, col ) )
+    var dtypes = this.dtypes
+    dtypes['json_obj'] = 'jsonArray'
+
+    // var test = this.__groupby__( this, col )
+    // // test['test'] = dtypes)
+    // // test = test.astype({json_obj: 'jsonArray'})
+    // console.log( test )
+    // console.log( test[0].json_obj instanceof jsonArray )
+    // const test2 = new jsonArray( test, true, dtypes )
+    // console.log( test2[0].json_obj instanceof jsonArray )
+
+    return new jsonArray( this.__groupby__( this, col ), true, dtypes )
   }
 
 
