@@ -58,8 +58,8 @@ export default function AccordianRow( props ){
   }
 
   // select an icon based on the visible flag
-  var icon = '^'
-  if( visible === true ) icon = '>'
+  var icon = 'caret right'
+  if( visible === true ) icon = 'caret down'
 
 
   var AccordianTable = new jsonArray(row_data.json_obj)
@@ -81,6 +81,7 @@ export default function AccordianRow( props ){
           <>
             <Cell
               {...props}
+              tdProps={{rowSpan:(visible) ? 2 : 1}}
               style={{maxWidth:'50px'}}
               row={props.row_idx}
               value={icon}
@@ -109,7 +110,7 @@ export default function AccordianRow( props ){
             defaultValue={
               <Cell
                 {...props}
-                tdProps={{colSpan:4}}
+                tdProps={{colSpan:props.columns.length}}
                 tdStyle={{margin:0, padding:0}}
                 row={props.row_idx}
                 dtype={'table'}
