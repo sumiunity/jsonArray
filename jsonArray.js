@@ -515,14 +515,6 @@ export default class jsonArray extends Array{
     var dtypes = this.dtypes
     dtypes['json_obj'] = 'jsonArray'
 
-    // var test = this.__groupby__( this, col )
-    // // test['test'] = dtypes)
-    // // test = test.astype({json_obj: 'jsonArray'})
-    // console.log( test )
-    // console.log( test[0].json_obj instanceof jsonArray )
-    // const test2 = new jsonArray( test, true, dtypes )
-    // console.log( test2[0].json_obj instanceof jsonArray )
-
     return new jsonArray( this.__groupby__( this, col ), true, dtypes )
   }
 
@@ -753,7 +745,11 @@ export default class jsonArray extends Array{
    * @return {Array}              jsonArray containing the mapped columns
    */
   astype( columns={}, params={} ){
-    var array = this.__inplace__(params['inplace'])
+
+    var inplace = true
+    if( params.inplace !== undefined ) inplace = params.inplace
+
+    var array = this.__inplace__(inplace)
 
     // convert all columns based on the specified data types
     const col_names = Object.keys(columns)

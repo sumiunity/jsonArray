@@ -97,17 +97,17 @@ export default function cellType( props ) {
 
     case 'boolean':
       cellOnClick = null
-      cellContent = booleanCircle(value, componentOnClick)
+      cellContent = booleanCircle(value, componentOnClick, props)
       break
 
     case 'square':
       cellOnClick = null
-      cellContent = coloredSquare(value, componentOnClick)
+      cellContent = coloredSquare(value, componentOnClick, props)
       break
 
     case 'hexcolor':
       cellOnClick = null
-      cellContent = coloredSquare(value, componentOnClick)
+      cellContent = coloredSquare(value, componentOnClick, props)
       break
 
     case 'text':
@@ -129,6 +129,10 @@ export default function cellType( props ) {
 
     case 'datetime':
       cellContent = format.toString(value, props.dtype)
+      break
+
+    case 'table':
+      cellContent = value
       break
 
     default:

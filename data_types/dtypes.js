@@ -171,6 +171,9 @@ export default class DataTypes extends Object{
       case 'datetime':
         return datetime(value)
 
+      case 'jsonArray':
+        return new jsonArray(value)
+
       case 'week':
         return datetime(value).week()
 

@@ -49,12 +49,14 @@ export default class valueToString{
   // formats a float by removing resolution to 4 decimal points or
   // converting it to scientific notation
   format_float( value ){
+    if( value === undefined ) return '-'
     if( value/Math.pow(10,this.float-1) > 0 ) return value.toFixed(this.float).toString()
     return value.toExponential(this.float).toString()
   }
 
   // formats a value of percent data type into a percentage string
   format_percentage( value ){
+    if( value === undefined ) return '-'
     const formatted = (100*value).toFixed(this.percentage)
     if( isNaN(formatted) ) return '-'
     return `${formatted}%`
@@ -63,6 +65,7 @@ export default class valueToString{
   // limits the resolution of integers. Returns the original
   // value when less than the maximum resolutions
   format_int( value ){
+    if( value === undefined ) return '-'
     if( value < Math.pow(10,this.numeric-1) ) return value.toString()
     return value.toExponential(this.float).toString()
   }

@@ -57,18 +57,24 @@ export default function AccordianRow( props ){
     rowStyle = {textAlign:'center', backgroundColor: '#8c9ac0'}
   }
 
-  // select an icon based on the visible flag
-  var icon = 'caret right'
-  if( visible === true ) icon = 'caret down'
 
 
-  var AccordianTable = new jsonArray(row_data.json_obj)
+  var AccordianTable = row_data.json_obj
 
   // when provided, apply the the function to transform the subgroup
   if( props.accordianFunc !== undefined) AccordianTable = props.accordianFunc(AccordianTable)
 
   var columns = AccordianTable.columns
   if( props.accordianColumns !== undefined ) columns = props.accordianColumns
+
+  // select an icon based on the visible flag
+  var iconOnClick = () => {setVisible(!visible)}
+  var icon = 'caret right'
+  if( visible === true ) icon = 'caret down'
+  if( AccordianTable.length === 0 ){
+    icon = 'ellipsis horizontal'
+    iconOnClick = () => {console.log('no data to unfold')}
+  }
 
   return (
     <>
@@ -88,7 +94,7 @@ export default function AccordianRow( props ){
               dtype={'icon'}
               key={`${props.tableName}-accordian-control-${props.row_idx}`}
               col = {'accordianEnable'}
-              onClick={() => {setVisible(!visible)} }
+              onClick={iconOnClick}
               />
 
             <Row
@@ -122,8 +128,10 @@ export default function AccordianRow( props ){
                     tableName={`accordianTable - ${props.row_idx}`}
                     tableStyle={{padding:0, margin:0}}
                     columns={columns}
+                    thStyle={{margin:0, padding:0}}
                     tdStyle={{margin:0, padding:0}}
                     showHeader={props.accordianHeader}
+                    radius={10}
                     />
                 }
                 />

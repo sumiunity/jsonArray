@@ -22,7 +22,7 @@ import {fillAndEdge} from '../../../colors/Colors'
  * @param       {string} colorHex string containing the hex color value
  * @constructor
  */
-export default function coloredSquare( colorHex ){
+export default function coloredSquare( colorHex, props ){
 
   if( colorHex === undefined ) colorHex = '#B0B0B0'
 
