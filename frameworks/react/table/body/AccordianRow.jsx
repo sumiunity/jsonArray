@@ -70,9 +70,11 @@ export default function AccordianRow( props ){
   // select an icon based on the visible flag
   var iconOnClick = () => {setVisible(!visible)}
   var icon = 'caret right'
+  var iconColor = 'black'
   if( visible === true ) icon = 'caret down'
   if( AccordianTable.length === 0 ){
     icon = 'ellipsis horizontal'
+    iconColor = '#D0D0D0'
     iconOnClick = () => {console.log('no data to unfold')}
   }
 
@@ -95,6 +97,7 @@ export default function AccordianRow( props ){
               key={`${props.tableName}-accordian-control-${props.row_idx}`}
               col = {'accordianEnable'}
               onClick={iconOnClick}
+              iconStyle={{color:iconColor}}
               />
 
             <Row
