@@ -107,49 +107,66 @@ export default class echartsOptions extends Object {
   }
 
   // creates a horizontal line across the plotting area
-  axhline( value, color='red' ){
-    this.series = this.series.concat({
-      name: 'limit',
-      type: 'line',
-      color: color,
-      markLine: {
-          symbol: "none",
-          data: [{
-            tooltip: {show:false},
-            name: value.toExponential(3),
-            yAxis: value,
-            label: {
-              formatter: value.toExponential(3),
-              position: 'end'
-            }
-          }]
-      }
+  axhline( value, props={} ){
+    const line = features.Axline( value, {
+      ...props,
+      ...{axis: 'yAxis'}
     })
 
+    this.append_series(line)
     return this
+
+    // this.series = this.series.concat({
+    //   name: 'limit',
+    //   type: 'line',
+    //   color: color,
+    //   markLine: {
+    //       symbol: "none",
+    //       data: [{
+    //         tooltip: {show:false},
+    //         name: value.toExponential(3),
+    //         yAxis: value,
+    //         label: {
+    //           formatter: value.toExponential(3),
+    //           position: 'end'
+    //         }
+    //       }]
+    //   }
+    // })
+
+    // return this
   }
 
   // creates a horizontal line across the plotting area
-  axvline( value, color='red' ){
-    this.series = this.series.concat({
-      name: 'limit',
-      type: 'line',
-      color: color,
-      markLine: {
-          symbol: "none",
-          data: [{
-            tooltip: {show:false},
-            name: value.toExponential(3),
-            xAxis: value,
-            label: {
-              formatter: value.toExponential(3),
-              position: 'end'
-            }
-          }]
-      }
+  axvline( value, props={} ){
+
+    const line = features.Axline( value, {
+      ...props,
+      ...{axis: 'xAxis'}
     })
 
+    this.append_series(line)
     return this
+
+    // this.series = this.series.concat({
+    //   name: 'limit',
+    //   type: 'line',
+    //   color: color,
+    //   markLine: {
+    //       symbol: "none",
+    //       data: [{
+    //         tooltip: {show:false},
+    //         name: value.toExponential(3),
+    //         xAxis: value,
+    //         label: {
+    //           formatter: value.toExponential(3),
+    //           position: 'end'
+    //         }
+    //       }]
+    //   }
+    // })
+    //
+    // return this
   }
 
 
