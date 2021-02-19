@@ -78,6 +78,38 @@ export default function AccordianRow( props ){
     iconOnClick = () => {console.log('no data to unfold')}
   }
 
+  var AccordianComponent
+  if( props.accordianComponent !== undefined ){
+
+    AccordianComponent = (
+      <props.accordianComponent
+        {...props}
+        row={props.row_idx}
+        row_data={row_data}
+        />
+    )
+
+  }else{
+    console.log( 'we should get here', props.tableName)
+    AccordianComponent = (
+      <AccordianTable.react.semanticUI.Table
+        tableName={`accordianTable - ${props.tableName} - ${props.row_idx}`}
+        tableStyle={{padding:0, margin:0}}
+        columns={columns}
+        thStyle={{margin:0, padding:0}}
+        tdStyle={{margin:0, padding:0}}
+        showHeader={props.accordianHeader}
+        radius={10}
+        {...props.accordianProps}
+        />
+    )
+  }
+
+  if( visible ){
+    console.log( props.tableName, props.row_idx )
+    console.log( row_data )
+
+  }
   return (
     <>
       <TableRow
@@ -125,18 +157,7 @@ export default function AccordianRow( props ){
                 dtype={'table'}
                 key={`${props.tableName}-accordian-dropodwn-${props.row_idx}-${-1}`}
                 col = {'accordianTable'}
-                value={
-                  <AccordianTable.react.semanticUI.Table
-                    {...props.accordianProps}
-                    tableName={`accordianTable - ${props.row_idx}`}
-                    tableStyle={{padding:0, margin:0}}
-                    columns={columns}
-                    thStyle={{margin:0, padding:0}}
-                    tdStyle={{margin:0, padding:0}}
-                    showHeader={props.accordianHeader}
-                    radius={10}
-                    />
-                }
+                value={AccordianComponent}
                 />
 
 
