@@ -106,7 +106,7 @@ export default class echartsOptions extends Object {
     }
   }
 
-  // add a secondary y axis 
+  // add a secondary y axis
   secondary_axis( col ){
     this.yAxis.push(  new echartsAxis(col) )
     return this

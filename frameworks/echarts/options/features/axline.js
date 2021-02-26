@@ -29,9 +29,9 @@ export default function Axline( value, props={} ){
   }
 
   if( props.axis === 'yAxis' ){
-    line.markLine.data[0]['yAxis'][0] = value
+    line.markLine.data[0]['yAxis'] = value
   }else{
-    line.markLine.data[0]['xAxis'][0] = value
+    line.markLine.data[0]['xAxis'] = value
   }
 
   return line
