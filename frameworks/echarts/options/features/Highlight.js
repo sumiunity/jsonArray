@@ -12,7 +12,8 @@ export default function Highlight( options, props ){
   // identify the index of the samples to highlight
   var index = props.value
   if( typeof props.value === 'string'){
-    index = options.xAxis.data.indexOf( props.value )
+    console.log( 'what is this...', options )
+    index = options.xAxis[0]['data'].indexOf( props.value )
   }
 
   // extend the first item in the series with the marked area

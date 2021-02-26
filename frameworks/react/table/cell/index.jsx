@@ -36,6 +36,16 @@ export default function Cell( props ) {
     }catch{}
   }
 
+  if( props.cellStyle !== undefined ){
+    try{
+      style = {
+        ...style,
+        ...props.cellStyle[props.row_idx][props.col]
+
+      }
+    }catch{}
+  }
+
   return (
     <TableCell
       {...props.tdProps}
