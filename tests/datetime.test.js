@@ -10,6 +10,11 @@
  * :Date: Aug 03, 2020
  */
 
+import jsonObject from '../jsonObject'
+import jsonArray from '../jsonArray'
+import datetime from '../data_types/datetime'
+import {data} from './data'
+
 global.base_dir = './';
 
 global.abs_path = function(path) {
@@ -19,11 +24,6 @@ global.abs_path = function(path) {
 global.include = function(file) {
   return require(abs_path('/' + file));
 }
-
-import jsonObject from '../jsonObject'
-import jsonArray from '../jsonArray'
-import datetime from '../data_types/datetime'
-import {data} from './data'
 
 
 test("jsonObject : converts date object to string", () => {

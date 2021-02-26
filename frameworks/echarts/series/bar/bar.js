@@ -1,5 +1,6 @@
 
 import jsonArray from '../../../../jsonArray'
+import propsToSeries from '../propsToSeries'
 
 /**
  * echarts area plot data formatter
@@ -21,9 +22,7 @@ export default function Bar( props ){
 
   }
 
-  if( props.name !== undefined ) Series['name'] = props.name
-  if( props.stacked !== undefined ) Series['stack'] = props.stacked
-  if( props.color !== undefined ) Series['color'] = props.color
+  Series = propsToSeries(props, Series)
 
   return Series
 }

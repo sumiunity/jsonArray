@@ -10,6 +10,7 @@
 
 
 import jsonArray from '../../../../jsonArray'
+import propsToSeries from '../propsToSeries'
 
 /**
  * Convert the json_array to a line plot
@@ -31,20 +32,8 @@ export default function line( props ){
     data: json_array.map(r => r[props.coly])
   }
 
-  if( props.color !== undefined ) Series['color'] = props.color
-  if( props.smooth !== undefined ) Series['smooth'] = props.smooth
-  if( props.symbol !== undefined ) Series['symbol'] = props.symbol
-  if( props.lineStyle !== undefined ) Series['lineStyle'] = props.lineStyle
+  Series = propsToSeries(props, Series)
 
-
-    // this.data = y_axis
-    // this.type = 'line'
-    // this.symbol = params['symbol']
-    // this.smooth = true
-    // this.lineStyle= {
-    //       color: params['color'],
-    //       width: params['lw']
-    //   }
   return [Series]
 
 }

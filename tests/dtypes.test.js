@@ -10,6 +10,10 @@
  * :Date: Aug 12, 2020
  */
 
+import jsonArray from '../jsonArray'
+import DataTypes from '../data_types/dtypes'
+import {data} from './data'
+
 global.base_dir = './';
 
 global.abs_path = function(path) {
@@ -19,10 +23,6 @@ global.abs_path = function(path) {
 global.include = function(file) {
   return require(abs_path('/' + file));
 }
-
-import jsonArray from '../jsonArray'
-import DataTypes from '../data_types/dtypes'
-import {data} from './data'
 
 
 test("Dtypes : parsing", () => {

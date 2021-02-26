@@ -8,6 +8,11 @@
  * :Date: Aug 03, 2020
 
  */
+import {data, array} from './data'
+import jsonArray from '../jsonArray'
+
+import moment from 'moment';
+
 global.base_dir = './';
 
 global.abs_path = function(path) {
@@ -17,11 +22,6 @@ global.abs_path = function(path) {
 global.include = function(file) {
   return require(abs_path('/' + file));
 }
-
-import {data, array} from './data'
-import jsonArray from '../jsonArray'
-
-import moment from 'moment';
 
 
 

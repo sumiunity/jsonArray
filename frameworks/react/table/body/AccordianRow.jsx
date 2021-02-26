@@ -14,7 +14,6 @@ import React, {useState} from 'react';
 
 import Cell from '../cell'
 import {Row as TableRow} from '../../framework/Components'
-import jsonArray from '../../../../jsonArray'
 
 import Row from './Row'
 

@@ -10,6 +10,7 @@
 
 
 import jsonArray from '../../../../jsonArray'
+import propsToSeries from '../propsToSeries'
 
 /**
  * Convert the json_array to a list of x/y cooridnates
@@ -71,7 +72,7 @@ export default function scatter( props ){
     data: coordinates
   }
 
-  if( props.symbol !== undefined ) Series['symbol'] = props.symbol
+  Series = propsToSeries(props, Series)
 
   // add tooltips when the label is provided
   if( props.colorBy !== undefined ){

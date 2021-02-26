@@ -38,8 +38,8 @@ export default function boxplot( json_array, props={} ){
 
 
   return {
-    xAxis: xAxis,
-    yAxis: yAxis,
+    xAxis: [xAxis],
+    yAxis: [yAxis],
     series: series
   }
 

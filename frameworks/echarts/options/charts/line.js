@@ -42,8 +42,8 @@ export default function line( json_array, props={} ){
   var series = line( {...props, ...{json_array: json_array}} )
 
   return {
-    xAxis: xAxis,
-    yAxis: yAxis,
+    xAxis: [xAxis],
+    yAxis: [yAxis],
     series: series
   }
 

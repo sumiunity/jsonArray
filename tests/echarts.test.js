@@ -8,6 +8,12 @@
  * :Date: Aug 03, 2020
 
  */
+import {data} from './data'
+// import jsonArray from '../jsonArray'
+
+import echartsSeries from '../frameworks/echarts/series'
+import jsonArray from '../jsonArray'
+
 global.base_dir = './';
 
 global.abs_path = function(path) {
@@ -17,12 +23,6 @@ global.abs_path = function(path) {
 global.include = function(file) {
   return require(abs_path('/' + file));
 }
-
-import {data} from './data'
-// import jsonArray from '../jsonArray'
-
-import echartsSeries from '../frameworks/echarts/series'
-import jsonArray from '../jsonArray'
 
 
 // test("jsonArray : groups similar rows based on the value of the specified column", () => {

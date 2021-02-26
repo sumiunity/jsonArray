@@ -12,7 +12,7 @@
 
 import jsonArray from '../../../jsonArray'
 import echartsTooltip from '../tooltips'
-
+import echartsAxis from '../axis'
 
 import * as features from './features'
 import Line from './charts/line'
@@ -78,7 +78,7 @@ export default class echartsOptions extends Object {
 
     this.local_variables( options )
 
-    delete this.json_array
+    if( props.delete !== false ) delete this.json_array
 
     return this
   }
@@ -106,6 +106,12 @@ export default class echartsOptions extends Object {
     }
   }
 
+  // add a secondary y axis 
+  secondary_axis( col ){
+    this.yAxis.push(  new echartsAxis(col) )
+    return this
+  }
+
   // creates a horizontal line across the plotting area
   axhline( value, props={} ){
     const line = features.Axline( value, {
@@ -116,25 +122,6 @@ export default class echartsOptions extends Object {
     this.append_series(line)
     return this
 
-    // this.series = this.series.concat({
-    //   name: 'limit',
-    //   type: 'line',
-    //   color: color,
-    //   markLine: {
-    //       symbol: "none",
-    //       data: [{
-    //         tooltip: {show:false},
-    //         name: value.toExponential(3),
-    //         yAxis: value,
-    //         label: {
-    //           formatter: value.toExponential(3),
-    //           position: 'end'
-    //         }
-    //       }]
-    //   }
-    // })
-
-    // return this
   }
 
   // creates a horizontal line across the plotting area
@@ -147,26 +134,6 @@ export default class echartsOptions extends Object {
 
     this.append_series(line)
     return this
-
-    // this.series = this.series.concat({
-    //   name: 'limit',
-    //   type: 'line',
-    //   color: color,
-    //   markLine: {
-    //       symbol: "none",
-    //       data: [{
-    //         tooltip: {show:false},
-    //         name: value.toExponential(3),
-    //         xAxis: value,
-    //         label: {
-    //           formatter: value.toExponential(3),
-    //           position: 'end'
-    //         }
-    //       }]
-    //   }
-    // })
-    //
-    // return this
   }
 
 
