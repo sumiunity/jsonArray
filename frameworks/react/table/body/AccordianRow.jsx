@@ -89,7 +89,7 @@ export default function AccordianRow( props ){
     )
 
   }else{
-    console.log( 'we should get here', props.tableName)
+
     AccordianComponent = (
       <AccordianTable.react.semanticUI.Table
         tableName={`accordianTable - ${props.tableName} - ${props.row_idx}`}
@@ -104,11 +104,7 @@ export default function AccordianRow( props ){
     )
   }
 
-  if( visible ){
-    console.log( props.tableName, props.row_idx )
-    console.log( row_data )
 
-  }
   return (
     <>
       <TableRow

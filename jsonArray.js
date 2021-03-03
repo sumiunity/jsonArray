@@ -458,6 +458,7 @@ export default class jsonArray extends Array{
           val = params[col]
           if( array[i][col] === undefined ) array[i][col] = val
           if( array[i][col] === null ) array[i][col] = val
+          if( array[i][col] === '' ) array[i][col] = val
           // if( isNaN(array[i][col]) ) array[i][col] = val
         }
       }
@@ -844,7 +845,13 @@ export default class jsonArray extends Array{
     // return all unique values for the specified column. When
     // ordered is set to true, these values are sorted.
 
-    var unique_values = [...new Set([...this].map(row => row[col] ))]
+    // filter the undefined values from unique
+    var values = [...this]
+      .map(row => row[col])
+      .filter(row => row !== undefined)
+
+    // remove duplicates by forcing to a set
+    var unique_values = [...new Set(values)]
 
     // When the column is an array type, concatinate all array values
     if( this.dtypes[col] === 'array'){
