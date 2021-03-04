@@ -87,6 +87,7 @@ export default function cellType( props ) {
           key={`${props.tableName}-checkbox-${props.col}-${props.row_idx}`}
           style={{...{textAlign:'center'}, ...props.checkboxStyle}}
           component={props.checkbox}
+          checked={value}
           onClick={componentOnClick}
           />
       )
