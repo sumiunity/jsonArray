@@ -145,7 +145,7 @@ export function Render( props ){
     for( var i=0; i < filters.length; i ++ ){
       // console.log( 'thisis the filter', filters[i])
       const filt = filters[i]
-      table_data = table_data.filter(r => filt.value.includes(r[filt.col_name]) )
+      table_data = table_data.filter(r => filt.value.includes(r[filt.col_name].toString()) )
     }
     // console.log( table_data)
   }
