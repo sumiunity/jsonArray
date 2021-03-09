@@ -108,6 +108,8 @@ export default function ColumnFilter( props ){
             maxWidth: '100px',
             minHeight: '10px',
             fontSize: '10px',
+            backgroundColor: '#e5faf9',
+            color: '#212121'
           }}
           placeholder={'filter...'}
           multiple
