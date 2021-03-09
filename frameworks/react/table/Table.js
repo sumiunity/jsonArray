@@ -128,7 +128,7 @@ export function Render( props ){
         temp = temp.filter(r => r.col_name !== content.col_name)
 
         // only push valid values (accounts for dropdown clearing)
-        if( content.value !== '' ) temp.push( content )
+        if( content.value.length > 0 ) temp.push( content )
         setFilters( temp )
       }
   }
@@ -145,7 +145,7 @@ export function Render( props ){
     for( var i=0; i < filters.length; i ++ ){
       // console.log( 'thisis the filter', filters[i])
       const filt = filters[i]
-      table_data = table_data.filter(r => r[filt.col_name] === filt.value)
+      table_data = table_data.filter(r => filt.value.includes(r[filt.col_name]) )
     }
     // console.log( table_data)
   }

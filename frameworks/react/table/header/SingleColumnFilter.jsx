@@ -18,14 +18,12 @@ import { Dropdown, Segment } from 'semantic-ui-react'
 
 export default function ColumnFilter( props ){
 
-  const unique_values = props.data.unique([props.col])
+  const unique_values = props.table_data.unique([props.col])
   const options = unique_values.map(r => {
     return {
       key:`${r}-${_.uniqueId()}`,
       text:`${r}`,
-      value:`${r}`,
-      style: {fontSize:'12px', padding: '0px', margin:0}
-    }})
+      value:`${r}`}})
 
   var headerCellOnClick = null
   if( props.columnOnClick !== undefined ){
@@ -67,9 +65,8 @@ export default function ColumnFilter( props ){
       key={`Header-SeggyGroup-${props.col}`}
       raised={false}
       compact
-
+      horizontal
       style={{
-        width:'100%',
         padding:0,
         margin:0,
         boxShadow: 'none',
@@ -92,31 +89,28 @@ export default function ColumnFilter( props ){
       <Segment
         key={`Header-Filter-${props.col}`}
         basic
-        textAlign='center'
         style={{
           padding:0,
           margin:0,
+          maxWidth: '30px',
           backgroundColor:'transparent',
           border: '0'}}
-        >
+        textAlign='right'>
 
         <Dropdown
           key={`Header-Dropdown-${props.col}}`}
           style={{
             margin:0,
-            padding:'0',
-            maxWidth: '100px',
-            minHeight: '10px',
-            fontSize: '10px',
+            padding:'5px 10px 5px 10px'
           }}
-          placeholder={'filter...'}
-          multiple
-          selection
+          className='button icon'
+          floating
+          clearable
+          basic
+          value={filterValues}
           onChange={columnFilterOnChange}
           options={options}
-          icon= {'none'}
-
-
+          trigger={<></>}
           />
       </Segment>
     </Segment.Group>
