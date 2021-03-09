@@ -20,6 +20,7 @@ import Boxplot from './charts/boxplot'
 import Heatmap from './charts/heatmap'
 import Scatter from './charts/scatter'
 import Bar from './charts/bar'
+import Grid from './charts/grid'
 
 export default class echartsOptions extends Object {
 
@@ -62,6 +63,8 @@ export default class echartsOptions extends Object {
   scatter( props ){ return this.generate_options( Scatter, props ) }
   bar( props ){ return this.generate_options( Bar, props ) }
   line( props ){ return this.generate_options( Line, props ) }
+  rectGrid( props ){ return this.generate_options( Grid, props ) }
+
 
   selection( props ){ return features.Selection( this, props ) }
   zoom( props ){ return features.DataZoom( this, props ) }

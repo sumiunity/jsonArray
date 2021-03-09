@@ -17,7 +17,9 @@ import scatter_by from './scatter/scatterBy'
 import boxplot from './boxplot'
 import line from './line'
 import bar from './bar'
+import grid from './grid'
 import ErrorBars from './features/ErrorBars'
+import Circle from './features/Circle'
 
 
 
@@ -44,5 +46,8 @@ export default class echartsSeries extends Object {
   boxplot( props ){ return boxplot({...props, ...{json_array:this.json_array}}) }
   line( props ){ return line({...props, ...{json_array:this.json_array}}) }
   bar( props ){ return bar({...props, ...{json_array:this.json_array}}) }
+  rectGrid( props ){ return grid({...props, ...{json_array:this.json_array}}) }
+
   errorbars( props ){ return ErrorBars({...props, ...{json_array:this.json_array}}) }
+  circle( props ){ return Circle({...props, ...{json_array:this.json_array}}) }
 }

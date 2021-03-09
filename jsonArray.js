@@ -503,6 +503,7 @@ export default class jsonArray extends Array{
     }
   }
 
+  concat( array ){ return new jsonArray( [...this].concat(array)) }
 
   filter( func ){
     return new jsonArray( [...this].filter(func), false, this.dtypes )

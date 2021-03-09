@@ -14,7 +14,7 @@
 
 import {enabledComponents, components} from './plugins/Plugins'
 
-
+import echartsLibrary from './plugins/echarts'
 
 export default class ReactComponents extends Object{
 
@@ -64,7 +64,7 @@ export default class ReactComponents extends Object{
       return {}
     }
 
-    return new components.echarts( this.data )
+    return new echartsLibrary( this.data )
   }
 
 

@@ -33,7 +33,7 @@ export default class echartsLibrary extends ReactLibraryFramework{
     this.Bar = this.Bar.bind(this)
     this.Histogram = this.Histogram.bind(this)
     this.Pareto = this.Pareto.bind(this)
-
+    this.RectGrid = this.RectGrid.bind(this)
 
   }
 
@@ -47,6 +47,10 @@ export default class echartsLibrary extends ReactLibraryFramework{
 
   Boxplot( props ){
     return this.Component( 'boxplot', this.props(props) )
+  }
+
+  RectGrid( props ){
+    return this.Component( 'rectGrid', this.props(props) )
   }
 
   Scatter( props ){
@@ -94,6 +98,11 @@ export default class echartsLibrary extends ReactLibraryFramework{
       case 'bar':
         plot_options = options.bar(props)
         break
+
+      case 'rectGrid':
+        plot_options = options.rectGrid(props)
+        break
+
 
       case 'histogram':
         const series = props.data.col( props.colx )

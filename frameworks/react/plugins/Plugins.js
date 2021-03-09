@@ -29,8 +29,8 @@ export var components = {
 
 
 try{
-  require("echarts/lib/lang");
-  require.cache[require.resolve('echarts/lib/lang')].exports = require("echarts/lib/langEN");
+  // require("echarts/lib/lang");
+  // require.cache[require.resolve('echarts/lib/lang')].exports = require("echarts/lib/langEN");
   // echarts = require('echarts')
   components.echarts = require('./echarts').default
   enabledComponents.echarts = true

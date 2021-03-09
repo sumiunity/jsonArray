@@ -73,6 +73,21 @@ export default class echartsAxis extends Object {
   }
 
 
+  hide(){ this.show = false }
+
+  minValue(value){
+    this.min = (val) => {
+      if( value !== undefined) return value
+      return val.min
+    }
+  }
+
+  maxValue(value){
+    this.max = (val) => {
+      if( value !== undefined) return value
+      return val.max
+    }
+  }
 
   rotate(){
     this.axisLabel = {
