@@ -10,6 +10,8 @@ export default function propsToSeries(props, Series){
     if( props.symbol !== undefined ) Series['symbol'] = props.symbol
     if( props.lineStyle !== undefined ) Series['lineStyle'] = props.lineStyle
     if( props.axis !== undefined ) Series['yAxisIndex'] = props.axis
+    if( props.z !== undefined ) Series['z'] = props.z
+    if( props.zIndex !== undefined ) Series['zlevel'] = props.zIndex
 
     return Series
 }

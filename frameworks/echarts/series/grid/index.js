@@ -63,6 +63,8 @@ export default function grid( props ){
         show: true,
         color: "black",
         fontSize:12,
+        z: 10,
+        zlevel: 10,
         formatter: (element) => {
           return element.value[2]; // Use sum variable here
         },
@@ -100,7 +102,8 @@ function renderRectangle(params, api) {
             width: w,
             height: h
         },
-
+        z:2,
+        zlevel: 2,
         style: api.style({
             stroke: '#B0B0B0',
             fill: color,

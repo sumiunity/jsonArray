@@ -20,6 +20,8 @@ import bar from './bar'
 import grid from './grid'
 import ErrorBars from './features/ErrorBars'
 import Circle from './features/Circle'
+import Vline from './features/Vline'
+import Hline from './features/Hline'
 
 
 
@@ -50,4 +52,6 @@ export default class echartsSeries extends Object {
 
   errorbars( props ){ return ErrorBars({...props, ...{json_array:this.json_array}}) }
   circle( props ){ return Circle({...props, ...{json_array:this.json_array}}) }
+  vline( props ){ return Vline({...props, ...{json_array:this.json_array}}) }
+  hline( props ){ return Hline({...props, ...{json_array:this.json_array}}) }
 }
