@@ -35,5 +35,5 @@ export function mean(array){
 }
 
 export function dropna(array){
-  return array.filter(r => (r !== undefined)&(r !== null) )
+  return array.filter(r => (r !== undefined)&(r !== null)&(!Number.isNaN(r)) )
 }
