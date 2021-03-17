@@ -21,6 +21,11 @@ import Heatmap from './charts/heatmap'
 import Scatter from './charts/scatter'
 import Bar from './charts/bar'
 import Grid from './charts/grid'
+import Pie from './charts/pie'
+import PieFromSeries from './charts/pie/fromSeries'
+
+import legend from './format/legend'
+
 
 export default class echartsOptions extends Object {
 
@@ -64,6 +69,8 @@ export default class echartsOptions extends Object {
   bar( props ){ return this.generate_options( Bar, props ) }
   line( props ){ return this.generate_options( Line, props ) }
   rectGrid( props ){ return this.generate_options( Grid, props ) }
+  pie( props ){ return this.generate_options( Pie, props ) }
+  pieFromSeries( props ){ return this.generate_options( PieFromSeries, props ) }
 
 
   selection( props ){ return features.Selection( this, props ) }
@@ -107,6 +114,10 @@ export default class echartsOptions extends Object {
       ...this.grid,
       ...{bottom: padding}
     }
+  }
+
+  legend(position){
+    this.legend = legend(position)
   }
 
   // add a secondary y axis

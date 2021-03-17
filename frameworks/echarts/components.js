@@ -10,7 +10,6 @@
  * @type {Object}
  */
 
- import echartsFormat from './format'
  import echartsOptions from './options'
 
 
@@ -23,11 +22,6 @@ export default class eChartsComponents extends Object{
 
     this.data = data
   }
-
-  get format(){
-    return new echartsFormat( this.data )
-  }
-
 
   get options(){
     return new echartsOptions( this.data )

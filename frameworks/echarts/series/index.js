@@ -18,6 +18,9 @@ import boxplot from './boxplot'
 import line from './line'
 import bar from './bar'
 import grid from './grid'
+import pie from './pie'
+import pieFromSeries from './pie/fromSeries'
+
 import ErrorBars from './features/ErrorBars'
 import Circle from './features/Circle'
 import Vline from './features/Vline'
@@ -48,6 +51,8 @@ export default class echartsSeries extends Object {
   boxplot( props ){ return boxplot({...props, ...{json_array:this.json_array}}) }
   line( props ){ return line({...props, ...{json_array:this.json_array}}) }
   bar( props ){ return bar({...props, ...{json_array:this.json_array}}) }
+  pie( props ){ return pie({...props, ...{json_array:this.json_array}}) }
+  pieFromSeries( props ){ return pie({...props, ...{json_array:this.json_array}}) }
   rectGrid( props ){ return grid({...props, ...{json_array:this.json_array}}) }
 
   errorbars( props ){ return ErrorBars({...props, ...{json_array:this.json_array}}) }
