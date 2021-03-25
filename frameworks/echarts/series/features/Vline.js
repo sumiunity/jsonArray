@@ -24,7 +24,7 @@ export default function Vline( props ){
         name: 'error',
         itemStyle: {
             normal: {
-                borderWidth: 1.0
+                borderWidth: 2.0
             }
         },
         renderItem: (params, api) => render(params, api, props),
@@ -32,8 +32,7 @@ export default function Vline( props ){
             x: 0,
             y: [1, 2]
         },
-        data: data,
-        // z: 100
+        data: data
     },
 
   ]

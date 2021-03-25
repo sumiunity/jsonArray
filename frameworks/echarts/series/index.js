@@ -52,7 +52,7 @@ export default class echartsSeries extends Object {
   line( props ){ return line({...props, ...{json_array:this.json_array}}) }
   bar( props ){ return bar({...props, ...{json_array:this.json_array}}) }
   pie( props ){ return pie({...props, ...{json_array:this.json_array}}) }
-  pieFromSeries( props ){ return pie({...props, ...{json_array:this.json_array}}) }
+  pieFromSeries( props ){ return pieFromSeries({...props, ...{json_array:this.json_array}}) }
   rectGrid( props ){ return grid({...props, ...{json_array:this.json_array}}) }
 
   errorbars( props ){ return ErrorBars({...props, ...{json_array:this.json_array}}) }

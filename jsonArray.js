@@ -180,6 +180,18 @@ export default class jsonArray extends Array{
     return array
   }
 
+  /// returns a jsonArray with the specified columns
+  selectColumns( columns ){
+    var subset = []
+    this.forEach( r => {
+      var row = {}
+      columns.forEach(s => row[s] = r[s])
+      subset.push(row)
+    })
+    return new jsonArray(subset)
+  }
+
+
   append( df ){
     return new jsonArray([...this].concat(df))
   }

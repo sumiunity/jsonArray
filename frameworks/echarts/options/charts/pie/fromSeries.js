@@ -1,6 +1,5 @@
 
 
-import moment from 'moment'
 import pie from '../../../series/pie/fromSeries'
 
 
