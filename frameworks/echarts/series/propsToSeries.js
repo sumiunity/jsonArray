@@ -12,6 +12,9 @@ export default function propsToSeries(props, Series){
     if( props.axis !== undefined ) Series['yAxisIndex'] = props.axis
     if( props.z !== undefined ) Series['z'] = props.z
     if( props.zIndex !== undefined ) Series['zlevel'] = props.zIndex
+    if( props.zIndex !== undefined ) Series['zlevel'] = props.zIndex
+
+    if( props.lw !== undefined ) Series['itemStyle'] = {normal: {borderWidth:props.lw}}
 
     return Series
 }

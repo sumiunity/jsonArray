@@ -24,7 +24,7 @@ export default function Hline( props ){
         name: 'error',
         itemStyle: {
             normal: {
-                borderWidth: 2.0
+                borderWidth: 1.0
             }
         },
         renderItem: (params, api) => render(params, api, props),
