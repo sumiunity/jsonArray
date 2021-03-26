@@ -24,7 +24,7 @@ export default function DataZoom( option, props ){
         type: 'inside',
         start: 0,
         end: 100,
-        filterMode: 'empty',
+        filterMode: 'none',
     }
 
     if( params.xAxis ) scrollZoom['orient'] = 'horizontal'
@@ -49,7 +49,7 @@ export default function DataZoom( option, props ){
           showDataShadow: false,
           handleSize: 15,
           handleIcon: icon,
-          filterMode: 'empty',
+          filterMode: 'none',
         }
       )
     }
@@ -66,7 +66,7 @@ export default function DataZoom( option, props ){
             showDataShadow: false,
             handleSize: 15,
             handleIcon: icon,
-            filterMode: 'empty',
+            filterMode: 'none',
           }
       )
     }
