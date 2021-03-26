@@ -55,6 +55,7 @@ function render(params, api, props) {
         children: [
         {
             type: 'line',
+            transition: ['shape'],
             shape: {
                 x1: highPoint[0], y1: highPoint[1],
                 x2: lowPoint[0], y2: lowPoint[1]

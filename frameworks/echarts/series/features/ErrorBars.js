@@ -1,6 +1,7 @@
 
 
 import jsonArray from '../../../../jsonArray'
+import Vline from './Vline'
 
 // Adds a scatter point for the ends of the error bars
 // and a line connecting the scatter poitns
@@ -21,40 +22,35 @@ export default function ErrorBars( props ){
   // console.log( props )
   // console.log( errorbars )
 
-  var Series = [
-    {
-        type: 'custom',
-        name: 'error',
-        itemStyle: {
-            normal: {
-                borderWidth: 1.5
-            }
-        },
-        renderItem: ErrorBar,
-        encode: {
-            x: 0,
-            y: [1, 2]
-        },
-        data: errorbars,
-        // z: 100
-    },
+  var Series = Vline({
+    ...props,
+    ...{
+      colx: '__index__',
+      coly: props.min,
+      colz: props.max,
+      zIndex: -1
+    }
+  })
 
-    // scatter point for the minimum value
+  // scatter point for the minimum value
+  Series.push(
     json_array.echartsSeries.scatter({
       colx:'__index__',
       coly:props.min,
       symbol: 'triangle',
       color: 'green'
-    })[0],
+    })[0]
+  )
 
-    // scatter point for the maximum value
+  // scatter point for the maximum value
+  Series.push(
     json_array.echartsSeries.scatter({
       colx:'__index__',
       coly:props.max,
       symbol: 'diamond',
       color: 'blue'
     })[0],
-  ]
+  )
 
 
   // scatter point for the average value when available

@@ -51,18 +51,20 @@ function render(params, api, props) {
     var highPoint = api.coord([api.value(1), yValue]);
     var lowPoint = api.coord([api.value(2), yValue]);
 
+    console.log( lowPoint, highPoint)
     var Series = {
         type: 'group',
         children: [
         {
             type: 'line',
+            transition: ['shape'],
             shape: {
                 x1: highPoint[0], y1: highPoint[1],
                 x2: lowPoint[0], y2: lowPoint[1]
             },
             style: api.style({
                 stroke: api.visual('color'),
-                fill: null
+                fill: 'green'
             })
         },
       ]
