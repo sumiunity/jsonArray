@@ -51,7 +51,6 @@ function render(params, api, props) {
     var highPoint = api.coord([api.value(1), yValue]);
     var lowPoint = api.coord([api.value(2), yValue]);
 
-    console.log( lowPoint, highPoint)
     var Series = {
         type: 'group',
         children: [
