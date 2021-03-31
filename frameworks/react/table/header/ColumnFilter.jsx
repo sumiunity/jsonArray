@@ -18,7 +18,7 @@ import { Dropdown, Segment } from 'semantic-ui-react'
 
 export default function ColumnFilter( props ){
 
-  const unique_values = props.data.unique([props.col])
+  const unique_values = props.data.unique(props.col, true)
   const options = unique_values.map(r => {
     return {
       key:`${r}-${_.uniqueId()}`,
@@ -117,7 +117,7 @@ export default function ColumnFilter( props ){
           value={filterValues}
           onChange={columnFilterOnChange}
           options={options}
-          icon= {'none'}
+          icon= {null}
 
 
           />
