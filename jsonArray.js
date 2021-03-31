@@ -853,6 +853,23 @@ export default class jsonArray extends Array{
   }
 
 
+  /**
+   * converts the column value into a color
+   * @param  {string} col color column
+   * @param  {string} colorType color label
+   */
+  to_color( col, colorType='entropy_8bit'){
+    const get_color = require('./frameworks/colors/Colors').get_color
+
+    for( var i=0; i < this.length; i++ ){
+      this[i]['color'] = get_color( this[i][col], colorType)
+    }
+
+    this.dtypes['color'] = 'hexcolor'
+    return this
+  }
+
+
   unique( col, ordered=false ){
     // return all unique values for the specified column. When
     // ordered is set to true, these values are sorted.

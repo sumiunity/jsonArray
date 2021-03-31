@@ -33,7 +33,7 @@ export default function Hline( props ){
             y: 0,
         },
         data: data,
-        // z: 100
+        z: 100
     },
 
   ]
@@ -51,7 +51,6 @@ function render(params, api, props) {
     var highPoint = api.coord([api.value(1), yValue]);
     var lowPoint = api.coord([api.value(2), yValue]);
 
-    console.log( lowPoint, highPoint)
     var Series = {
         type: 'group',
         children: [
