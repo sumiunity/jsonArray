@@ -67,10 +67,16 @@ export default function Row( props ) {
       rowStyle['backgroundColor'] = '#f6fcfe'
     }
 
-
-    if( props.row_idx === props.selectedRow ){
-      rowStyle = {textAlign:'center', backgroundColor: '#8c9ac0'}
+    // Row background color allows for the control of the background
+    // color of multiple rows based on the index number
+    if( props.rowColor !== undefined ){
+      const rows = Object.keys(props.rowColor)
+      const idx = row_data.__index__.toString()
+      if( rows.includes(idx) ){
+        rowStyle = {textAlign:'center', backgroundColor: props.rowColor[idx]}
+      }
     }
+
 
     // Row background color allows for the control of the background
     // color of multiple rows based on the index number
@@ -80,11 +86,16 @@ export default function Row( props ) {
       }
     }
 
+    if( props.row_idx === props.selectedRow ){
+      rowStyle = {textAlign:'center', backgroundColor: '#8c9ac0'}
+    }
+
     // return the cell content not wrapped in a row element. This
     // is needed for row extensions such as the accordian rows.
     if( props.cellContentOnly === true ){
       return row
     }
+
 
     return (
       <TableRow
