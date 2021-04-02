@@ -9,7 +9,6 @@
  */
 
 
-import jsonArray from '../../../../jsonArray'
 import propsToSeries from '../propsToSeries'
 import get_color from '../../../colors/Colors'
 
@@ -23,9 +22,6 @@ import get_color from '../../../colors/Colors'
 export default function grid( props ){
 
   var json_array = props.json_array
-  if( !(json_array instanceof jsonArray) ){
-    json_array = new jsonArray(json_array)
-  }
 
   // check to ensure the minimum set of parameters are available
   if( (props.colx === undefined)|(props.coly === undefined)|(props.value === undefined) ){
@@ -45,6 +41,9 @@ export default function grid( props ){
     // coordinateSystem: 'cartesian2d',
     renderItem: renderRectangle,
     animation: false,
+    legendHoverLink : false,
+    silent: true,
+
     encode: {
         x: 0,
         y: 1

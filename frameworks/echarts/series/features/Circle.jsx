@@ -3,10 +3,13 @@
 import propsToSeries from '../propsToSeries'
 
 export default function Circle( props ){
-
+  
   var Series = {
       type: 'custom',
       renderItem: (params, api) => renderItem(params, api, props),
+      animation: false,
+      legendHoverLink : false,
+      silent: true,
       data: props.data,
       z: 0,
       zlevel: 0,
