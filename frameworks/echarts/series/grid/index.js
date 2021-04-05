@@ -53,7 +53,6 @@ export default function grid( props ){
       r[props.coly],
       r[props.value],
       r[color_col],
-      r[props.lw],
     ])
   }
 
@@ -84,30 +83,21 @@ function renderRectangle(params, api) {
     var xCoor = api.value(0);
     var yCoor = api.value(1);
     var color = api.value(3);
-    var lw = api.value(4);
-
-    if( (lw === undefined)|(isNaN(lw)) ) lw = 0.5
 
     const [x,y] = api.coord([xCoor, yCoor])
     const [w,h] = api.size([1, 1])
 
     return {
         type: 'rect',
-        // color: COLORS[api.value(2)],
-        // value: api.value(2),
         shape: {
             x: x,
             y: y,
             width: w,
             height: h
         },
-        z:2,
-        zlevel: 2,
         style: api.style({
             stroke: '#B0B0B0',
             fill: color,
-            lineWidth: lw,
         }),
-        // styleEmphasis: api.styleEmphasis()
     };
 }
