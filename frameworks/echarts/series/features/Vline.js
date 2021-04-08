@@ -21,7 +21,10 @@ export default function Vline( props ){
   var Series = [
     {
         type: 'custom',
-        name: 'error',
+        name: 'vLine',
+        animation: false,
+        legendHoverLink : false,
+        silent: true,
         itemStyle: {
             normal: {
                 borderWidth: 1.0

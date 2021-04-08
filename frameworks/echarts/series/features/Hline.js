@@ -21,7 +21,10 @@ export default function Hline( props ){
   var Series = [
     {
         type: 'custom',
-        name: 'error',
+        name: 'hLine',
+        animation: false,
+        legendHoverLink : false,
+        silent: true,
         itemStyle: {
             normal: {
                 borderWidth: 1.0

@@ -16,7 +16,7 @@ import moment from 'moment'
 import ReactLibraryFramework from '../../ReactLibraryFramework'
 
 import EchartsReact from './EchartsReact'
-export {default as EchartsReact} from './EchartsReact'
+// export {default as EchartsReact} from './EchartsReact'
 
 
 export default class echartsLibrary extends ReactLibraryFramework{
