@@ -231,6 +231,21 @@ export default class jsonArray extends Array{
   }
 
 
+  /**
+   * applies the provided function to each row
+   * @param  {function} func  function to apply to the column
+   */
+   row_apply( func){
+
+    for( var i=0; i < this.length; i++ ){
+      this[i] = func(this[i])
+    }
+
+    return this
+  }
+
+
+
   // returns the values of the data at the specified index
   loc( idx, props={Series:true} ){
 
@@ -841,14 +856,14 @@ export default class jsonArray extends Array{
    * @param  {string} bcol blue color column
    * @return {[type]}      [description]
    */
-  to_rgb( rcol, gcol, bcol){
+  to_rgb( rcol, gcol, bcol, colorCol='rgb'){
     const toHex = require('./frameworks/colors/Colors').rgbToHex
 
     for( var i=0; i < this.length; i++ ){
-      this[i]['rgb'] = toHex( this[i][rcol], this[i][gcol], this[i][bcol])
+      this[i][colorCol] = toHex( this[i][rcol], this[i][gcol], this[i][bcol])
     }
 
-    this.dtypes['rgb'] = 'hexcolor'
+    this.dtypes[colorCol] = 'hexcolor'
     return this
   }
 
