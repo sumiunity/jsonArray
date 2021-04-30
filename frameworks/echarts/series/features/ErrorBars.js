@@ -18,10 +18,6 @@ export default function ErrorBars( props ){
   }
 
 
-  var errorbars = json_array.map( r => {return [r.__index__, r[props.min], r[props.max]]})
-  // console.log( props )
-  // console.log( errorbars )
-
   var Series = Vline({
     ...props,
     ...{
@@ -66,32 +62,4 @@ export default function ErrorBars( props ){
   }
 
   return Series
-}
-
-
-
-function ErrorBar(params, api) {
-
-    var xValue = api.value(0);
-    var highPoint = api.coord([xValue, api.value(1)]);
-    var lowPoint = api.coord([xValue, api.value(2)]);
-
-    var style = api.style({
-        stroke: api.visual('color'),
-        fill: null
-    });
-
-    return {
-        type: 'group',
-        children: [
-        {
-            type: 'line',
-            shape: {
-                x1: highPoint[0], y1: highPoint[1],
-                x2: lowPoint[0], y2: lowPoint[1]
-            },
-            style: style
-        },
-      ]
-    };
 }

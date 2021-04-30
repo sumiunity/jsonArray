@@ -49,7 +49,7 @@ export default function Cell( props ) {
   return (
     <TableCell
       {...props.tdProps}
-      style={{...style, ...props.tdStyle}}
+      style={{...props.tdStyle, ...style}}
       component={props.td}
       key = {`${props.tableName}-cell-${props.col}-${props.row_idx}`}
       onClick={cell.cellOnClick}
