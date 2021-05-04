@@ -143,8 +143,10 @@ export function Render( props ){
   // filter Table based on the values stored in the filter object array
   if( filters !== undefined ){
     for( var i=0; i < filters.length; i ++ ){
-      // console.log( 'thisis the filter', filters[i])
+
       const filt = filters[i]
+      if( !(columns.includes(filt.col_name)) ) continue
+      
       table_data = table_data.filter(r => filt.value.includes(r[filt.col_name].toString()) )
     }
     // console.log( table_data)
