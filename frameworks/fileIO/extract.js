@@ -43,7 +43,11 @@ function browserInterface( data, filename ){
  */
 export default function toCsv( data, filename='file.csv' ){
 
-  var csv = Papa.unparse(data);
+  var csv = Papa.unparse(data, {
+    header: true,
+    columns:data.columns
+  });
+
   var csvData = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
 
   browserInterface( csvData, filename )
