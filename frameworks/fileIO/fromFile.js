@@ -10,6 +10,7 @@
  */
 
 import jsonArray from '../../jsonArray'
+import toCsv from './extract'
 
 // import papaparser when available
 var parser
@@ -21,9 +22,12 @@ var http = require("http"), zlib = require("zlib");
 export default class fromFileLibrary{
   constructor(data){
 
+    this.json_array = data
+
     // must bind this to all internal functions or they will be
     // lost when rendering via react
     this.fromUrl = this.fromUrl.bind(this)
+    this.toCsv = this.toCsv.bind(this)
   }
 
   async fromUrl( url, callback, params={} ){
@@ -38,6 +42,9 @@ export default class fromFileLibrary{
     return from_url( url, callback, params )
   }
 
+  toCsv( filename='file.csv' ){
+    toCsv(this.json_array, filename)
+  }
 }
 
 
