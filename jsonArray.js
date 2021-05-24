@@ -1196,6 +1196,6 @@ export default class jsonArray extends Array{
 
   get fileIO(){
     const fromFileLibrary = require('./frameworks/fileIO/fromFile').default
-    return new fromFileLibrary()
+    return new fromFileLibrary(this)
   }
 }

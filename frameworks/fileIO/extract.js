@@ -37,13 +37,17 @@ function browserInterface( data, filename ){
 
 /**
  * Formats the data as a csv file and push it into a dowloadble location
- * @param  {Array}   data     DataFrame containing the data 
+ * @param  {Array}   data     DataFrame containing the data
  * @param  {string} filename  file name
  * @return {None}
  */
-export function toCsv( data, filename='file.csv' ){
+export default function toCsv( data, filename='file.csv' ){
 
-  var csv = Papa.unparse(data);
+  var csv = Papa.unparse(data, {
+    header: true,
+    columns:data.columns
+  });
+
   var csvData = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
 
   browserInterface( csvData, filename )
