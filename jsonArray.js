@@ -1158,6 +1158,11 @@ export default class jsonArray extends Array{
   min(col){ return stats.min(this, col)  }
   sum(col){ return stats.sum(this, col)  }
   mean(col){ return stats.mean(this, col)  }
+  forward_diff(col, newCol, step=1){ return stats.forward_diff(this, col, newCol, step)  }
+  stats(){ return stats  }
+
+
+
   // max(col){
   //   if( this.length === 1 ) return this[0][col]
   //   return Math.max(...this.map(row => row[col])) }

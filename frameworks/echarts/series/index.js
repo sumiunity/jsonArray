@@ -20,6 +20,7 @@ import bar from './bar'
 import grid from './grid'
 import pie from './pie'
 import pieFromSeries from './pie/fromSeries'
+import waterfall from './waterfall'
 
 import ErrorBars from './features/ErrorBars'
 import Circle from './features/Circle'
@@ -54,6 +55,8 @@ export default class echartsSeries extends Object {
   pie( props ){ return pie({...props, ...{json_array:this.json_array}}) }
   pieFromSeries( props ){ return pieFromSeries({...props, ...{json_array:this.json_array}}) }
   rectGrid( props ){ return grid({...props, ...{json_array:this.json_array}}) }
+  waterfall( props ){ return waterfall({...props, ...{json_array:this.json_array}}) }
+
 
   errorbars( props ){ return ErrorBars({...props, ...{json_array:this.json_array}}) }
   circle( props ){ return Circle({...props, ...{json_array:this.json_array}}) }

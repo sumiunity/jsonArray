@@ -23,6 +23,7 @@ import Bar from './charts/bar'
 import Grid from './charts/grid'
 import Pie from './charts/pie'
 import PieFromSeries from './charts/pie/fromSeries'
+import Waterfall from './charts/waterfall'
 
 import legend from './format/legend'
 
@@ -71,6 +72,7 @@ export default class echartsOptions extends Object {
   rectGrid( props ){ return this.generate_options( Grid, props ) }
   pie( props ){ return this.generate_options( Pie, props ) }
   pieFromSeries( props ){ return this.generate_options( PieFromSeries, props ) }
+  waterfall( props ){ return this.generate_options( Waterfall, props ) }
 
 
   selection( props ){ return features.Selection( this, props ) }
