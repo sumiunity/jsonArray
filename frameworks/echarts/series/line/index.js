@@ -9,7 +9,6 @@
  */
 
 
-import jsonArray from '../../../../jsonArray'
 import propsToSeries from '../propsToSeries'
 
 /**
@@ -22,10 +21,6 @@ import propsToSeries from '../propsToSeries'
 export default function line( props ){
 
   var json_array = props.json_array
-  if( !(json_array instanceof jsonArray) ){
-    json_array = new jsonArray(json_array)
-  }
-
 
   var Series = {
     type: 'line',

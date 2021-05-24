@@ -35,9 +35,39 @@ export function mean(data, col){
 export function forward_diff(data, col, newCol, step=1){
   if( newCol === undefined) newCol = col
 
-  console.log( data, step)
   for( let i=step; i < data.length; i++ ){
     data[i][newCol] = data[i][col] - data[i-step][col]
+  }
+
+  return data
+}
+
+
+// computes the rolling average for the provided column
+export function rolling_average(data, col, window=7 ){
+
+  var pStep, nStep
+  if( window % 2  === 0){
+    pStep = window/2
+    nStep = window/2
+
+  }else{
+    pStep = Math.floor(window/2)
+    nStep = Math.floor(window/2) + 1
+  }
+
+  const yValues = data.map(r => r[col])
+
+  for( let i=0; i < data.length - 1; i++ ){
+
+    var start = i - nStep
+    var end = i + pStep
+
+    // ensure that the statistics do not count out of bounds values
+    if (start < 0 ) start = 0
+    if (end > data.length ) end = data.length
+
+    data[i][`${col}_avg`] = arrayStats.mean(yValues.slice(start,end))
   }
 
   return data

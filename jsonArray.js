@@ -1159,6 +1159,7 @@ export default class jsonArray extends Array{
   sum(col){ return stats.sum(this, col)  }
   mean(col){ return stats.mean(this, col)  }
   forward_diff(col, newCol, step=1){ return stats.forward_diff(this, col, newCol, step)  }
+  rolling_average(col, window=1){ return stats.rolling_average(this, col, window)  }
   stats(){ return stats  }
 
 
