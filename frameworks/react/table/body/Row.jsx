@@ -77,6 +77,12 @@ export default function Row( props ) {
       }
     }
 
+    // Add custom row style
+    if( props.rowStyle !== undefined ){
+      if( props.rowStyle.length > props.row_idx ){
+        rowStyle = {...rowStyle, ...props.rowStyle[props.row_idx]}
+      }
+    }
 
     // Row background color allows for the control of the background
     // color of multiple rows based on the index number
