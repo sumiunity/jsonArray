@@ -150,7 +150,9 @@ export function Dropdown( props ){
       options={options}
       search={true}
       clearable={true}
+      multiple={(props.multiple === undefined) ? false : props.multiple}
       placeholder={props.column}
+      onChange={(e, d) => (props.callback !== undefined) ? props.callback({[props.column]: d.value}) : null}
     />
   )
 }

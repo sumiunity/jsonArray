@@ -58,7 +58,7 @@ export function rolling_average(data, col, window=7 ){
 
   const yValues = data.map(r => r[col])
 
-  for( let i=0; i < data.length - 1; i++ ){
+  for( let i=0; i < data.length; i++ ){
 
     var start = i - nStep
     var end = i + pStep
