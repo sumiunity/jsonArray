@@ -194,6 +194,7 @@ export default class DataTypes extends Object{
         return value.toString()
 
       case 'boolean' :
+        if( value === null ) return null 
         if( value === false | value === true ) return value
         if( value.toLowerCase() === 'true' ) return true
         if( value.toLowerCase() === 'false' ) return false
