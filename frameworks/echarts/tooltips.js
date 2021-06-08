@@ -58,6 +58,7 @@ export default class echartsTooltip extends Object {
       for (var i=0; i < columns.length; i++ ){
          // [key, value] of Object.entries(json_array[index])) {
         const col = columns[i]
+        if( col === '__index__' ) continue
         string = string + `<b>${col}</b>: ${sample[col]}<br/>`;
       }
 

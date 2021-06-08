@@ -25,6 +25,7 @@ import Pie from './charts/pie'
 import PieFromSeries from './charts/pie/fromSeries'
 import Waterfall from './charts/waterfall'
 
+import Toolbox from './format/Toolbox'
 import legend from './format/legend'
 
 
@@ -75,6 +76,7 @@ export default class echartsOptions extends Object {
   waterfall( props ){ return this.generate_options( Waterfall, props ) }
 
 
+  toolbox( props ){ return Toolbox( this, props ) }
   selection( props ){ return features.Selection( this, props ) }
   zoom( props ){ return features.DataZoom( this, props ) }
   highlight( props ){
@@ -89,6 +91,11 @@ export default class echartsOptions extends Object {
     const options = func( this.json_array, props )
 
     this.local_variables( options )
+
+    // add the tooltip when provided as a parameter
+    if( props.tooltip !== undefined ){
+      this.tooltip.from_DataFrame(this.json_array, props.tooltip)
+    }
 
     if( props.delete !== false ) delete this.json_array
 
