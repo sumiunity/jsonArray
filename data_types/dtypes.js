@@ -194,11 +194,17 @@ export default class DataTypes extends Object{
         return value.toString()
 
       case 'boolean' :
-        if( value === null ) return null 
+
+        if( value === null ) return null
         if( value === false | value === true ) return value
-        if( value.toLowerCase() === 'true' ) return true
-        if( value.toLowerCase() === 'false' ) return false
-        return Number( value )
+
+        let number = Number(value)
+        if( isNaN(number) ){
+          if( value.toLowerCase() === 'true' ) return true
+          if( value.toLowerCase() === 'false' ) return false
+        }
+
+        return number
 
       case 'array':
         if( typeof value !== 'string' ) return value
