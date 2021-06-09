@@ -18,6 +18,12 @@ export default function heatmap( json_array, props={} ){
     alert( 'boxplot required att : colx, coly and value' )
   }
 
+  // force the datatypes of the columns to strings due to the categorical nature of the heatmap
+  json_array = json_array.astype({
+    [props.colx]: 'string',
+    [props.coly]: 'string',
+  })
+
   // set the x axis values using the Axis class
   var xAxis = new echartsAxis(props.colx)
   xAxis.to_category({values: json_array.unique(props.colx, true) })
@@ -31,9 +37,18 @@ export default function heatmap( json_array, props={} ){
 
   var grid = {backgroundColor: 'rgb(0, 128, 0)'}
 
+  // set the percentage flag based on the datatype or parameter
+  var percentage = false
+  if( (json_array.dtypes[props.value] === 'percentage') | (props.percentage === true)){
+    percentage = true
+  }
+
+  var min = Math.min(...json_array.unique(props.value))
+  var max = Math.max(...json_array.unique(props.value))
+
   var visualMap = {
-      min: Math.min(...json_array.unique(props.value))*100,
-      max: Math.max(...json_array.unique(props.value))*100,
+      min: (percentage === true) ? min * 100 : min,
+      max: (percentage === true) ? max * 100 : max,
       calculable: true,
       orient: 'vertical',
       left: 'left',
@@ -48,7 +63,7 @@ export default function heatmap( json_array, props={} ){
       data: json_array.map(function (item) {
 
         var value = Number(item[props.value])
-        if( props.percentage === true ) value = (Number(item[props.value])*100).toFixed(2)
+        if( percentage === true ) value = (Number(item[props.value])*100).toFixed(2)
 
           return [
             item[props.colx],
