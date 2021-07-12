@@ -15,6 +15,8 @@ import jsonArray from '../jsonArray'
 
 import datetime from './datetime'
 
+import moment from 'moment';
+
 
 
 export default class DataTypes extends Object{
@@ -174,8 +176,17 @@ export default class DataTypes extends Object{
       case 'jsonArray':
         return new jsonArray(value)
 
+      case 'date':
+        return moment(value)
+
       case 'week':
-        return datetime(value).week()
+        if( value === null ) return null
+        if( value.toString().split('-').length != 2){
+          const date = moment(value)
+          return `${date.year()}-${date.format('ww')}`
+        }
+
+        return value
 
       case 'strftime':
         const param_keys = Object.keys(params)

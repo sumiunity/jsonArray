@@ -1,5 +1,5 @@
 
-import { toolbox as features } from 'echarts/lib/langEN'
+// import { toolbox as features } from 'echarts/lib/langEN'
 
 // adds a toolbox to the chart to enable user interaction
 export default function Toolbox( option, props ){
