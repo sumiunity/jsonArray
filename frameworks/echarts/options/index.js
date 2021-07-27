@@ -20,6 +20,7 @@ import Boxplot from './charts/boxplot'
 import Heatmap from './charts/heatmap'
 import Scatter from './charts/scatter'
 import Bar from './charts/bar'
+import Pareto from './charts/pareto'
 import Grid from './charts/grid'
 import Pie from './charts/pie'
 import PieFromSeries from './charts/pie/fromSeries'
@@ -69,6 +70,7 @@ export default class echartsOptions extends Object {
   boxplot( props ){ return this.generate_options( Boxplot, props ) }
   scatter( props ){ return this.generate_options( Scatter, props ) }
   bar( props ){ return this.generate_options( Bar, props ) }
+  pareto( props ){ return this.generate_options( Pareto, props ) }
   line( props ){ return this.generate_options( Line, props ) }
   rectGrid( props ){ return this.generate_options( Grid, props ) }
   pie( props ){ return this.generate_options( Pie, props ) }
