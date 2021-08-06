@@ -8,12 +8,21 @@ export default function propsToSeries(props, Series){
     if( props.color !== undefined ) Series['color'] = props.color
     if( props.smooth !== undefined ) Series['smooth'] = props.smooth
     if( props.symbol !== undefined ) Series['symbol'] = props.symbol
+    if( props.symbolSize !== undefined ) Series['symbolSize'] = props.symbolSize
     if( props.lineStyle !== undefined ) Series['lineStyle'] = props.lineStyle
     if( props.axis !== undefined ) Series['yAxisIndex'] = props.axis
     if( props.z !== undefined ) Series['z'] = props.z
     if( props.zIndex !== undefined ) Series['zlevel'] = props.zIndex
     if( props.zIndex !== undefined ) Series['zlevel'] = props.zIndex
 
+    if( props.label !== undefined ){
+      Series['label'] = {
+        show: true,
+        position: 'top',
+        formatter: props.label
+      }
+      Series['showSymbol'] = true
+    }
     if( props.lw !== undefined ) Series['itemStyle'] = {normal: {borderWidth:props.lw}}
 
     return Series
