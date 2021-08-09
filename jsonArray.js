@@ -22,6 +22,8 @@ import eChartsComponents from './frameworks/echarts/components'
 import echartsOptions from './frameworks/echarts/options'
 import echartsSeries from './frameworks/echarts/series'
 
+import toCsv from './frameworks/fileIO/extract'
+
 import ReactComponents from './frameworks/react/ReactComponents'
 
 import * as stats from './statistics/matrix'
@@ -1164,6 +1166,7 @@ export default class jsonArray extends Array{
 
 
 
+  toCsv(filename){ toCsv(this, filename ) }
   // max(col){
   //   if( this.length === 1 ) return this[0][col]
   //   return Math.max(...this.map(row => row[col])) }
