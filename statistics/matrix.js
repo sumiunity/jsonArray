@@ -44,30 +44,57 @@ export function forward_diff(data, col, newCol, step=1){
 
 
 // computes the rolling average for the provided column
-export function rolling_average(data, col, window=7 ){
+export function rolling_average(data, col, window=7, type='center' ){
 
-  var pStep, nStep
-  if( window % 2  === 0){
-    pStep = window/2
-    nStep = window/2
 
-  }else{
-    pStep = Math.floor(window/2)
-    nStep = Math.floor(window/2) + 1
-  }
 
   const yValues = data.map(r => r[col])
 
-  for( let i=0; i < data.length; i++ ){
+  // coompute the rolloing average where the sample of interest is
+  // in the middle of the window
+  if( type === 'center' ){
 
-    var start = i - nStep
-    var end = i + pStep
+    var pStep, nStep
+    if( window % 2  === 0){
+      pStep = window/2
+      nStep = window/2
 
-    // ensure that the statistics do not count out of bounds values
-    if (start < 0 ) start = 0
-    if (end > data.length ) end = data.length
+    }else{
+      pStep = Math.floor(window/2)
+      nStep = Math.floor(window/2) + 1
+    }
 
-    data[i][`${col}_avg`] = arrayStats.mean(yValues.slice(start,end))
+    for( let i=0; i < data.length; i++ ){
+
+      var start = i - nStep + 1
+      var end = i + pStep + 1
+
+      // ensure that the statistics do not count out of bounds values
+      if (start < 0 ) start = 0
+      if (end > data.length ) end = data.length
+      // console.log( i, start, end, yValues.slice(start,end))
+      data[i][`${col}_avg`] = arrayStats.mean(yValues.slice(start,end))
+    }
+  }
+
+  if( type === 'tailing' ){
+
+    // // add nulls for the first n samples
+    // for( let i=0; i < window-1; i++ ){
+    //   data[i][`${col}_avg`] = null
+    //
+    // }
+    //
+    // for( let i=window-1; i < data.length; i++ ){
+    //   data[i][`${col}_avg`] = arrayStats.mean(yValues.slice(i-window+1,i+1))
+    // }
+
+    // average is not accurate for the first n samples in the rolling average
+    for( let i=0; i < data.length; i++ ){
+      var start = (i-window+1 < 0) ? 0 : i-window+1
+      data[i][`${col}_avg`] = arrayStats.mean(yValues.slice(start,i+1))
+    }
+
   }
 
   return data
