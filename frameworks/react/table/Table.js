@@ -146,7 +146,8 @@ export function Render( props ){
 
       const filt = filters[i]
       if( !(columns.includes(filt.col_name)) ) continue
-      
+      if( filt.value.length === 0 ) continue
+
       table_data = table_data.filter(r => filt.value.includes(r[filt.col_name].toString()) )
     }
     // console.log( table_data)
