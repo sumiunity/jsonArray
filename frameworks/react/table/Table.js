@@ -17,6 +17,7 @@ import Series from '../../../Series'
 
 import ReactLibraryFramework from '../ReactLibraryFramework'
 
+import toColumn from './utilities/ColGroupsToCol'
 import {Table as TableComponent} from '../framework/Components'
 import {SeriesHeader, DataFrameHeader} from './header'
 import TableBody from './body'
@@ -100,6 +101,7 @@ export function Render( props ){
   // pull the column names from the props when available. Default
   // to using all columns in the DataFrame
   var columns = props.columns
+  if( props.columnGroups !== undefined) columns = toColumn(props.columnGroups, false)
   if( columns === undefined ) columns = table_data.columns
 
   // define the table name which will be used to define the keys

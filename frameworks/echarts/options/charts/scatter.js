@@ -38,18 +38,16 @@ export default function scatter( json_array, props={} ){
   }
 
 
-  var colorBy = props.colorBy
-  if( colorBy === undefined) colorBy = props.label
 
   var series
 
-  if( (colorBy !== undefined)&(json_array.columns.includes(colorBy)) ){
+  if( (props.colorBy !== undefined)&(json_array.columns.includes(props.colorBy)) ){
 
     series = scatter_by({
       ...props,
       ...{
           json_array: json_array,
-          colorBy: colorBy
+          colorBy: props.colorBy
         }
     })
 
