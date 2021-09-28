@@ -20,6 +20,7 @@ import bar from './bar'
 import grid from './grid'
 import pie from './pie'
 import pieFromSeries from './pie/fromSeries'
+import radar from './radar'
 import waterfall from './waterfall'
 import rollingAvg from './line/rollingAvg'
 
@@ -58,7 +59,7 @@ export default class echartsSeries extends Object {
   rectGrid( props ){ return grid({...props, ...{json_array:this.json_array}}) }
   waterfall( props ){ return waterfall({...props, ...{json_array:this.json_array}}) }
   rollingAvg( props ){ return rollingAvg({...props, ...{json_array:this.json_array}}) }
-
+  radar( props ){ return radar({...props, ...{json_array:this.json_array}}) }
 
   errorbars( props ){ return ErrorBars({...props, ...{json_array:this.json_array}}) }
   circle( props ){ return Circle({...props, ...{json_array:this.json_array}}) }

@@ -25,6 +25,7 @@ import Pareto from './charts/pareto'
 import Grid from './charts/grid'
 import Pie from './charts/pie'
 import PieFromSeries from './charts/pie/fromSeries'
+import Radar from './charts/radar'
 import Waterfall from './charts/waterfall'
 
 import Toolbox from './format/Toolbox'
@@ -77,7 +78,9 @@ export default class echartsOptions extends Object {
   rectGrid( props ){ return this.generate_options( Grid, props ) }
   pie( props ){ return this.generate_options( Pie, props ) }
   pieFromSeries( props ){ return this.generate_options( PieFromSeries, props ) }
+  radar( props ){ return this.generate_options( Radar, props ) }
   waterfall( props ){ return this.generate_options( Waterfall, props ) }
+
 
 
   toolbox( props ){ return Toolbox( this, props ) }
