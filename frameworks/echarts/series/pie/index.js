@@ -9,12 +9,12 @@ import propsToSeries from '../propsToSeries'
 export default function pie( props ){
 
   // format the data with and without a label (w/o is the default)
-  var data = props.json_array.map(r => { return {value: r[props.value]}})
-  if( props.__label__ !== undefined ){
+  var data = props.json_array.map(r => { return {value: r[props.col]}})
+  if( props.name !== undefined ){
     data = props.json_array.map(r => {
       return {
-        value: r[props.value],
-        name: r[props.__label__]
+        value: r[props.col],
+        name: r[props.name]
       }
     })
   }
@@ -30,7 +30,7 @@ export default function pie( props ){
     data: data
   }
 
-  if( props.__label__ !== undefined ){
+  if( props.name !== undefined ){
     Series['label'] = {
         show: false,
         position: 'center'

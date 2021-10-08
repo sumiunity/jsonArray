@@ -84,6 +84,12 @@ export default class echartsLibrary extends ReactLibraryFramework{
 
   Pie( props ){
     const __props = this.format_props(props)
+    const options = __props.data.echartsOptions.pie(__props)
+    return this.Render( __props, options )
+  }
+
+  PieFromSeries( props ){
+    const __props = this.format_props(props)
     const options = __props.data.echartsOptions.pieFromSeries(__props)
     return this.Render( __props, options )
   }

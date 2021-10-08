@@ -14,7 +14,7 @@ export default function pieFromSeries( json_array, props={} ){
     series : pie( {...props, ...{json_array: json_array}} ),
   }
 
-  if( props.label !== undefined ){
+  if( props.name !== undefined ){
     option['tooltip'] = {trigger: 'item'}
   }
 

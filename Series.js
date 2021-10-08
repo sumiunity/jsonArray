@@ -515,7 +515,7 @@ export default class Series extends Array {
   get echarts( ){ return new eChartsComponents( this ) }
 
   get react(){
-    const props = {colx: '__index__', coly: this.name, col: this.name}
+    const props = {colx: '__index__', name: '__index__', coly: this.name, col: this.name, }
     return new ReactComponents(this, props) }
 
 }

@@ -6,15 +6,15 @@ import pie from '../../../series/pie'
 export default function pieChart( json_array, props={} ){
 
   // check to ensure the minimum set of parameters are available
-  if( (props.value === undefined)){
-    alert( 'pie plot required att : value ')
+  if( (props.col === undefined)){
+    alert( 'pie plot required att : col ')
   }
 
   var option = {
     series : pie( {...props, ...{json_array: json_array}} ),
   }
 
-  if( props.label !== undefined ){
+  if( props.name !== undefined ){
     option['tooltip'] = {trigger: 'item'}
   }
 
