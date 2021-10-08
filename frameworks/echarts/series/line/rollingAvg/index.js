@@ -12,6 +12,7 @@
 import propsToSeries from '../../propsToSeries'
 import CenterWindow from './CenterWindow'
 import TailingWindow from './TailingWindow'
+import Standard from './Standard'
 
 // returns the
 export default function rollingAvg( props ){
@@ -36,15 +37,17 @@ export default function rollingAvg( props ){
   var Series = []
   switch( avgType ){
     case 'center':
-      Series = CenterWindow(data, props.window)
+      Series = Standard(data, props.window)
+      if( props.showUncertainty === true ) Series = CenterWindow(data, props.window)
       break
 
     case 'tailing':
-      Series = TailingWindow(data, props.window)
+      Series = Standard(data, props.window)
+      if( props.showUncertainty === true ) Series = TailingWindow(data, props.window)
       break
 
     default:
-      Series = CenterWindow(data, props.window)
+      Series = Standard(data, props.window)
 
   }
 
