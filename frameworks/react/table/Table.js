@@ -52,8 +52,8 @@ import TableBody from './body'
  * @constructor
  */
 export default class Table extends ReactLibraryFramework{
-  constructor(data){
-    super(data)
+  constructor(data, props={}){
+    super(data, props)
 
     // must bind this to all internal functions or they will be
     // lost when rendering via react
@@ -64,11 +64,11 @@ export default class Table extends ReactLibraryFramework{
 
     // Render the table with a Series data structure
     if( this.data instanceof Series ){
-      return SeriesTable( this.props(props) )
+      return SeriesTable( this.format_props(props) )
     }
 
     // default to render the table as a DataFrame type
-    return Render( this.props(props) )
+    return Render( this.format_props(props) )
   }
 
 }

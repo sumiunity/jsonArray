@@ -20,8 +20,8 @@ const extract = require('../../fileIO/extract')
 
 
 export default class FileIOLibrary extends ReactLibraryFramework{
-  constructor(data){
-    super(data)
+  constructor(data, props={}){
+    super(data, props)
 
     // must bind this to all internal functions or they will be
     // lost when rendering via react
@@ -31,7 +31,7 @@ export default class FileIOLibrary extends ReactLibraryFramework{
   }
 
   ToCsv( props ){
-    return ToCsv( this.props(props) )
+    return ToCsv( this.format_props(props) )
   }
 
 }

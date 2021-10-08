@@ -115,6 +115,10 @@ export default function cellType( props ) {
       cellContent = <p style={{whiteSpace:'pre'}}>{value}</p>
       break
 
+    case 'hyperlink':
+      cellContent = <a href={value}>{value}</a>
+      break
+
     case 'float':
       cellContent = format.toString(value, props.dtype)
       break

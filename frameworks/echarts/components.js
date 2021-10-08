@@ -20,6 +20,7 @@ export default class eChartsComponents extends Object{
   constructor(data) {
     super()
 
+    console.log( data )
     this.data = data
   }
 

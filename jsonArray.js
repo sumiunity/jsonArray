@@ -303,6 +303,60 @@ export default class jsonArray extends Array{
     return array
   }
 
+  /**
+   * Returns a single column as a Series Object
+   * @param  {String} col         Column name
+   * @param  {Object} [params={}] additional parameters
+   * @return {[type]}             [description]
+   */
+  toSeries( col, params={}  ){
+    return new Series({DataFrame: this, name: col})
+  }
+
+  /**
+   * duplicate of pandas count values with the ability to pass in a
+   * single or multiple columns
+   * @type {strFormat}
+   */
+  value_counts( columns, params={} ){
+
+    var array = this.__inplace__(params['inplace'])
+
+    // ensure that the columns are provided as an array
+    if(typeof columns === 'string') columns = [columns]
+
+    // initialize the pareto array
+    var pareto = {}
+    columns.forEach(att => pareto[att] ={})
+
+    // loop through each value and count the occurances
+    array.forEach( row => {
+      columns.forEach( att => {
+
+        // create a buffer for the split attribute when one does not exist
+        if( !Object.keys(pareto[att]).includes(row[att]) ){
+          pareto[att][row[att]] = 0
+        }
+
+        // increment the pareto value
+        pareto[att][row[att]] = pareto[att][row[att]] + 1
+
+      })
+    })
+
+    // convert the pareto(s) to series
+    var  paretoSeries = {}
+    for (const [key, value] of Object.entries(pareto)) {
+      console.log( key )
+      console.log( value )
+      console.log( new Series({object:value, name:key}) )
+      paretoSeries[key] = new Series({object:value, name:key})
+    }
+
+    return paretoSeries
+
+
+  }
 
 
   /**
@@ -621,6 +675,8 @@ export default class jsonArray extends Array{
 
     return new jsonArray( buffer, true  )
   }
+
+
 
 
   // Drops duplicates based on the specified column names. Only

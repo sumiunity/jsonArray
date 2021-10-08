@@ -19,8 +19,8 @@ try{ SemanticUI = require('semantic-ui-react') }catch{}
 
 
 export default class SemanticUILibrary extends ReactLibraryFramework{
-  constructor(data){
-    super(data)
+  constructor(data, props={}){
+    super(data, props)
 
     // must bind this to all internal functions or they will be
     // lost when rendering via react
@@ -32,20 +32,20 @@ export default class SemanticUILibrary extends ReactLibraryFramework{
   }
 
   Excel( props ){
-    return Excel( this.props(props) )
+    return Excel( this.format_props(props) )
   }
 
   Table( props ){
-    return Table( this.props(props) )
+    return Table( this.format_props(props) )
   }
 
   Dropdown( props ){
-    return Dropdown( this.props(props) )
+    return Dropdown( this.format_props(props) )
   }
 
   ToCsv( props ){
     const fileIO = require('../plugins/fileIO')
-    return fileIO.ToCsv( {...this.props(props), ...{button: SemanticUI.Button}})
+    return fileIO.ToCsv( {...this.format_props(props), ...{button: SemanticUI.Button}})
   }
 
 

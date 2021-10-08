@@ -15,14 +15,16 @@
 
 export default class ReactLibraryFramework{
 
-  constructor(data){
+  constructor(data, props={}){
     // cast the data to a json_array data type
     this.data = data
+    this.props = props
   }
 
-  props( props ){
+  format_props( props ){
     return {
       ...props,
+      ...this.props,
       ...{
         data: this.data
       }}

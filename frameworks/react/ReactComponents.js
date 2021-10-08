@@ -18,23 +18,24 @@ import echartsLibrary from './plugins/echarts'
 
 export default class ReactComponents extends Object{
 
-  constructor(data) {
+  constructor(data, props={}) {
     super()
 
     this.data = data
+    this.props = props
   }
 
   get Table(){
 
     const Table = require('./table/Table').default
-    return new Table(this.data).Table
+    return new Table(this.data, this.props).Table
   }
 
 
   get FileIO(){
 
     const FileIO = require('./plugins/fileIO').default
-    return new FileIO(this.data)
+    return new FileIO(this.data, this.props)
   }
 
   get semanticUI(){
@@ -43,7 +44,7 @@ export default class ReactComponents extends Object{
       return {}
     }
 
-    return new components.semanticUI( this.data )
+    return new components.semanticUI( this.data, this.props )
   }
 
 
@@ -64,7 +65,7 @@ export default class ReactComponents extends Object{
       return {}
     }
 
-    return new echartsLibrary( this.data )
+    return new echartsLibrary( this.data, this.props )
   }
 
 
