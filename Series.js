@@ -57,7 +57,7 @@ export default class Series extends Array {
 
     if( keys.includes('DataFrame') ){
       props.DataFrame.forEach(obj => {
-        this.push( {__index__: obj.__index__,  [props.name]: obj[props.name]} )
+        this.push( {__index__: obj.__index__,  value: obj[props.name]} )
       })
       this.name = props.name
     }
@@ -287,7 +287,7 @@ export default class Series extends Array {
    * @param  {Object} [params={}] parameters to define the binning
    * @return {Object}             jsonArray containing the binning results
    */
-  get value_counts(){
+  value_counts(){
 
     // placeholder for the results
     var pareto = {};
@@ -306,6 +306,40 @@ export default class Series extends Array {
 
     return new Series({object: pareto})
 
+  }
+
+  duplicates(type='drop'){
+
+    // placeholder to track the unique value per unique index
+    var uniqueIndex = {};
+
+    // loop through each index and append the array of values
+    this.forEach( row => {
+      const index = row['__index__']
+
+      // create an empty array when the index does not exist
+      if( !Object.keys(uniqueIndex).includes(index) ) uniqueIndex[index] = []
+
+      // append the value array
+      uniqueIndex[index].push( row['value'] )
+    })
+
+
+    // generate the return object based on the specified type
+    var returnObj = {}
+    for (const [key, value] of Object.entries(uniqueIndex)) {
+      // drop all but the first instance
+      if( type === 'drop' ) returnObj[key] = value[0]
+
+      // sum all entries in the array
+      if( type === 'sum') returnObj[key] = value.reduce((a,b) => a + b, 0)
+
+      // sum all entries in the array
+      if( type === 'mean') returnObj[key] = value.reduce((a,b) => a + b, 0)/value.length
+
+    }
+
+    return new Series({object: returnObj, name: this.name})
   }
 
 
