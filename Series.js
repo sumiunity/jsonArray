@@ -166,7 +166,16 @@ export default class Series extends Array {
     return ser
   }
 
+  /**
+   * converts the Series data into an objects
+   * @return {Object} Object containing the series data
+   */
+  toObject(){
+    var obj = {}
+    this.forEach(r=> obj[r.__index__] = r.value)
 
+    return obj
+  }
 
   /**
    * applies the provided function to each row
@@ -269,6 +278,7 @@ export default class Series extends Array {
 
     return ser
   }
+
 
   /**
    * Counts the number of occurences for each unique value in the
