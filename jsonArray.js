@@ -347,9 +347,6 @@ export default class jsonArray extends Array{
     // convert the pareto(s) to series
     var  paretoSeries = {}
     for (const [key, value] of Object.entries(pareto)) {
-      console.log( key )
-      console.log( value )
-      console.log( new Series({object:value, name:key}) )
       paretoSeries[key] = new Series({object:value, name:key})
     }
 

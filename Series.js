@@ -37,23 +37,22 @@ export default class Series extends Array {
 
     if( keys.includes('index') & keys.includes('value') ){
       for( var i=0; i < props.value.length; i++ ){
-        array.push( {__index__: props.index[i],  [this.name]: props.value[i]} )
+        array.push( {__index__: props.index[i],  value: props.value[i]} )
       }
     }
 
     if( keys.includes('object') ){
       const keys = Object.keys(props.object)
       for( i=0; i < keys.length; i++ ){
-        array.push( {__index__: keys[i],  [this.name]: props.object[keys[i]]} )
+        array.push( {__index__: keys[i],  value: props.object[keys[i]]} )
       }
     }
 
     if( keys.includes('Series') ){
       const ser = props.Series
       props.Series.forEach(obj => {
-        this.push( {__index__: obj.__index__,  [ser.name]: obj[ser.name]} )
+        this.push( {__index__: obj.__index__,  value: obj['value']} )
       })
-      this.name = ser.name
     }
 
     if( keys.includes('DataFrame') ){
@@ -101,7 +100,7 @@ export default class Series extends Array {
    * @return {Array} values in order
    */
   get values(){
-    return this.map(r => r[this.name])
+    return this.map(r => r['value'])
   }
 
   /**
@@ -117,14 +116,14 @@ export default class Series extends Array {
    * @param  {Array} values Array of index values
    */
   set values( values ){
-    this.insert( values, this.name)
+    this.insert( values, 'value')
   }
 
   /**
    * Replaces the Series values with the
    * @param  {Array} values Array of index values
    */
-  insert( values, col=this.name ){
+  insert( values, col='value' ){
     for( let i=0; i < values.length; i++ ){
       this[i][col] = values[i]
     }
@@ -148,7 +147,7 @@ export default class Series extends Array {
    * @param  {Object} mapping Object containing the value mapping
    * @return {Object}         Series with the mapped values
    */
-  replace( mapping={}, col=this.name, params={} ){
+  replace( mapping={}, col='value', params={} ){
 
     // clone the local copy to avoid mutation
     var ser = this.__inplace__(params['inplace'])
@@ -262,10 +261,10 @@ export default class Series extends Array {
 
     //sort the table based on the ascending flag
     if( ascending === true ){
-      ser = this.sort((a, b) => a[this.name] > b[this.name] ? 1 : -1 )
+      ser = this.sort((a, b) => a['value'] > b['value'] ? 1 : -1 )
 
     }else{
-      ser = this.sort((a, b) => a[this.name] < b[this.name] ? 1 : -1 )
+      ser = this.sort((a, b) => a['value'] < b['value'] ? 1 : -1 )
     }
 
     return ser
@@ -285,7 +284,7 @@ export default class Series extends Array {
 
     // loop through each value and count the occurances
     this.forEach( row => {
-      const value = row[this.name]
+      const value = row['value']
 
       // create a buffer for the split attribute when one does not exist
       if( !Object.keys(pareto).includes(value) ) pareto[value] = 0
@@ -359,12 +358,12 @@ export default class Series extends Array {
 
     // compute the sum of all samples cropped out
     var other = array.slice(count, array.length)
-      .map(r => r[this.name])
+      .map(r => r['value'])
       .reduce((a,b) => a + b, 0)
 
-    var pareto = array.slice(0,count).concat({__index__: 'other', [this.name]: other})
+    var pareto = array.slice(0,count).concat({__index__: 'other', value: other})
 
-    return new Series({Series:pareto})
+    return new Series({Series:pareto, name: this.name})
   }
 
 
@@ -383,7 +382,7 @@ export default class Series extends Array {
     // clone the local copy to avoid mutation when inplace is disabled
     if( enable === true ) return this
 
-    return new Series( {Series:this} )
+    return new Series({Series:this, name: this.name})
   }
 
 
@@ -515,7 +514,7 @@ export default class Series extends Array {
   get echarts( ){ return new eChartsComponents( this ) }
 
   get react(){
-    const props = {colx: '__index__', name: '__index__', coly: this.name, col: this.name, }
+    const props = {colx: '__index__', name: '__index__', coly: 'value', col: 'value' }
     return new ReactComponents(this, props) }
 
 }
