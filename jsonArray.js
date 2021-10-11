@@ -1168,17 +1168,23 @@ export default class jsonArray extends Array{
     // clone the local copy to avoid mutation
     var array = this.__inplace__(params['inplace'])
 
+    const newCol = (params.newCol === undefined) ? col : params.newCol
+
     const values = Object.keys( mapping )
 
     // delete the specified column(s) from the DataFrame
     for( var i = 0; i < array.length; i++ ){
-      const columns = Object.keys(array[i] )
 
       // do not perform mapping when no data nor the mapping exists
-      if(!columns.includes(col) ) continue
-      if(!values.includes(array[i][col])) continue
+      if(array[i] === undefined ) continue
 
-      array[i][col] = mapping[array[i][col]]
+      // copy the original content when there's not mapping
+      if(!values.includes(array[i][col])){
+        array[i][newCol] = array[i][col]
+        continue  
+      }
+
+      array[i][newCol] = mapping[array[i][col]]
 
     }
 
