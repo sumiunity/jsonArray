@@ -1,8 +1,12 @@
 
+import CompletedWaferfall from './completed'
 
 export default function Waterfall( props ){
 
   var data = props.json_array
+
+  // redirect to the completed waferfall when colz is provided
+  if( props.colz !== undefined ) return CompletedWaferfall(props )
 
   // perform the forward difference required to generate the waterfall
   data = data.forward_diff(props.coly, 'waferfallDiff' )
@@ -48,19 +52,19 @@ export default function Waterfall( props ){
       },
 
       {
-          name: 'Gains',
+          name: 'Increase',
           type: 'bar',
           stack: 'waferfall',
           data: pos,
-          color: 'green',
+          color: (props.posColor === undefined) ? 'green' : props.posColor,
       },
 
       {
-          name: 'Losses',
+          name: 'Decrease',
           type: 'bar',
           stack: 'waferfall',
           data: neg,
-          color: 'red',
+          color: (props.negColor === undefined) ? 'red' : props.negColor,
       }
   ]
 
