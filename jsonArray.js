@@ -21,6 +21,7 @@ import strFormat from './data_types/format/strFormat'
 import eChartsComponents from './frameworks/echarts/components'
 import echartsOptions from './frameworks/echarts/options'
 import echartsSeries from './frameworks/echarts/series'
+import datetime from './frameworks/datetime'
 
 import toCsv from './frameworks/fileIO/extract'
 
@@ -197,6 +198,38 @@ export default class jsonArray extends Array{
   append( df ){
     return new jsonArray([...this].concat(df))
   }
+
+  /**
+   * inserts an object into the array based on the specified
+   * position
+   * @param  {Object} obj           object to insert
+   * @param  {Number} [position=0] array position
+   * @param  {Object} [params={}]  parameters
+   * @return {jsonArray}           jsonArray with the added object
+   */
+  insert( obj, position=0, params={} ){
+    // duplicate the jsonArray
+    var array = [...this]
+
+    // insert at the beginning of the array
+    if( position === 0 ){
+      array.unshift( obj)
+      return new jsonArray(array)
+    }
+
+    // insert at the end of the array
+    if( position >= array.length ){
+      array.push( obj)
+      return new jsonArray(array)
+    }
+
+    // insert in the middle of the array
+    const pos1 = array.slice(0, position)
+    const pos2 = array.slice(position, array.length)
+
+    return new jsonArray( pos1.concat([obj]).concat(pos2) )
+  }
+
 
   /**
    * Applies a given function to a column and returns a DataFrame
@@ -380,6 +413,14 @@ export default class jsonArray extends Array{
   sort_values( col, ascending=true){
 
     var array
+
+    // sort the jsonArray based on the column array in order of occurance
+    if( col instanceof Array ){
+      for( let i=0; i < col.length; i++ ){
+        array = this.sort_values(col[i])
+      }
+      return new jsonArray( array )
+    }
 
     //sort the table based on the ascending flag
     if( ascending === true ){
@@ -1181,7 +1222,7 @@ export default class jsonArray extends Array{
       // copy the original content when there's not mapping
       if(!values.includes(array[i][col])){
         array[i][newCol] = array[i][col]
-        continue  
+        continue
       }
 
       array[i][newCol] = mapping[array[i][col]]
@@ -1244,6 +1285,9 @@ export default class jsonArray extends Array{
   *  ===============================
   *  Interface that returns echarts series objects for plotting
   ********************************************************************************/
+
+
+  get dt(){ return new datetime( this ) }
 
   // /**
   //  * echarts line plot data formatter
