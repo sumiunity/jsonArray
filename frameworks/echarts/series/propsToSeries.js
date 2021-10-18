@@ -13,7 +13,10 @@ export default function propsToSeries(props, Series){
     if( props.axis !== undefined ) Series['yAxisIndex'] = props.axis
     if( props.z !== undefined ) Series['z'] = props.z
     if( props.zIndex !== undefined ) Series['zlevel'] = props.zIndex
-    if( props.zIndex !== undefined ) Series['zlevel'] = props.zIndex
+    if( props.emphasis !== undefined ) Series['emphasis'] = props.emphasis
+
+    // barplot props
+    if( props.barGap !== undefined ) Series['barGap'] = props.barGap
 
     if( props.label !== undefined ){
       Series['label'] = {

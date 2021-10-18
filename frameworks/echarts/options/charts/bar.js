@@ -15,13 +15,23 @@ export default function bar( json_array, props={} ){
     alert( 'bar plot required att : colx and coly ')
   }
 
-  // set the x axis values using the Axis class
-  var xAxis = new echartsAxis(props.colx)
-  xAxis.label(props.colx)
-  xAxis.tick_values(json_array.values(props.colx))
+  const colx = props.colx
+  const coly = props.coly
 
-  // set the y axis values using the Axis class
-  var yAxis = new echartsAxis(props.coly)
+  if( props.horizontal === true ){
+    var xAxis = new echartsAxis(coly)
+
+    var yAxis = new echartsAxis(colx)
+    yAxis.label(colx)
+    yAxis.tick_values(json_array.values(colx))
+
+  }else{
+    var xAxis = new echartsAxis(colx)
+    xAxis.label(colx)
+    xAxis.tick_values(json_array.values(colx))
+
+    var yAxis = new echartsAxis(coly)
+  }
 
   // const echart_series = new echartsSeries( json_array )
   // var series = echart_series.bar( props.coly, props)

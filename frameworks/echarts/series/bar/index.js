@@ -35,6 +35,8 @@ export default function BarPlot( props ){
         col: props.col[i],
         name: props.col[i],
         json_array: json_array,
+        barGap: (i === 0 ) ? 0 : undefined,
+        emphasis: (props.emphasis === true) ? { focus: 'series' } : undefined,
       }
     }) )
 

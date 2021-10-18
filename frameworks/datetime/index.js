@@ -64,12 +64,12 @@ export default class datetime extends Object{
    * @param  {Object} [params={}] Additional Parameters
    * @return {Array}              jsonArray containing the data
    */
-  date(col, params={}){
+  date(col, format='YYYY-MM-DD', params={}){
     var array = this.data.__inplace__(params['inplace'])
 
     array.row_apply( r => {
       // convert the column to a moment if it is not already
-      if( !(r[col] instanceof moment) ) r[col] = moment(r[col])
+      if( !(r[col] instanceof moment) ) r[col] = moment(r[col], format)
       r['WEEK'] = r[col].week()
       r['DAY'] = r[col].format('D')
       r['DAYOFWEEK'] = r[col].day()
