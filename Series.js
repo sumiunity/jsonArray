@@ -192,7 +192,48 @@ export default class Series extends Array {
 
     return ser
   }
-  //
+
+
+  merge( ser, params={} ){
+    // clone the local copy to avoid mutation
+    var array = this.__inplace__(params['inplace'])
+
+    // generate object mapping the index to value
+    const mapping = ser.toObject()
+
+    // merge left i.e. merge based on the host index values
+    var dataframe = []
+    for( let i=0; i < array.length; i++ ){
+      // set null instead of undefined so the entry does not get overwritten
+      var value = mapping[array[i].__index__]
+      if( value === undefined ) value = null
+
+      dataframe.push({
+        __index__: array[i].__index__,
+        [this.name]: array[i].value,
+        [ser.name]: value
+      })
+    }
+
+
+    // fill values that weren't included in the host index
+    const serIndex1 = this.index
+    const serIndex2 = ser.index
+    const diff = [...new Set(serIndex2.filter(x => !serIndex1.includes(x)))]
+
+    for( let i=0; i < diff.length; i++ ){
+      dataframe.push({
+        __index__: diff[i],
+        [this.name]: null,
+        [ser.name]: mapping[diff[i]]
+      })
+    }
+
+    console.log(serIndex2, serIndex1, diff)
+    return new jsonArray(dataframe)
+  }
+
+
   // // copies the local data removes all metadata elements
   // get data(){
   //   var data = {...this}
