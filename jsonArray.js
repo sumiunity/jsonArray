@@ -194,10 +194,32 @@ export default class jsonArray extends Array{
     return new jsonArray(subset)
   }
 
+  /**
+   * Standard js Slice that returns the data as a jsonArrayDocs
+   * @param  {Integer} first       first index
+   * @param  {Integer} last        Last index
+   * @param  {Object} [params={}] Additional Parameters
+   * @return {Array}             Sliced jsonArray
+   */
+  slice(first, last, params={} ){
+    var array = [...this].slice(first, last)
+    return new jsonArray(array)
+  }
 
+  // duplication of conact but with pandas syntax
   append( df ){
+    return this.concat(df)
+  }
+
+  /**
+   * appends the existing DataFrame with the provided DataFrame
+   * @param  {Array} df jsonArray
+   * @return {Array}    jsonArray with appended bojects
+   */
+  concat( df ){
     return new jsonArray([...this].concat(df))
   }
+
 
   /**
    * inserts an object into the array based on the specified
