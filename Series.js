@@ -187,7 +187,7 @@ export default class Series extends Array {
     var ser = this.__inplace__(params['inplace'])
 
     for( var i=0; i < ser.length; i++ ){
-      ser[i] = func(ser[i])
+      ser[i]['value'] = func(ser[i]['value'])
     }
 
     return ser
@@ -229,7 +229,6 @@ export default class Series extends Array {
       })
     }
 
-    console.log(serIndex2, serIndex1, diff)
     return new jsonArray(dataframe)
   }
 
@@ -496,6 +495,16 @@ export default class Series extends Array {
     if( this.values.length === 1 ) return this[0]
     return this.sum / this.values.length
   }
+
+  /********************************************************************************
+  *  Arithmetic Functions
+  *  ===============================
+  *  Interface for computing common statistical functions
+  ********************************************************************************/
+  add( value, params={} ){ return this.apply(r => r + value, params) }
+  sub( value, params={} ){ return this.apply(r => r - value, params) }
+  multiply( value, params={} ){ return this.apply(r => r * value, params) }
+  divide( value, params={} ){ return this.apply(r => r / value, params) }
 
   //
   //
