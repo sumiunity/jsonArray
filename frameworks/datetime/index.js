@@ -42,6 +42,7 @@ export default class datetime extends Object{
       if( !(r[col] instanceof moment) ) r[col] = moment(r[col])
       r['WEEK'] = r[col].week()
       r['YEAR'] = r[col].year()
+      r['WEEK_LABEL'] = `${r[col].year()}-${r[col].week()}`
       return r
     })
 
@@ -50,8 +51,9 @@ export default class datetime extends Object{
       ...array.dtypes,
       ...{
         [col]: 'datetime',
-        'WEEK': 'int',
+        'WEEK_NUM': 'int',
         'YEAR': 'int',
+        'WEEK_LABEL': 'string',
       }
     }
 
@@ -75,6 +77,7 @@ export default class datetime extends Object{
       r['DAYOFWEEK'] = r[col].day()
       r['MONTH'] = r[col].format('M')
       r['YEAR'] = r[col].year()
+      r['WEEK_LABEL'] = `${r[col].year()}-${r[col].week()}`
       return r
     })
 
@@ -88,6 +91,7 @@ export default class datetime extends Object{
         'DAY': 'int',
         'DAYOFWEEK': 'int',
         'MONTH': 'int',
+        'WEEK_LABEL': 'string',
       }
     }
 

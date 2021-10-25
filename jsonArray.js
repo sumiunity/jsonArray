@@ -870,6 +870,11 @@ export default class jsonArray extends Array{
             temp[column_val[j]] = stats.mean( by_col, value)
             break;
 
+          case 'func':
+            temp_json = new jsonArray( by_col )
+            temp[column_val[j]] = value( temp_json )
+            break;
+
           default:
             temp[column_val[j]] = by_col.length
             break
