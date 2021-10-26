@@ -12,7 +12,6 @@
 
 import React from 'react';
 
-import moment from 'moment'
 import ReactLibraryFramework from '../../ReactLibraryFramework'
 
 import EchartsReact from './EchartsReact'
@@ -62,7 +61,7 @@ export default class echartsLibrary extends ReactLibraryFramework{
   }
 
   Histogram( props ){
-    const __props = this.format_props(__props)
+    const __props = this.format_props(props)
     const series = __props.data.col( __props.colx )
     const hist = series.binning({bins: 30})
     const opt = hist.echartsOptions
@@ -102,8 +101,8 @@ export default class echartsLibrary extends ReactLibraryFramework{
 
   Scatter( props ){
     const __props = this.format_props(props)
-    const options = props.data.echartsOptions.scatter(props)
-    return this.Render( props, options )
+    const options = props.data.echartsOptions.scatter(__props)
+    return this.Render( __props, options )
   }
 
 

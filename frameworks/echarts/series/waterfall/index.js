@@ -11,7 +11,6 @@ export default function Waterfall( props ){
   // perform the forward difference required to generate the waterfall
   data = data.forward_diff(props.coly, 'waferfallDiff' )
 
-  const diff = data.map(r => r.waferfallDiff)
 
   var pos = []
   var neg = []

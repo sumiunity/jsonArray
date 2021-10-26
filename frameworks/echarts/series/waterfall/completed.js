@@ -7,9 +7,6 @@ export default function CompletedWaferfall( props ){
   // perform the forward difference required to generate the waterfall
   data = data.forward_diff(props.coly, 'waferfallDiff' )
 
-  console.log( data )
-  const diff = data.map(r => r.waferfallDiff)
-
   var pos = []
   var neg = []
   var pos_c = []

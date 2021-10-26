@@ -47,7 +47,7 @@ export function forward_diff(data, col, newCol, step=1){
 export function rolling_average(data, col, window=7, type='center' ){
 
 
-
+  var start, end
   const yValues = data.map(r => r[col])
 
   // coompute the rolloing average where the sample of interest is
@@ -64,10 +64,11 @@ export function rolling_average(data, col, window=7, type='center' ){
       nStep = Math.floor(window/2) + 1
     }
 
+
     for( let i=0; i < data.length; i++ ){
 
-      var start = i - nStep + 1
-      var end = i + pStep + 1
+      start = i - nStep + 1
+      end = i + pStep + 1
 
       // ensure that the statistics do not count out of bounds values
       if (start < 0 ) start = 0
@@ -91,7 +92,7 @@ export function rolling_average(data, col, window=7, type='center' ){
 
     // average is not accurate for the first n samples in the rolling average
     for( let i=0; i < data.length; i++ ){
-      var start = (i-window+1 < 0) ? 0 : i-window+1
+      start = (i-window+1 < 0) ? 0 : i-window+1
       data[i][`${col}_avg`] = arrayStats.mean(yValues.slice(start,i+1))
     }
 

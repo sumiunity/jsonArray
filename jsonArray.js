@@ -74,7 +74,7 @@ export default class jsonArray extends Array{
     // console.log( dtypes )
     // dictionary containing column data types
     this.dtypes = dtypes
-
+    this.indexName = '__index__'
   }
 
 
@@ -116,11 +116,19 @@ export default class jsonArray extends Array{
     // duplicate the array to avoid mutation
     var array = this.__inplace__(props['inplace'])
 
+    // extract the index name and rename when the default
+    var indexName = this.indexName
+    if( indexName === '__index__') indexName = 'index'
+
+    console.log( 'what is the index', indexName )
     for( var i=0; i < array.length; i++ ){
+      array[i][indexName] = array[i][this.indexName]
       array[i]['__index__'] = i
     }
+
     return array
   }
+
 
   // return all values for the specified column
   values( col ){
@@ -765,6 +773,47 @@ export default class jsonArray extends Array{
     return new jsonArray( buffer, true  )
   }
 
+
+  /**
+   * Transpose Alias
+   * @param  {Object} [props={}] user provided parameters
+   * @return {Object}            jsonArray containing the tranposed DataFrame
+   */
+  T(props={}){
+    return this.transpose(props)
+  }
+
+
+  /**
+   * Tranposes DataFrame i.e. converts the columns to rows and vice-versa
+   * @param  {Object} [props={}] user provided parameters
+   * @return {Object}            jsonArray containing the tranposed DataFrame
+   */
+  transpose(props={}){
+
+    const columns = this.columns
+    const index = this.index
+
+    // loop through each column and row and store the
+    // transposed results into a dictionary
+    var temp = {}
+    for( let i=0; i < this.length; i++){
+      columns.forEach(col => {
+        const id = index[i]
+        const value = this[i][col]
+
+        if( temp[col] === undefined ) temp[col] = {'__index__': col}
+        temp[col][id] = value
+      })
+    }
+
+    // convert the object with transposed data into a jsonArray
+    var array = []
+    Object.values(temp).forEach(row => array.push(row))
+
+    return new jsonArray( array )
+
+  }
 
 
   pivot( columns ){

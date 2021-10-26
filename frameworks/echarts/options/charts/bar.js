@@ -18,19 +18,20 @@ export default function bar( json_array, props={} ){
   const colx = props.colx
   const coly = props.coly
 
+  var xAxis, yAxis
   if( props.horizontal === true ){
-    var xAxis = new echartsAxis(coly)
+    xAxis = new echartsAxis(coly)
 
-    var yAxis = new echartsAxis(colx)
+    yAxis = new echartsAxis(colx)
     yAxis.label(colx)
     yAxis.tick_values(json_array.values(colx))
 
   }else{
-    var xAxis = new echartsAxis(colx)
+    xAxis = new echartsAxis(colx)
     xAxis.label(colx)
     xAxis.tick_values(json_array.values(colx))
 
-    var yAxis = new echartsAxis(coly)
+    yAxis = new echartsAxis(coly)
   }
 
   // const echart_series = new echartsSeries( json_array )

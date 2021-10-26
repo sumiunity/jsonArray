@@ -1,5 +1,4 @@
 
-import echartsAxis from '../../axis'
 import RadarSeries from '../../series/radar'
 
 /**

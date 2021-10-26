@@ -49,7 +49,6 @@ export default class Series extends Array {
     }
 
     if( keys.includes('Series') ){
-      const ser = props.Series
       props.Series.forEach(obj => {
         this.push( {__index__: obj.__index__,  value: obj['value']} )
       })

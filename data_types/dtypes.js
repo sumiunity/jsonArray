@@ -181,7 +181,7 @@ export default class DataTypes extends Object{
 
       case 'week':
         if( value === null ) return null
-        if( value.toString().split('-').length != 2){
+        if( value.toString().split('-').length !== 2){
           const date = moment(value)
           return `${date.year()}-${date.format('ww')}`
         }
