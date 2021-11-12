@@ -1,5 +1,6 @@
 
 import CompletedWaferfall from './completed'
+import propsToSeries from '../propsToSeries'
 
 export default function Waterfall( props ){
 
@@ -33,7 +34,7 @@ export default function Waterfall( props ){
 
   }
 
-  const series = [
+  const Series = [
       {
           type: 'bar',
           stack: 'waferfall',
@@ -67,7 +68,10 @@ export default function Waterfall( props ){
       }
   ]
 
-  return series
+
+  Series[0] = propsToSeries(props, Series[0])
+
+  return Series
 
 
 

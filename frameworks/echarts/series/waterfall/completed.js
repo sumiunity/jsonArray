@@ -1,4 +1,5 @@
 
+import propsToSeries from '../propsToSeries'
 
 export default function CompletedWaferfall( props ){
 
@@ -36,7 +37,7 @@ export default function CompletedWaferfall( props ){
 
   }
 
-  const series = [
+  const Series = [
       {
           type: 'bar',
           stack: 'waferfall',
@@ -84,7 +85,9 @@ export default function CompletedWaferfall( props ){
       },
   ]
 
-  return series
+  Series[0] = propsToSeries(props, Series[0])
+
+  return Series
 
 
 

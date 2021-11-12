@@ -89,7 +89,7 @@ export default class jsonArray extends Array{
       columns = columns.concat(Object.keys(this[i]))
     }
 
-    return [...new Set(columns.filter(x => !['__index__'].includes(x)))]
+    return [...new Set(columns.filter(x => ![this.indexName].includes(x)))]
   }
 
   /**
@@ -120,11 +120,12 @@ export default class jsonArray extends Array{
     var indexName = this.indexName
     if( indexName === '__index__') indexName = 'index'
 
-    console.log( 'what is the index', indexName )
     for( var i=0; i < array.length; i++ ){
       array[i][indexName] = array[i][this.indexName]
       array[i]['__index__'] = i
     }
+
+    array.indexName = '__index__'
 
     return array
   }
@@ -140,7 +141,7 @@ export default class jsonArray extends Array{
    * @return {Array} Array of index values
    */
   get index(){
-    return [...this].map(row => row.__index__)
+    return [...this].map(row => row[this.indexName])
   }
 
   /**
@@ -358,10 +359,13 @@ export default class jsonArray extends Array{
   set_index( col, params={} ){
     var array = this.__inplace__(params['inplace'])
 
+    // delete the current index
     for( var i=0; i < array.length; i ++ ){
-      array[i].__index__ = array[i][col]
-      delete array[i][col]
+      delete array[i][array.indexName]
     }
+
+    // replace the index name with the given column
+    array.indexName = col
 
     return array
   }
@@ -802,8 +806,11 @@ export default class jsonArray extends Array{
         const id = index[i]
         const value = this[i][col]
 
-        if( temp[col] === undefined ) temp[col] = {'__index__': col}
-        temp[col][id] = value
+        if( col !== this.indexName ){
+          if( temp[col] === undefined ) temp[col] = {'__index__': col}
+          temp[col][id] = value
+        }
+
       })
     }
 

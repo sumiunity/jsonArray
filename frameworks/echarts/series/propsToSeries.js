@@ -18,6 +18,7 @@ export default function propsToSeries(props, Series){
     // barplot props
     if( props.barGap !== undefined ) Series['barGap'] = props.barGap
 
+    if( props.labelObj !== undefined ) Series['label'] = props.labelObj 
     if( props.label !== undefined ){
       Series['label'] = {
         show: true,
