@@ -2,6 +2,8 @@
 import CompletedWaferfall from './completed'
 import propsToSeries from '../propsToSeries'
 
+import HorizontalLines from './components/HorizontalLines'
+
 export default function Waterfall( props ){
 
   var data = props.json_array
@@ -12,6 +14,7 @@ export default function Waterfall( props ){
   // perform the forward difference required to generate the waterfall
   data = data.forward_diff(props.coly, 'waferfallDiff' )
 
+  console.log( data )
 
   var pos = []
   var neg = []
@@ -34,7 +37,7 @@ export default function Waterfall( props ){
 
   }
 
-  const Series = [
+  var Series = [
       {
           type: 'bar',
           stack: 'waferfall',
@@ -68,6 +71,7 @@ export default function Waterfall( props ){
       }
   ]
 
+  Series = HorizontalLines(props, Series)
 
   Series[0] = propsToSeries(props, Series[0])
 

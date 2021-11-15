@@ -1,5 +1,6 @@
 
 import propsToSeries from '../propsToSeries'
+import HorizontalLines from './components/HorizontalLines'
 
 export default function CompletedWaferfall( props ){
 
@@ -37,7 +38,7 @@ export default function CompletedWaferfall( props ){
 
   }
 
-  const Series = [
+  var Series = [
       {
           type: 'bar',
           stack: 'waferfall',
@@ -84,6 +85,8 @@ export default function CompletedWaferfall( props ){
         color: (props.negColorIncomplete === undefined) ? '#fa0000' : props.negColorIncomplete,
       },
   ]
+
+  Series = HorizontalLines(props, Series)
 
   Series[0] = propsToSeries(props, Series[0])
 

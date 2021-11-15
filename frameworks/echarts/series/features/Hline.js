@@ -72,6 +72,7 @@ function render(params, api, props) {
       ]
     };
 
+    console.log( 'what are the props', props )
     if( props.color !== undefined ) Series.children[0].style.fill = props.color
     if( props.border !== undefined ) Series.children[0].style.stroke = props.border
 
