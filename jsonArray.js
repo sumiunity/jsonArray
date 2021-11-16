@@ -453,7 +453,12 @@ export default class jsonArray extends Array{
     // duplicate the array to avoid mutation
     var array = this.__inplace__(props['inplace'])
 
-    var temp = array.create_column('__temp__', r => indexArray.indexOf(r[array.indexName]) )
+    var temp = array.create_column('__temp__', r => {
+      var idx = indexArray.indexOf(r[array.indexName])
+      // put missing entries at the end
+      if( idx === -1 ) return array.length
+      return idx
+    })
 
     temp = temp.sort_values('__temp__')
 

@@ -56,7 +56,7 @@ export default class Series extends Array {
 
     if( keys.includes('DataFrame') ){
       props.DataFrame.forEach(obj => {
-        this.push( {__index__: obj.__index__,  value: obj[props.name]} )
+        this.push( {__index__: obj[props.DataFrame.indexName],  value: obj[props.name]} )
       })
       this.name = props.name
     }
