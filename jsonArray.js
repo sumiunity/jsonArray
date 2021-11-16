@@ -39,31 +39,35 @@ export default class jsonArray extends Array{
     if( dtypes === undefined ) dtypes = new DataTypes( array )
     // console.log( dtypes )
 
+    const indexName = (array.indexName === undefined) ? '__index__' : array.indexName
+
     // add an index column when the array is not empty
     if( (array.length > 0)&(inplace!==true) ){
 
-      array = JSON.parse(JSON.stringify(array))
+      var cloned = JSON.parse(JSON.stringify(array))
 
       // when the Array is passed in as an array of arrays, covert
       // it to an array of objects
       if( array[0].hasOwnProperty('length') ){
-        for( var i=0; i < array.length; i++ ){
-          array[i] = {...array[i]}
+        for( var i=0; i < cloned.length; i++ ){
+          cloned[i] = {...cloned[i]}
         }
       }
 
-      const columns = Object.keys(array[0])
+      const columns = Object.keys(cloned[0])
 
       // create an internal index attribute when one doesn't exist
-      if( !columns.includes('__index__') ){
-        for( i=0; i < array.length; i++ ){
-          array[i]['__index__'] = i
+      if( !columns.includes(indexName) ){
+        for( i=0; i < cloned.length; i++ ){
+          cloned[i][indexName] = i
         }
       }
 
 
       // initialize the array based on the data type of the uncloned DataFrame
-      array = dtypes.init(array)
+      cloned = dtypes.init(cloned)
+
+      array = cloned
     }
 
     super()
@@ -74,7 +78,7 @@ export default class jsonArray extends Array{
     // console.log( dtypes )
     // dictionary containing column data types
     this.dtypes = dtypes
-    this.indexName = '__index__'
+    this.indexName = indexName
   }
 
 

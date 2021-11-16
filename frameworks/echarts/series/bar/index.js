@@ -29,6 +29,9 @@ export default function BarPlot( props ){
   var series = []
   for( var i=0; i < col.length; i++ ){
 
+    var color = (props.color === undefined) ? [] : props.color
+    if( typeof color === 'string' ) color = []
+
     // create a data structure for plotting the scatter plot
     series.push( Bar({
       ...props,
@@ -36,6 +39,7 @@ export default function BarPlot( props ){
         col: col[i],
         name: col[i],
         json_array: json_array,
+        color: (i < color.length) ? color[i] : undefined,
         // barGap: (i === 0 ) ? 0 : .1,
         emphasis: (props.emphasis === true) ? { focus: 'series' } : undefined,
       }
