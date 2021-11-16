@@ -13,29 +13,30 @@ export default function BarPlot( props ){
     json_array = new jsonArray(json_array)
   }
 
+  const col = (props.col === undefined) ? props.coly : props.col
 
   // return a single boxplot when the column is a string
-  if( typeof props.col === 'string' ){
+  if( typeof col === 'string' ){
     return [Bar({
       ...props,
       ...{
-        col: props.col,
+        col: col,
         json_array: json_array,
       }
     })]
   }
 
   var series = []
-  for( var i=0; i < props.col.length; i++ ){
+  for( var i=0; i < col.length; i++ ){
 
     // create a data structure for plotting the scatter plot
     series.push( Bar({
       ...props,
       ...{
-        col: props.col[i],
-        name: props.col[i],
+        col: col[i],
+        name: col[i],
         json_array: json_array,
-        barGap: (i === 0 ) ? 0 : undefined,
+        // barGap: (i === 0 ) ? 0 : .1,
         emphasis: (props.emphasis === true) ? { focus: 'series' } : undefined,
       }
     }) )
