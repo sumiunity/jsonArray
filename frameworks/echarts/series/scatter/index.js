@@ -75,7 +75,7 @@ export default function scatter( props ){
   Series = propsToSeries(props, Series)
 
   // add tooltips when the label is provided
-  if( props.colorBy !== undefined ){
+  if( props.label !== undefined ){
     Series['emphasis'] = {
       label: {
         formatter: function( params){
