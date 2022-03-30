@@ -40,9 +40,9 @@ export default class datetime extends Object{
     array.row_apply( r => {
       // convert the column to a moment if it is not already
       if( !(r[col] instanceof moment) ) r[col] = moment(r[col])
-      r['WEEK'] = r[col].week()
-      r['YEAR'] = r[col].year()
-      r['WEEK_LABEL'] = `${r[col].year()}-${r[col].week()}`
+      r['WEEK'] = r[col].isoWeek()
+      r['YEAR'] = r[col].isoWeekYear()
+      r['WEEK_LABEL'] = `${r[col].isoWeekYear()}-${String(r[col].isoWeek()).padStart(2, '0')}`
       return r
     })
 
@@ -72,12 +72,12 @@ export default class datetime extends Object{
     array.row_apply( r => {
       // convert the column to a moment if it is not already
       if( !(r[col] instanceof moment) ) r[col] = moment(r[col], format)
-      r['WEEK'] = r[col].week()
+      r['WEEK'] = r[col].isoWeek()
       r['DAY'] = r[col].format('D')
       r['DAYOFWEEK'] = r[col].day()
       r['MONTH'] = r[col].format('M')
-      r['YEAR'] = r[col].year()
-      r['WEEK_LABEL'] = `${r[col].year()}-${r[col].week()}`
+      r['YEAR'] = r[col].isoWeekYear()
+      r['WEEK_LABEL'] = `${r[col].isoWeekYear()}-${r[col].isoWeek()}`
       return r
     })
 
