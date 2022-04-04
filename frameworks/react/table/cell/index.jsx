@@ -36,6 +36,14 @@ export default function Cell( props ) {
     }catch{}
   }
 
+  if( props.cellBackgroundColorByIndex !== undefined ){
+    var index = props.row['__index__']
+    try{
+      const color = props.cellBackgroundColorByIndex[index][props.col]
+      if( color !== undefined ) style['backgroundColor'] = color
+    }catch{}
+  }
+
   if( props.cellStyle !== undefined ){
     try{
       style = {

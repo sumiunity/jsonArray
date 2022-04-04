@@ -37,7 +37,7 @@ export default function BarPlot( props ){
       ...props,
       ...{
         col: col[i],
-        name: (props.stacked !== true ) ? `${col[i]} (${props.stacked})`: col[i],
+        name: (props.name === true ) ? `${col[i]} (${props.stacked})`: col[i],
         json_array: json_array,
         color: (i < color.length) ? color[i] : undefined,
         // barGap: (i === 0 ) ? 0 : .1,
