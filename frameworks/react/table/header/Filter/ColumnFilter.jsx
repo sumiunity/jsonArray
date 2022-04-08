@@ -113,6 +113,7 @@ export default function ColumnFilter( props ){
           placeholder={'filter...'}
           multiple
           selection
+          search
           fluid
           value={filterValues}
           onChange={columnFilterOnChange}
