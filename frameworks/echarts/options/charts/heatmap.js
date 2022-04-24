@@ -36,7 +36,7 @@ export default function heatmap( json_array, props={} ){
 
 
   var grid = {backgroundColor: 'rgb(0, 128, 0)'}
-
+  var tooltip = {axisPointer : {type: 'cross'},position: 'top'}
   // set the percentage flag based on the datatype or parameter
   var percentage = false
   if( (json_array.dtypes[props.value] === 'percentage') | (props.percentage === true)){
@@ -81,6 +81,7 @@ export default function heatmap( json_array, props={} ){
     yAxis: [yAxis],
     series: series,
     grid: grid,
+    tooltip:tooltip,
     visualMap: visualMap
 
   }
