@@ -116,7 +116,7 @@ export default function cellType( props ) {
       break
 
     case 'hyperlink':
-      cellContent = <a href={value}>{value}</a>
+      cellContent = <a href={value}>link</a>
       break
 
     case 'float':
