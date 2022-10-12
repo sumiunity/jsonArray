@@ -681,6 +681,22 @@ export default class jsonArray extends Array{
     }
   }
 
+  filter_non_column( col, value ){
+    if( Array.isArray(value) ){
+      return new jsonArray(
+        [...this].filter(row => !value.includes(row[col])),
+        false,
+        this.dtypes
+       )
+    }else{
+      return new jsonArray(
+        [...this].filter(row => row[col] !== value ),
+        false,
+        this.dtypes
+      )
+    }
+  }
+
   concat( array ){ return new jsonArray( [...this].concat(array)) }
 
   filter( func ){
