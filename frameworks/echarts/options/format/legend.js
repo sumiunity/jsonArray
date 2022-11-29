@@ -5,7 +5,7 @@ export default function legend( position ){
 
     case 'top-center':
       return {
-        top: '5%',
+        top: '8%',
         left: 'center'
       }
 
@@ -29,7 +29,7 @@ export default function legend( position ){
 
     default:
       return {
-        top: '5%',
+        top: '8%',
         left: 'center'
       }
   }

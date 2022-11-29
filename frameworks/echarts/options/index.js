@@ -136,6 +136,15 @@ export default class echartsOptions extends Object {
     this.legend = legend(position)
   }
 
+  title( props){
+    this.title = {
+      ...props,
+      left: 'center'
+    }
+    return this
+
+  }
+
   // add a secondary y axis
   secondary_axis( col ){
     this.yAxis.push(  new echartsAxis(col) )
